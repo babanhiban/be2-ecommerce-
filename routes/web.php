@@ -26,3 +26,14 @@ Route::get('/login', function () {
 Route::get('/register', function () {
     return view('auth.register');
 })->name('register');
+
+// Quên mật khẩu
+Route::get('/forgot-password', function () {
+    return view('auth.forgot-password');
+})->name('password.request');
+
+// Nếu bạn muốn xử lý gửi email khôi phục mật khẩu (tùy chọn)
+Route::post('/forgot-password', function () {
+    // Xử lý logic gửi email
+    return back()->with('status', 'Email khôi phục mật khẩu đã được gửi!');
+})->name('password.email');
