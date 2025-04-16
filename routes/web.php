@@ -37,3 +37,13 @@ Route::post('/forgot-password', function () {
     // Xử lý logic gửi email
     return back()->with('status', 'Email khôi phục mật khẩu đã được gửi!');
 })->name('password.email');
+
+// Xác nhận mã khi quên mật khẩu
+Route::get('/verify-code', function () {
+    return view('auth.verify-code');
+})->name('verify.code.form');
+
+Route::post('/verify-code', function () {
+    // Xử lý xác nhận mã ở đây
+    return redirect()->route('password.reset'); // ví dụ
+})->name('verify.code');
