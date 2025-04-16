@@ -47,3 +47,15 @@ Route::post('/verify-code', function () {
     // Xử lý xác nhận mã ở đây
     return redirect()->route('password.reset'); // ví dụ
 })->name('verify.code');
+
+// Xác nhận thay đổi mật khẩu mới sau khi quên mật khẩu
+Route::get('/reset-password', function () {
+    return view('auth.reset-password');
+})->name('password.reset');
+
+Route::post('/reset-password', function (\Illuminate\Http\Request $request) {
+    // Xử lý cập nhật mật khẩu ở đây...
+    // Ví dụ: kiểm tra token/mã hợp lệ, cập nhật vào DB
+
+    return redirect()->route('login')->with('success', 'Mật khẩu đã được cập nhật!');
+})->name('password.update');
