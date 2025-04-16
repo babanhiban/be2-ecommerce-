@@ -12,8 +12,8 @@
 <body>
     <header class="header">
         <div class="nav">
-            <a href="#" class="nav-item">Màn Hình</a>
-            <a href="#" class="nav-item active">Quên Mật Khẩu</a>
+            <a href="#" class="nav-item active">Màn Hình</a>
+            <a href="#" class="nav-item">Quên Mật Khẩu</a>
         </div>
         <div class="logo-container">
             <img src="{{ asset('images/manhinhdangnhap/logo.png') }}" alt="Logo" class="logo-header">
