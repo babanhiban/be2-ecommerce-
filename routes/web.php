@@ -27,6 +27,11 @@ Route::get('/register', function () {
     return view('auth.register');
 })->name('register');
 
+// Xác nhận mã đăng ký
+Route::get('/verify-register', function () {
+    return view('auth.verify-register');
+})->name('verify.register');
+
 // Quên mật khẩu
 Route::get('/forgot-password', function () {
     return view('auth.forgot-password');
