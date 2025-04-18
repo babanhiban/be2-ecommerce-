@@ -25,7 +25,7 @@
             <img src="{{ asset('images/manhinhdangnhap/logo.png') }}" alt="Logo">
         </div>
         <div class="login-form">
-            <h2>Xác nhận mã để đăng ký</h2>
+            <h2>Xác nhận mã để đăng nhập</h2>
             <form method="POST" action="{{ route('verify.register') }}">
                 @csrf
                 <div class="form-group">
@@ -37,6 +37,10 @@
                 <span class="divider-text">Hoặc</span>
             </div>
             <div class="links">
+                <div class="register-link">
+                    <span>Quay lại đăng ký</span>
+                    <a href="{{ route('register') }}">Đăng ký</a>
+                </div>
                 <div class="login-link">
                     <span>Bạn đã có tài khoản? </span>
                     <a href="{{ route('login') }}">Đăng nhập</a>
