@@ -44,7 +44,7 @@
                         @endforeach
                     </th>
                     <th class="action-buttons">
-                        <button class="btn-delete"><a href="{{ route('user.deleteUser', ['id' => $user->id]) }}">Xóa</a></button>
+                        <a href="{{ route('user.deleteUser', ['id' => $user->id]) }}" class="btn-delete">Xóa</a>
                         <button class="btn-edit"><a href="{{ route('user.updateUser', ['id' => $user->id]) }}">Sửa</a></button>
                     </th>
                 </tr>
@@ -59,21 +59,19 @@
     </div>
 
     <div class="navigation-buttons">
+        @foreach($user->roles as $role)
         <a href="{{ route('admin.users') }}" class="btn-nav">Quay lại</a>
 
-        @foreach($user->roles as $role)
-        <a href="{{ route('user.role', ['id' => $role->id]) }}">
-            <a href="{{ route('user.role.show', ['id' => 1]) }}" class="btn-nav">
-                Danh Sách Quản Lý
-            </a>
+        <a href="{{ route('user.role.show', ['id' => 1]) }}" class="btn-nav">
+            Danh Sách Quản Lý
+        </a>
 
-            <a href="{{ route('user.role.show', ['id' => 2]) }}" class="btn-nav">
-                Danh Sách Nhân Viên
-            </a>
+        <a href="{{ route('user.role.show', ['id' => 2]) }}" class="btn-nav">
+            Danh Sách Nhân Viên
+        </a>
 
-            <a href="{{ route('user.role.show', ['id' => 3]) }}" class="btn-nav">
-                Danh Sách Người Dùng
-            </a>
+        <a href="{{ route('user.role.show', ['id' => 3]) }}" class="btn-nav">
+            Danh Sách Người Dùng
         </a>
         @endforeach
 

@@ -34,8 +34,8 @@ class RoleController extends Controller
     public function showRoleUsers($id)
     {
         $role = Role::findOrFail($id);
-        $users = $role->users()->paginate(5); // 5 user mỗi trang
+        $users = $role->users()->paginate(5); // phân trang
 
-        return view('admin.list_users', compact('role', 'users'));
+        return view('role.list_role_user', compact('role', 'users'));
     }
 }
