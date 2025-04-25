@@ -69,3 +69,8 @@ Route::post('/reset-password', function (\Illuminate\Http\Request $request) {
 Route::get('list_users', function () {
     return view('admin.list_users');
 })->name('admin.users');
+
+// Chỉnh sửa tài khoản
+Route::get('crud_users', function () {
+    return view('admin.crud_users');
+})->name('admin.users.edit');
