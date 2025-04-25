@@ -64,3 +64,8 @@ Route::post('/reset-password', function (\Illuminate\Http\Request $request) {
 
     return redirect()->route('login')->with('success', 'Mật khẩu đã được cập nhật!');
 })->name('password.update');
+
+// Danh sách tài khoản
+Route::get('list_users', function () {
+    return view('admin.list_users');
+})->name('admin.users');
