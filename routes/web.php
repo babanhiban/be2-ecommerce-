@@ -2,6 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\CrudUserController;
+
+use App\Http\Controllers\RoleController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -66,9 +70,20 @@ Route::post('/reset-password', function (\Illuminate\Http\Request $request) {
 })->name('password.update');
 
 // Danh sách tài khoản
-Route::get('list_users', function () {
-    return view('admin.list_users');
-})->name('admin.users');
+// Route::get('list_users', [CrudUserController::class, 'listUser'])->name('admin.users');
+
+Route::get('/list_users', [CrudUserController::class, 'listUser'])->name('admin.users');
+
+// Xóa tài khoản
+Route::get('delete', [CrudUserController::class, 'deleteUser'])->name('user.deleteUser');
+
+// Sửa tài khoản
+Route::get('update', [CrudUserController::class, 'updateUser'])->name('user.updateUser');
+Route::post('update', [CrudUserController::class, 'postUpdateUser'])->name('user.postUpdateUser');
+
+//Roles
+Route::get('role', [RoleController::class, 'role'])->name('user.role');
+Route::get('/role/{id}', [RoleController::class, 'showRoleUsers'])->name('user.role.show');
 
 // Chỉnh sửa tài khoản
 Route::get('crud_users', function () {
