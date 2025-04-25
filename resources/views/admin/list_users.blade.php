@@ -23,7 +23,7 @@
         <table class="accounts-table">
             <thead>
                 <tr>
-                    <th>Tài khoản</th>
+                    <th>Tên</th>
                     <th>Email</th>
                     <th>Số điện thoại</th>
                     <th>Quyền</th>
