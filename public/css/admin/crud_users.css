@@ -109,6 +109,18 @@ body {
     text-align: center;
     white-space: nowrap;
 }
+.btn-delete {
+    padding: 8px 20px;
+    background-color: #45c6f3;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    white-space: nowrap;
+}
 
 .btn-edit:hover, .btn-nav:hover {
     background-color: #3ab5e0;

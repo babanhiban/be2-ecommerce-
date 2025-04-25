@@ -75,11 +75,13 @@ Route::post('/reset-password', function (\Illuminate\Http\Request $request) {
 Route::get('/list_users', [CrudUserController::class, 'listUser'])->name('admin.users');
 
 // Xóa tài khoản
-Route::get('delete', [CrudUserController::class, 'deleteUser'])->name('user.deleteUser');
+// Route::get('delete', [CrudUserController::class, 'deleteUser'])->name('user.deleteUser');
+Route::get('delete/{id}', [CrudUserController::class, 'deleteUser'])->name('user.deleteUser');
 
 // Sửa tài khoản
 Route::get('update', [CrudUserController::class, 'updateUser'])->name('user.updateUser');
 Route::post('update', [CrudUserController::class, 'postUpdateUser'])->name('user.postUpdateUser');
+
 
 //Roles
 Route::get('role', [RoleController::class, 'role'])->name('user.role');

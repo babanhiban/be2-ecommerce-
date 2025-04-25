@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Support\Facades\DB;
 
+use Carbon\Carbon;
 
 /**
  * CRUD User controller
@@ -97,9 +98,15 @@ class CrudUserController extends Controller
     public function deleteUser(Request $request)
     {
         $user_id = $request->get('id');
-        $user = User::destroy($user_id);
+        User::destroy($user_id);  // Xóa người dùng theo ID
 
-        return redirect("list")->withSuccess('You have signed-in');
+        // Quay lại trang danh sách người dùng sau khi xóa thành công
+        return redirect()->route('admin.users')->withSuccess('User deleted successfully');
+
+        // $user_id = $request->get('id');
+        // $user = User::destroy($user_id);
+
+        // return redirect("list")->withSuccess('You have signed-in');
     }
 
     /**
@@ -110,7 +117,7 @@ class CrudUserController extends Controller
         $user_id = $request->get('id');
         $user = User::find($user_id);
 
-        return view('crud_user.update', ['user' => $user]);
+        return view('admin.crud_users', ['user' => $user]);
     }
 
     /**
@@ -118,6 +125,7 @@ class CrudUserController extends Controller
      */
     public function postUpdateUser(Request $request)
     {
+
         $input = $request->all();
 
         $request->validate([
@@ -132,7 +140,14 @@ class CrudUserController extends Controller
 
         $user->phone = $input['phone'];
         $user->gioitinh = $input['gioitinh'];
-        $user->ngaysinh = $input['ngaysinh'];
+
+
+        // Chuyển định dạng ngày sinh từ dd/MM/yyyy sang yyyy-MM-dd
+        try {
+            $user->ngaysinh = Carbon::createFromFormat('d/m/Y', $input['ngaysinh'])->format('Y-m-d');
+        } catch (\Exception $e) {
+            return back()->withErrors(['ngaysinh' => 'Ngày sinh không hợp lệ. Định dạng đúng là dd/mm/yyyy']);
+        }
 
 
         // Kiểm tra nếu password có nhập thì mới update, nếu không thì giữ nguyên mật khẩu cũ
@@ -141,8 +156,8 @@ class CrudUserController extends Controller
         }
 
         $user->save();
-
-        return redirect("list")->withSuccess('You have signed-in');
+        // Quay lại trang danh sách người dùng sau khi sửa thành công
+        return redirect()->route('admin.users')->withSuccess('User update successfully');
     }
 
     /**
