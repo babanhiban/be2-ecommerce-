@@ -91,3 +91,8 @@ Route::get('/role/{id}', [RoleController::class, 'showRoleUsers'])->name('user.r
 Route::get('crud_users', function () {
     return view('admin.crud_users');
 })->name('admin.users.edit');
+
+// Đăng nhập
+Route::get('/pay', function () {
+    return view('payment.pay');
+})->name('pay');
