@@ -75,8 +75,8 @@ Route::post('/reset-password', function (\Illuminate\Http\Request $request) {
 Route::get('/list_users', [CrudUserController::class, 'listUser'])->name('admin.users');
 
 // Xóa tài khoản
-// Route::get('delete', [CrudUserController::class, 'deleteUser'])->name('user.deleteUser');
-Route::get('delete/{id}', [CrudUserController::class, 'deleteUser'])->name('user.deleteUser');
+Route::get('delete', [CrudUserController::class, 'deleteUser'])->name('user.deleteUser');
+// Route::get('delete/{id}', [CrudUserController::class, 'deleteUser'])->name('user.deleteUser');
 
 // Sửa tài khoản
 Route::get('update', [CrudUserController::class, 'updateUser'])->name('user.updateUser');
@@ -96,3 +96,23 @@ Route::get('crud_users', function () {
 Route::get('/pay', function () {
     return view('payment.pay');
 })->name('pay');
+
+// hoa don
+Route::get('/bill', function () {
+    return view('payment.bill');
+})->name('bill');
+
+// hoan tien
+Route::get('/refund', function () {
+    return view('payment.refund');
+})->name('refund');
+
+// lich su giao dich
+Route::get('/history', function () {
+    return view('payment.history');
+})->name('history');
+
+// trang thai giao dich
+Route::get('/statuspay', function () {
+    return view('payment.status');
+})->name('statuspay');

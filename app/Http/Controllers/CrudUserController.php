@@ -98,7 +98,8 @@ class CrudUserController extends Controller
     public function deleteUser(Request $request)
     {
         $user_id = $request->get('id');
-        User::destroy($user_id);  // Xóa người dùng theo ID
+        $user = User::destroy($user_id);
+
 
         // Quay lại trang danh sách người dùng sau khi xóa thành công
         return redirect()->route('admin.users')->withSuccess('User deleted successfully');
