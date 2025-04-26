@@ -31,45 +31,53 @@
                 </tr>
             </thead>
             <tbody>
+                @foreach($users as $user)
                 <tr>
-                    <td>Username1</td>
-                    <td>user1@gmail.com</td>
-                    <td>123456789</td>
-                    <td>Người dùng</td>
-                    <td class="action-buttons">
-                        <button class="btn-delete">Xóa</button>
-                        <button class="btn-edit">Sửa</button>
-                    </td>
+                    <th>{{ $user->name }}</th>
+                    <th>{{ $user->email }}</th>
+                    <th>{{ $user->phone }}</th>
+                    <th>
+                        @foreach($user->roles as $role)
+
+                        {{ $role->name}}
+
+                        @endforeach
+                    </th>
+                    <th class="action-buttons">
+                        <button class="btn-delete"><a href="{{ route('user.deleteUser', ['id' => $user->id]) }}">Xóa</a></button>
+                        <button class="btn-edit"><a href="{{ route('user.updateUser', ['id' => $user->id]) }}">Sửa</a></button>
+                    </th>
                 </tr>
-                <tr>
-                    <td>Username2</td>
-                    <td>user2@gmail.com</td>
-                    <td>123456789</td>
-                    <td>Người dùng</td>
-                    <td class="action-buttons">
-                        <button class="btn-delete">Xóa</button>
-                        <button class="btn-edit">Sửa</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Username3</td>
-                    <td>user3@gmail.com</td>
-                    <td>123456789</td>
-                    <td>Người dùng</td>
-                    <td class="action-buttons">
-                        <button class="btn-delete">Xóa</button>
-                        <button class="btn-edit">Sửa</button>
-                    </td>
-                </tr>
+                @endforeach
+
             </tbody>
         </table>
     </div>
 
+    <div class="pagination-container">
+        {!! $users->withQueryString()->links('pagination::bootstrap-5') !!}
+    </div>
+
     <div class="navigation-buttons">
-        <a href="" class="btn-nav">Quay lại</a>
-        <a href="" class="btn-nav">Danh Sách Quản Lý</a>
-        <a href="" class="btn-nav">Danh Sách Nhân Viên</a>
-        <a href="" class="btn-nav">Danh Sách Người Dùng</a>
+        <a href="{{ route('admin.users') }}" class="btn-nav">Quay lại</a>
+
+        @foreach($user->roles as $role)
+        <a href="{{ route('user.role', ['id' => $role->id]) }}">
+            <a href="{{ route('user.role.show', ['id' => 1]) }}" class="btn-nav">
+                Danh Sách Quản Lý
+            </a>
+
+            <a href="{{ route('user.role.show', ['id' => 2]) }}" class="btn-nav">
+                Danh Sách Nhân Viên
+            </a>
+
+            <a href="{{ route('user.role.show', ['id' => 3]) }}" class="btn-nav">
+                Danh Sách Người Dùng
+            </a>
+        </a>
+        @endforeach
+
+
     </div>
 </body>
 
