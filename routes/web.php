@@ -114,5 +114,5 @@ Route::get('/history', function () {
 
 // trang thai giao dich
 Route::get('/statuspay', function () {
-    return view('payment.statuspay');
+    return view('payment.status');
 })->name('statuspay');
