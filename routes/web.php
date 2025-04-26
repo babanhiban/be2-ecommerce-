@@ -96,3 +96,8 @@ Route::get('crud_users', function () {
 Route::get('/pay', function () {
     return view('payment.pay');
 })->name('pay');
+
+// hoa don
+Route::get('/bill', function () {
+    return view('payment.bill');
+})->name('bill');
