@@ -111,3 +111,8 @@ Route::get('/refund', function () {
 Route::get('/history', function () {
     return view('payment.history');
 })->name('history');
+
+// trang thai giao dich
+Route::get('/statuspay', function () {
+    return view('payment.status');
+})->name('statuspay');
