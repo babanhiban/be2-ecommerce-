@@ -106,3 +106,8 @@ Route::get('/bill', function () {
 Route::get('/refund', function () {
     return view('payment.refund');
 })->name('refund');
+
+// lich su giao dich
+Route::get('/history', function () {
+    return view('payment.history');
+})->name('history');
