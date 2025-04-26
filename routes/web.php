@@ -101,3 +101,8 @@ Route::get('/pay', function () {
 Route::get('/bill', function () {
     return view('payment.bill');
 })->name('bill');
+
+// hoan tien
+Route::get('/refund', function () {
+    return view('payment.refund');
+})->name('refund');
