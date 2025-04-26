@@ -44,7 +44,7 @@
                         @endforeach
                     </th>
                     <th class="action-buttons">
-                        <a href="{{ route('user.deleteUser', ['id' => $user->id]) }}" class="btn-delete">Xóa</a>
+                        <button class="btn-edit"><a href="{{ route('user.deleteUser', ['id' => $user->id]) }}">Xóa</a></button>
                         <button class="btn-edit"><a href="{{ route('user.updateUser', ['id' => $user->id]) }}">Sửa</a></button>
                     </th>
                 </tr>
