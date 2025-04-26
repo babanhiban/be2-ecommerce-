@@ -12,7 +12,7 @@
 <body>
     <header class="header">
         <div class="header-title">
-            <h1>DANH SÁCH TẤT CẢ TÀI KHOẢN</h1>
+            <h1>DANH SÁCH TẤT TÀI KHOẢN THUỘC {{ $role->name }}</h1>
         </div>
         <div class="logo-container">
             <img src="{{ asset('images/manhinhdangnhap/logo.png') }}" alt="Logo" class="logo-header">
@@ -49,33 +49,32 @@
                     </th>
                 </tr>
                 @endforeach
-
             </tbody>
         </table>
     </div>
 
     <div class="pagination-container">
-        {!! $users->withQueryString()->links('pagination::bootstrap-5') !!}
+        {!! $users->links('pagination::bootstrap-5') !!}
     </div>
 
     <div class="navigation-buttons">
-        @foreach($user->roles as $role)
         <a href="{{ route('admin.users') }}" class="btn-nav">Quay lại</a>
 
-        <a href="{{ route('user.role.show', ['id' => 1]) }}" class="btn-nav">
-            Danh Sách Quản Lý
-        </a>
+        @foreach($user->roles as $role)
+        <a href="{{ route('user.role', ['id' => $role->id]) }}">
+            <a href="{{ route('user.role.show', ['id' => 1]) }}" class="btn-nav">
+                Danh Sách Quản Lý
+            </a>
 
-        <a href="{{ route('user.role.show', ['id' => 2]) }}" class="btn-nav">
-            Danh Sách Nhân Viên
-        </a>
+            <a href="{{ route('user.role.show', ['id' => 2]) }}" class="btn-nav">
+                Danh Sách Nhân Viên
+            </a>
 
-        <a href="{{ route('user.role.show', ['id' => 3]) }}" class="btn-nav">
-            Danh Sách Người Dùng
+            <a href="{{ route('user.role.show', ['id' => 3]) }}" class="btn-nav">
+                Danh Sách Người Dùng
+            </a>
         </a>
         @endforeach
-
-
     </div>
 </body>
 
