@@ -116,3 +116,12 @@ Route::get('/history', function () {
 Route::get('/statuspay', function () {
     return view('payment.status');
 })->name('statuspay');
+
+// gio hang
+Route::get('/cart', function () {
+    return view('cart.cart');
+})->name('cart');
+// sua gio hang
+Route::get('/cart/edit', function () {
+    return view('cart.cart-edit');
+})->name('cart.edit');
