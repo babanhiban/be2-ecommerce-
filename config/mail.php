@@ -13,7 +13,9 @@ return [
     |
     */
 
-    'default' => env('MAIL_MAILER', 'smtp'),
+    // 'default' => env('MAIL_MAILER', 'smtp'),
+
+    // 'default' => env('MAIL_MAILER', 'sendgrid'),
 
     /*
     |--------------------------------------------------------------------------
@@ -33,7 +35,10 @@ return [
     |
     */
 
+    'default' => env('MAIL_MAILER', 'sendgrid'),
+
     'mailers' => [
+        // Mailer SMTP mặc định (nếu bạn cần dùng đến)
         'smtp' => [
             'transport' => 'smtp',
             'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
@@ -45,38 +50,40 @@ return [
             'local_domain' => env('MAIL_EHLO_DOMAIN'),
         ],
 
+        // Mailer SendGrid
+        'sendgrid' => [
+            'transport'  => 'smtp',
+            'host'       => 'smtp.sendgrid.net',
+            'port'       => 587,
+            'encryption' => 'tls',
+            'username'   => 'apikey', // Luôn là 'apikey'
+            'password'   => env('SENDGRID_API_KEY'), // Lấy API key từ .env
+            'timeout'    => null,
+            // Bạn có thể không cần local_domain nếu không cần
+            'local_domain' => env('MAIL_EHLO_DOMAIN'),
+        ],
+
+        // Các mailer khác (nếu bạn không dùng chúng, vẫn giữ nguyên hoặc xoá nếu không cần)
         'ses' => [
             'transport' => 'ses',
         ],
-
         'mailgun' => [
             'transport' => 'mailgun',
-            // 'client' => [
-            //     'timeout' => 5,
-            // ],
         ],
-
         'postmark' => [
             'transport' => 'postmark',
-            // 'client' => [
-            //     'timeout' => 5,
-            // ],
         ],
-
         'sendmail' => [
             'transport' => 'sendmail',
             'path' => env('MAIL_SENDMAIL_PATH', '/usr/sbin/sendmail -bs -i'),
         ],
-
         'log' => [
             'transport' => 'log',
             'channel' => env('MAIL_LOG_CHANNEL'),
         ],
-
         'array' => [
             'transport' => 'array',
         ],
-
         'failover' => [
             'transport' => 'failover',
             'mailers' => [
@@ -87,32 +94,20 @@ return [
     ],
 
     /*
-    |--------------------------------------------------------------------------
+    |---------------------------------------------------------------------------
     | Global "From" Address
-    |--------------------------------------------------------------------------
-    |
-    | You may wish for all e-mails sent by your application to be sent from
-    | the same address. Here, you may specify a name and address that is
-    | used globally for all e-mails that are sent by your application.
-    |
+    |---------------------------------------------------------------------------
     */
-
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
-        'name' => env('MAIL_FROM_NAME', 'Example'),
+        'address' => env('MAIL_FROM_ADDRESS', '22211tt2703@mail.tdc.edu.vn'),
+        'name' => env('MAIL_FROM_NAME', 'Web Bán Hàng Điện Tử'),
     ],
 
     /*
-    |--------------------------------------------------------------------------
+    |---------------------------------------------------------------------------
     | Markdown Mail Settings
-    |--------------------------------------------------------------------------
-    |
-    | If you are using Markdown based email rendering, you may configure your
-    | theme and component paths here, allowing you to customize the design
-    | of the emails. Or, you may simply stick with the Laravel defaults!
-    |
+    |---------------------------------------------------------------------------
     */
-
     'markdown' => [
         'theme' => 'default',
 
@@ -120,5 +115,4 @@ return [
             resource_path('views/vendor/mail'),
         ],
     ],
-
 ];
