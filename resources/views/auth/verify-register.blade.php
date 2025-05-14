@@ -51,7 +51,7 @@
             @endif
 
             <p>Chúng tôi đã gửi mã xác nhận đến email: <strong>{{ session('register_email') }}</strong></p>
-
+            <br>
             <form method="POST" action="{{ route('verify.register.post') }}">
                 @csrf
                 <div class="form-group">

@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail; // Thêm dòng này
 
 class AuthController extends Controller
 {
@@ -266,7 +267,7 @@ class AuthController extends Controller
             'expires_at' => $expiresAt
         ]);
 
-        // Gửi email với mã xác minh
+        // Tạo subject và body cho email
         $subject = ($type == 'register')
             ? 'Mã xác nhận đăng ký tài khoản'
             : 'Mã xác nhận quên mật khẩu';
@@ -275,6 +276,10 @@ class AuthController extends Controller
             ? "Mã xác nhận đăng ký tài khoản của bạn là: $code. Mã có hiệu lực trong 10 phút."
             : "Mã xác nhận quên mật khẩu của bạn là: $code. Mã có hiệu lực trong 10 phút.";
 
-        $this->emailService->sendEmail($email, $subject, $body);
+        // Gửi email với mã xác minh bằng Mail::raw
+        Mail::raw($body, function ($message) use ($email, $subject) {
+            $message->to($email)
+                ->subject($subject);
+        });
     }
 }
