@@ -7,6 +7,7 @@
     <title>Xác Nhận Mã</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/verify-code.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/alert.css') }}">
 </head>
 
 <body>
@@ -26,6 +27,31 @@
         </div>
         <div class="login-form">
             <h2>Xác nhận mã</h2>
+
+            @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
+
+            @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+            @endif
+
+            @if (session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+            @endif
+
+            <p>Chúng tôi đã gửi mã xác nhận đến email: <strong>{{ session('reset_email') }}</strong></p>
+
             <form method="POST" action="{{ route('verify.code') }}">
                 @csrf
                 <div class="form-group">
@@ -33,6 +59,14 @@
                 </div>
                 <button type="submit" class="btn-reset">Tiếp theo</button>
             </form>
+
+            <div class="resend-code">
+                <form method="POST" action="{{ route('resend.reset.code') }}">
+                    @csrf
+                    <button type="submit" class="btn-resend">Gửi lại mã</button>
+                </form>
+            </div>
+
             <div class="divider">
                 <span class="divider-text">Hoặc</span>
             </div>

@@ -7,6 +7,7 @@
     <title>Quên Mật Khẩu</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/forgot-password.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/alert.css') }}">
 </head>
 
 <body>
@@ -26,10 +27,33 @@
         </div>
         <div class="login-form">
             <h2>Quên mật khẩu</h2>
+
+            @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
+
+            @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+            @endif
+
+            @if (session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+            @endif
+
             <form method="POST" action="{{ route('password.email') }}">
                 @csrf
                 <div class="form-group">
-                    <input type="email" class="form-control" name="email" placeholder="Nhập email" required>
+                    <input type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="Nhập email" required>
                 </div>
                 <button type="submit" class="btn-reset">Lấy lại mật khẩu</button>
             </form>
