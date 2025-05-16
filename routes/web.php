@@ -6,6 +6,8 @@ use App\Http\Controllers\CrudUserController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\Auth\AuthController;
 
+use Illuminate\Support\Facades\Auth;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -107,3 +109,21 @@ Route::get('/history', function () {
 Route::get('/statuspay', function () {
     return view('payment.status');
 })->name('statuspay');
+
+// Trang chủ
+Route::get('/homepage', function () {
+    $user = null;
+    if (Auth::check()) {
+        $user = Auth::user();
+        if ($user) {
+            $user->load('roles');
+        }
+    }
+    return view('homepage', ['user' => $user]);
+})->name('home');
+
+// Giỏ hàng
+Route::get('/cart', function () {
+    // Xử lý giỏ hàng
+    return view('cart');
+})->name('cart');

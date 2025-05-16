@@ -20,7 +20,7 @@
             <img src="{{ asset('images/manhinhchinhsuataikhoan/icon_user.png') }}" alt="Avatar" class="avatar">
             <h2>Username</h2>
             <a href="{{ route('user.deleteUser', ['id' => $user->id]) }}" class="btn-delete" style="text-decoration: none;">Xóa hồ sơ</a>
-            <a href="{{ route('admin.users') }}" class="btn-nav" style="text-decoration: none;">Quay lại</a>
+            <a href="{{ route('home') }}" class="btn-nav" style="text-decoration: none;">Quay lại</a>
         </div>
 
         <div class="form-container">

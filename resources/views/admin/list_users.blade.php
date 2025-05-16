@@ -60,7 +60,7 @@
 
     <div class="navigation-buttons">
         @foreach($user->roles as $role)
-        <a href="{{ route('admin.users') }}" class="btn-nav">Quay lại</a>
+        <a href="{{ route('home') }}" class="btn-nav">Quay lại</a>
 
         <a href="{{ route('user.role.show', ['id' => 1]) }}" class="btn-nav">
             Danh Sách Quản Lý
