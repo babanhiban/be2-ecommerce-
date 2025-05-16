@@ -110,6 +110,10 @@ Route::get('/statuspay', function () {
     return view('payment.status');
 })->name('statuspay');
 
+Route::get('/list_products', function () {
+    return view('admin.list_products');
+})->name('list_products');
+
 // Trang chủ
 Route::get('/homepage', function () {
     $user = null;
@@ -123,6 +127,10 @@ Route::get('/homepage', function () {
 })->name('home');
 
 // Giỏ hàng
+Route::get('/cart', function () {
+    // Xử lý giỏ hàng
+    return view('cart');
+})->name('cart');
 Route::get('/cart', function () {
     // Xử lý giỏ hàng
     return view('cart');
