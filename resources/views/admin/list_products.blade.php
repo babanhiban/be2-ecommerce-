@@ -53,10 +53,9 @@
                     <th>{{ $product->quantity }}</th>
                     <th>{{ $product->price }}</th>
 
-                    <td class="action-buttons">
-                        <button class="btn-delete">Xóa</button>
-                        <button class="btn-edit">Sửa</button>
-                    </td>
+                    <th class="action-buttons">
+                        
+                    </th>
                 </tr>
                 @endforeach
                 <!-- <tr>
@@ -80,6 +79,8 @@
         <div class="bottom-buttons">
             <button class="btn-voucher">Thêm voucher</button>
             <button class="btn-add">Thêm mới</button>
+            <button class="btn-add"><a href="{{ route('home') }}" class="btn-nav">Quay lại</a></button>
+            
         </div>
     </main>
 
