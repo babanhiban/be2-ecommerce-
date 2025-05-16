@@ -121,6 +121,15 @@ Route::get('/addProduct', [ProductController::class, 'create'])->name('product.a
 Route::post('/addProduct', [ProductController::class, 'store'])->name('products.store');
 // Xóa san pham
 Route::get('delete', [ProductController::class, 'deleteProduct'])->name('products.deleteProduct');
+// sua san phẩmphẩm
+Route::get('/editProduct', function () {
+    return view('product.editProduct');
+})->name('editProduct');
+Route::get('/product/edit/{id}', [ProductController::class, 'edit'])->name('product.updateProduct');
+
+Route::post('/product/update/{id}', [ProductController::class, 'update'])->name('product.saveProduct');
+
+
 // Trang chủ
 Route::get('/homepage', function () {
     $user = null;

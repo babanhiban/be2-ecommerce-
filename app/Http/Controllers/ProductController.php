@@ -77,4 +77,46 @@ public function deleteProduct(Request $request)
             'products' => Products::with('category')->paginate(5)
         ]);   
     }
+    public function edit($id)
+{
+    // Tìm sản phẩm theo id
+    $product = Products::findOrFail($id);
+    $categories = Category::all(); 
+
+    // Trả về view sửa với dữ liệu sản phẩm
+    return view('product.editProduct', [
+        'product' => $product,
+        'categories' => $categories,
+    ]);
+}
+public function update(Request $request, $id)
+{
+   $product = Products::findOrFail($id);
+
+    // Cập nhật thông tin cơ bản
+    $product->name = $request->input('name');
+    $product->description = $request->input('description');
+    $product->quantity = $request->input('quantity');
+    $product->price = $request->input('price');
+    $product->category_id = $request->input('category_id');
+
+    // ✅ Xử lý hình ảnh nếu người dùng upload mới
+    if ($request->hasFile('image')) {
+        $file = $request->file('image');
+        $filename = $file->getClientOriginalName();
+        $file->move(public_path('images/manhinhsanpham'), $filename);
+
+        //Xoá ảnh cũ nếu muốn
+        if ($product->image && file_exists(public_path('images/manhinhsanpham/' . $product->image))) {
+            unlink(public_path('images/manhinhsanpham/' . $product->image));
+        }
+
+        // Lưu tên ảnh mới vào DB
+        $product->image = $filename;
+    }
+
+    $product->save();
+
+    return redirect()->route('admin.products')->with('success', 'Cập nhật sản phẩm thành công!');
+}
 }
