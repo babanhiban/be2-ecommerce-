@@ -143,3 +143,38 @@ body {
 .product-table tr:empty {
     height: 60px;
 }
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.pagination button,
+.pagination a {
+    padding: 8px 14px;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+    color: #333;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease-in-out;
+    text-decoration: none;
+}
+
+.pagination button:hover,
+.pagination a:hover {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #007bff;
+}
+
+.pagination .active,
+.pagination .active:hover {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+    border-color: #007bff;
+}

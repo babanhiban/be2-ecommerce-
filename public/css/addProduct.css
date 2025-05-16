@@ -60,8 +60,8 @@ body {
 }
 
 .image-preview {
-    width: 300px;
-    height: 220px;
+    width: 500px;
+    height: 300px;
     border: 1px solid #ddd;
     border-radius: 5px;
     overflow: hidden;

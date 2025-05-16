@@ -54,7 +54,7 @@
                     <th>{{ $product->price }}</th>
 
                     <th class="action-buttons">
-                        
+                        <button class="btn-edit"><a href="{{ route('products.deleteProduct', ['id' => $product->id]) }}">Xóa</a></button>
                     </th>
                 </tr>
                 @endforeach
@@ -75,14 +75,16 @@
 
             </tbody>
         </table>
+        
 
         <div class="bottom-buttons">
             <button class="btn-voucher">Thêm voucher</button>
-            <button class="btn-add">Thêm mới</button>
-            <button class="btn-add"><a href="{{ route('home') }}" class="btn-nav">Quay lại</a></button>
+            <button class="btn-add"><a href="{{ route('product.addProduct') }}"style="text-decoration: none;">Them moi</a></button>
+            <button class="btn-add"><a href="{{ route('home') }}"style="text-decoration: none;">Quay lại</a></button>
             
         </div>
     </main>
+    {!! $products->withQueryString()->links('pagination::bootstrap-5') !!}
 
     <script>
         // JavaScript functionality can be added here
