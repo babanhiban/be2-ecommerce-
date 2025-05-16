@@ -18,7 +18,9 @@
     <div class="main-container">
         <div class="sidebar">
             <img src="{{ asset('images/manhinhchinhsuataikhoan/icon_user.png') }}" alt="Avatar" class="avatar">
-            <h2>Username</h2>
+
+            <label for="">{{ $user->name }}</label>
+
             <a href="{{ route('user.deleteUser', ['id' => $user->id]) }}" class="btn-delete" style="text-decoration: none;">Xóa hồ sơ</a>
             <a href="{{ route('home') }}" class="btn-nav" style="text-decoration: none;">Quay lại</a>
         </div>
