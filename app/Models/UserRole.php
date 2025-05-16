@@ -6,8 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserRole extends Model
 {
-    protected $table = 'role_user';
-
+    protected $table = 'user_role';
 
     public $incrementing = true;
 
