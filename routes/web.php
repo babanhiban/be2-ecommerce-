@@ -113,8 +113,14 @@ Route::get('/statuspay', function () {
 Route::get('/addProduct', function () {
     return view('product.addProduct');
 })->name('addProduct');
+// danh sach san pham
 Route::get('/list_products', [ProductController::class, 'listProduct'])->name('admin.products');
-
+// lay taat ca category
+Route::get('/addProduct', [ProductController::class, 'create'])->name('product.addProduct');
+// theem san phaam
+Route::post('/addProduct', [ProductController::class, 'store'])->name('products.store');
+// Xóa san pham
+Route::get('delete', [ProductController::class, 'deleteProduct'])->name('products.deleteProduct');
 // Trang chủ
 Route::get('/homepage', function () {
     $user = null;
