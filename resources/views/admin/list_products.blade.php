@@ -43,19 +43,20 @@
 
                 @foreach($products as $product)
                 <tr>
-                    <th> <img src="{{ asset('images/manhinhsanpham/'.$product->image) }}" alt="Iphone 16" class="product-image"> </th>
-                    <th>{{ $product->name }}</th>
+                    <td> <img src="{{ asset('images/manhinhsanpham/'.$product->image) }}" alt="Iphone 16" class="product-image"> </td>
+                    <td>{{ $product->name }}</td>
                     
-                    <th>
+                    <td>
                         {{ $product->category?->name ?? 'Không có danh mục' }}
-                    </th>
+                    </td>
                     
-                    <th>{{ $product->quantity }}</th>
-                    <th>{{ $product->price }}</th>
+                    <td>{{ $product->quantity }}</td>
+                    <td>{{ $product->price }}</td>
 
-                    <th class="action-buttons">
+                    <td >
                         <button class="btn-edit"><a href="{{ route('products.deleteProduct', ['id' => $product->id]) }}">Xóa</a></button>
-                    </th>
+                        <button class="btn-edit"><a href="{{ route('product.updateProduct', ['id' => $product->id]) }}">Sửa</a></button>
+                    </td>
                 </tr>
                 @endforeach
                 <!-- <tr>
