@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Danh sách sản phẩm</title>
     <link rel="stylesheet" href="styles.css">
-     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/admin/list_products.css') }}">
 </head>
+
 <body>
     <header class="header">
         <div class="header-title">Quản lý sản phẩm</div>
@@ -38,7 +40,26 @@
                 </tr>
             </thead>
             <tbody>
+
+                @foreach($products as $product)
                 <tr>
+                    <th> <img src="{{ asset('images/manhinhsanpham/'.$product->image) }}" alt="Iphone 16" class="product-image"> </th>
+                    <th>{{ $product->name }}</th>
+                    
+                    <th>
+                        {{ $product->category?->name ?? 'Không có danh mục' }}
+                    </th>
+                    
+                    <th>{{ $product->quantity }}</th>
+                    <th>{{ $product->price }}</th>
+
+                    <td class="action-buttons">
+                        <button class="btn-delete">Xóa</button>
+                        <button class="btn-edit">Sửa</button>
+                    </td>
+                </tr>
+                @endforeach
+                <!-- <tr>
                     <td>
                         <img src="{{ asset('images/manhinhsanpham/iphone.png') }}" alt="Iphone 16" class="product-image">
                     </td>
@@ -51,7 +72,8 @@
                         <button class="btn-edit">Sửa</button>
                     </td>
                 </tr>
-              
+-->
+
             </tbody>
         </table>
 
@@ -65,4 +87,5 @@
         // JavaScript functionality can be added here
     </script>
 </body>
+
 </html>

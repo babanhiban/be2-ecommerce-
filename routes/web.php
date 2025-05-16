@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CrudUserController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\Auth\AuthController;
-
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -113,6 +113,7 @@ Route::get('/statuspay', function () {
 Route::get('/list_products', function () {
     return view('admin.list_products');
 })->name('list_products');
+Route::get('/list_products', [ProductController::class, 'listProduct'])->name('admin.products');
 
 // Trang chủ
 Route::get('/homepage', function () {
