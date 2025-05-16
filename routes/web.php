@@ -110,9 +110,9 @@ Route::get('/statuspay', function () {
     return view('payment.status');
 })->name('statuspay');
 
-Route::get('/list_products', function () {
-    return view('admin.list_products');
-})->name('list_products');
+Route::get('/addProduct', function () {
+    return view('product.addProduct');
+})->name('addProduct');
 Route::get('/list_products', [ProductController::class, 'listProduct'])->name('admin.products');
 
 // Trang chủ
