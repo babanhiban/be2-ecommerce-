@@ -16,7 +16,7 @@ class ProductSeeder extends Seeder
         DB::table('products')->insert([
                 [
                     'name' => 'Iphone 1616',
-                    'image' => 'iphone.png',
+                    'image' => 'iphone.jpg',
                     'price' => 50000,
                     'quantity' => 10,
                     'description' => 'dsafdfafdsfs',
@@ -29,7 +29,7 @@ class ProductSeeder extends Seeder
          DB::table('products')->insert([
                 [
                     'name' => 'Lap top acer nitro 55',
-                    'image' => 'laptop.png',
+                    'image' => 'laptop.jpg',
                     'price' => 1000000,
                     'quantity' => 5,
                     'description' => ' CPU: 6th Gen Intel® Core™ i7 6820HQ Processor 2.7GHz (up to 3.6GHz) 8Mb Cache
@@ -47,7 +47,7 @@ class ProductSeeder extends Seeder
              DB::table('products')->insert([
                 [
                     'name' => 'Máy ảnh Canon EOS RP Kit RF24-105mm F4-7.1 IS STM',
-                    'image' => 'mayanh.png',
+                    'image' => 'mayanh.jpg',
                     'price' => 10999999,
                     'quantity' => 10,
                     'description' => 'Cảm biến	CMOS full-frame 26.2 megapixels
@@ -64,7 +64,7 @@ class ProductSeeder extends Seeder
              DB::table('products')->insert([
                 [
                     'name' => 'Tai nghe Broadcast Headset Sennheiser',
-                    'image' => 'tainghe.png',
+                    'image' => 'tainghe.jpg',
                     'price' => 50000,
                     'quantity' => 10,
                     'description' => 'Nhẹ nhàng với đệm mềm mại để mang lại sự thoải mái tuyệt vời khi đeo
@@ -79,7 +79,7 @@ class ProductSeeder extends Seeder
              DB::table('products')->insert([
                 [
                     'name' => 'Màn hình Gaming ASUS ROG Swift OLED PG34WCDM',
-                    'image' => 'manhinhmaytinh.png',
+                    'image' => 'manhinhmaytinh.jpg',
                     'price' => 2000000,
                     'quantity' => 10,
                     'description' => 'Chất lượng hình ảnh vượt trội với màn hình OLED 34 inch, độ phân giải 3440x1440, mang đến màu sắc sống động và độ tương phản ấn tượng.
