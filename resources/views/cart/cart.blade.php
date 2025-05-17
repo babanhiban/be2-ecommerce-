@@ -16,7 +16,7 @@
         <div class="cart-header">
             <h2>🛒 Giỏ Hàng</h2>
             <div class="header-right">
-                <a href="{{ url('/') }}">Trang Chủ</a> | <strong>Giỏ Hàng</strong>
+                <a href="{{ route('home') }}">Trang Chủ</a> | <strong>Giỏ Hàng</strong>
                 <img src="{{ asset('images/manhinhdangnhap/logo.png') }}" alt="Logo" class="brand-logo" />
             </div>
         </div>

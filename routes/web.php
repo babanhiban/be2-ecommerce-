@@ -6,11 +6,8 @@ use App\Http\Controllers\CrudUserController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\ProductController;
-<<<<<<< HEAD
 use App\Http\Controllers\HomeController;
-=======
 use App\Http\Controllers\CartController;
->>>>>>> function-cart
 use Illuminate\Support\Facades\Auth;
 use App\Models\Products;
 use App\Models\Category;
