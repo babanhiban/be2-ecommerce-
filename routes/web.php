@@ -8,6 +8,8 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Products;
+use App\Models\Category;
 
 /*
 |--------------------------------------------------------------------------
@@ -121,7 +123,7 @@ Route::get('/addProduct', [ProductController::class, 'create'])->name('product.a
 // theem san phaam
 Route::post('/addProduct', [ProductController::class, 'store'])->name('products.store');
 // Xóa san pham
-Route::get('delete', [ProductController::class, 'deleteProduct'])->name('products.deleteProduct');
+Route::get('delete2', [ProductController::class, 'deleteProduct'])->name('products.deleteProduct');
 // sua san phẩmphẩm
 Route::get('/editProduct', function () {
     return view('product.editProduct');
@@ -129,21 +131,20 @@ Route::get('/editProduct', function () {
 Route::get('/product/edit/{id}', [ProductController::class, 'edit'])->name('product.updateProduct');
 
 Route::post('/product/update/{id}', [ProductController::class, 'update'])->name('product.saveProduct');
-// danh sach san pham len trang home
 
-Route::get('/homepage', [HomeController::class, 'index'])->name('homepage');
-
-// Trang chủ
-// Route::get('/homepage', function () {
-//     $user = null;
-//     if (Auth::check()) {
-//         $user = Auth::user();
-//         if ($user) {
-//             $user->load('roles');
-//         }
-//     }
-//     return view('homepage', ['user' => $user]);
-// })->name('home');
+//Trang chủ
+Route::get('/homepage', function () {
+    $user = null;
+    $products = Products::all();
+    $categories = Category::all(); // ✅ Lấy danh mục
+    if (Auth::check()) {
+        $user = Auth::user();
+        if ($user) {
+            $user->load('roles');
+        }
+    }
+    return view('homepage', compact('products', 'categories', 'user'));
+})->name('home');
 
 // Giỏ hàng
 Route::get('/cart', function () {
