@@ -30,6 +30,8 @@
                     <th>Chức năng</th>
                 </tr>
             </thead>
+
+            <!-- dùng vòng lập để lấy toàn bộ user vào load lên danh sách -->
             <tbody>
                 @foreach($users as $user)
                 <tr>
@@ -43,21 +45,26 @@
 
                         @endforeach
                     </th>
+
+                    <!-- Các nút button chuyển hướng đến trang thông tin user hoặc xóa thẳng user -->
                     <th class="action-buttons">
                         <button class="btn-edit"><a href="{{ route('user.deleteUser', ['id' => $user->id]) }}">Xóa</a></button>
                         <button class="btn-edit"><a href="{{ route('user.updateUser', ['id' => $user->id]) }}">Sửa</a></button>
                     </th>
+
                 </tr>
                 @endforeach
-
             </tbody>
+
         </table>
     </div>
 
+    <!-- Sử dụng boostrap để tạo các thanh pagination -->
     <div class="pagination-container">
         {!! $users->withQueryString()->links('pagination::bootstrap-5') !!}
     </div>
 
+    <!-- Các nút button giúp load lại danh sách theo role bằng cách chuyển trang qua list_role_user -->
     <div class="navigation-buttons">
         @foreach($user->roles as $role)
         <a href="{{ route('home') }}" class="btn-nav">Quay lại</a>
@@ -74,9 +81,8 @@
             Danh Sách Người Dùng
         </a>
         @endforeach
-
-
     </div>
+
 </body>
 
 </html>

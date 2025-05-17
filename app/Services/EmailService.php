@@ -20,7 +20,7 @@ class EmailService
             return true;
         } catch (\Exception $e) {
             // Log lỗi nếu gửi thất bại
-            Log::error('Email sending failed: ' . $e->getMessage()); // Sửa lại ở đây
+            Log::error('Email sending failed: ' . $e->getMessage());
             return false;
         }
     }
