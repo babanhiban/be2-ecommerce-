@@ -167,30 +167,14 @@
         
         <div class="content-wrapper">
             <div class="left-content">
-                <div class="payment-methods">
-                    <h3>Phương thức thanh toán:</h3>
-                    <div class="payment-option">
-                        <input type="radio" id="cash" name="payment" value="cash">
-                        <label for="cash">Tiền mặt</label>
-                    </div>
-                    
-                    <div class="payment-option">
-                        <input type="radio" id="bank" name="payment" value="bank">
-                        <label for="bank">Thanh toán qua ngân hàng liên kết</label>
-                    </div>
-                    
-                    <div class="payment-option">
-                        <input type="radio" id="ewallet" name="payment" value="ewallet">
-                        <label for="ewallet">Thanh toán ví điện tử</label>
-                    </div>
-                </div>
+               
                 
                 <div>
                     <h3>Mã giảm giá</h3>
                     <div class="voucher-input">
                         <input type="text" placeholder="abx-ynx-yuna" style="width: 150px;">
                     </div>
-                    <div class="voucher-result">-100.000 đ</div>
+                   
                 </div>
                 
                 <div class="product-info">
@@ -204,15 +188,13 @@
                     </div>
                 </div>
                 
-                <button class="button">Hóa đơn</button>
+                <button class="button"><a href="{{ route('bill')}}">Hóa Đơn</a></button>
             </div>
             
-            <div class="right-content">
+            <div class="right-content" >
                 <div class="payment-summary">
                     <h3>Chi tiết thanh toán:</h3>
                     <p>Tổng tiền hàng : 22.690.000đ</p>
-                    <p>Tổng Voucher giảm giá : 100.000đ</p>
-                    <p>Phí ship : 20.000đ</p>
                     <p>Tổng thanh toán: <input type="text" value="22.610.000đ" style="width: 120px;"></p>
                 </div>
                 
@@ -221,7 +203,7 @@
                     <span>22.610.000đ</span>
                 </div>
                 
-                <button class="checkout-button">Thanh toán</button>
+                <button class="checkout-button mt-5"><a href="{{ route('statuspay')}}">Thanh Toán</a></button>
             </div>
         </div>
     </div>

@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CrudUserController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\Auth\AuthController;
-
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -110,6 +110,26 @@ Route::get('/statuspay', function () {
     return view('payment.status');
 })->name('statuspay');
 
+Route::get('/addProduct', function () {
+    return view('product.addProduct');
+})->name('addProduct');
+// danh sach san pham
+Route::get('/list_products', [ProductController::class, 'listProduct'])->name('admin.products');
+// lay taat ca category
+Route::get('/addProduct', [ProductController::class, 'create'])->name('product.addProduct');
+// theem san phaam
+Route::post('/addProduct', [ProductController::class, 'store'])->name('products.store');
+// Xóa san pham
+Route::get('delete', [ProductController::class, 'deleteProduct'])->name('products.deleteProduct');
+// sua san phẩmphẩm
+Route::get('/editProduct', function () {
+    return view('product.editProduct');
+})->name('editProduct');
+Route::get('/product/edit/{id}', [ProductController::class, 'edit'])->name('product.updateProduct');
+
+Route::post('/product/update/{id}', [ProductController::class, 'update'])->name('product.saveProduct');
+
+
 // Trang chủ
 Route::get('/homepage', function () {
     $user = null;
@@ -123,6 +143,10 @@ Route::get('/homepage', function () {
 })->name('home');
 
 // Giỏ hàng
+Route::get('/cart', function () {
+    // Xử lý giỏ hàng
+    return view('cart');
+})->name('cart');
 Route::get('/cart', function () {
     // Xử lý giỏ hàng
     return view('cart');

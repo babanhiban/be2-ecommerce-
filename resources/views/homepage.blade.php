@@ -26,8 +26,10 @@
                 </button>
             </div>
 
-
+            <!-- kiểm tra xem tài khoản vừa đăng nhập là admin hay member nếu là admin sẽ hiển thị icon và các chức năng dành cho admin , ngược lại với member cũng vậy -->
             <div class="account">
+
+                <!-- Kiểm tra role tài khoản vừa đăng nhập là gì -->
                 @if(auth()->check())
                 @php
                 $isAdmin = false;
@@ -39,6 +41,7 @@
                 }
                 @endphp
 
+                <!-- Nếu là admin thì sẽ thay đổi phần thông tin ở tashbar theo admin  -->
                 @if($isAdmin)
                 <div class="dropdown">
                     <button class="dropbtn">
@@ -47,9 +50,12 @@
                     <div class="dropdown-content">
                         <a href="{{ route('user.updateUser', ['id' => $user->id]) }}"><i class="fas fa-user-edit"></i> Thông tin cá nhân</a>
                         <a href="{{ route('admin.users') }}"><i class="fas fa-users-cog"></i> Quản lý tài khoản</a>
+                        <a href="{{ route('admin.products') }}"><i class="fas fa-users-cog"></i> Quản lý sản phẩm</a>
                         <a href="{{ route('logout') }}"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
                     </div>
                 </div>
+
+                <!-- Còn nếu là member hay staff thì sẽ thay đổi phần thông tin ở tashbar theo member hoặc staff  -->
                 @else
                 <div class="dropdown">
                     <button class="dropbtn">
@@ -61,6 +67,8 @@
                     </div>
                 </div>
                 @endif
+
+                <!-- Nếu không đăng nhập tài khoản nào thì sẽ hiển thị Đăng nhập / Đăng ký giúp chuyển hướng trang về lại đăng nhập -->
                 @else
                 <a href="{{ route('login') }}">Đăng Nhập/Đăng Ký</a>
                 @endif
