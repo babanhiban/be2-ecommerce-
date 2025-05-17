@@ -6,6 +6,7 @@ use App\Http\Controllers\CrudUserController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -128,19 +129,21 @@ Route::get('/editProduct', function () {
 Route::get('/product/edit/{id}', [ProductController::class, 'edit'])->name('product.updateProduct');
 
 Route::post('/product/update/{id}', [ProductController::class, 'update'])->name('product.saveProduct');
+// danh sach san pham len trang home
 
+Route::get('/homepage', [HomeController::class, 'index'])->name('homepage');
 
 // Trang chủ
-Route::get('/homepage', function () {
-    $user = null;
-    if (Auth::check()) {
-        $user = Auth::user();
-        if ($user) {
-            $user->load('roles');
-        }
-    }
-    return view('homepage', ['user' => $user]);
-})->name('home');
+// Route::get('/homepage', function () {
+//     $user = null;
+//     if (Auth::check()) {
+//         $user = Auth::user();
+//         if ($user) {
+//             $user->load('roles');
+//         }
+//     }
+//     return view('homepage', ['user' => $user]);
+// })->name('home');
 
 // Giỏ hàng
 Route::get('/cart', function () {
