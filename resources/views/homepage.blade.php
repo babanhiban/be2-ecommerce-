@@ -76,7 +76,7 @@
 
 
             <div class="cart">
-                <a href="{{ route('cart') }}">
+                <a href="{{ route('cart.index') }}">
                     <i class="fas fa-shopping-cart"></i>
                 </a>
             </div>

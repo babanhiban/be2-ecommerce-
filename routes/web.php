@@ -7,6 +7,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Products;
 use App\Models\Category;
@@ -146,12 +147,6 @@ Route::get('/homepage', function () {
     return view('homepage', compact('products', 'categories', 'user'));
 })->name('home');
 
-// Giỏ hàng
-Route::get('/cart', function () {
-    // Xử lý giỏ hàng
-    return view('cart');
-})->name('cart');
-Route::get('/cart', function () {
-    // Xử lý giỏ hàng
-    return view('cart');
-})->name('cart');
+// gio hang
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::post('/cart', [CartController::class, 'update'])->name('cart.update');
