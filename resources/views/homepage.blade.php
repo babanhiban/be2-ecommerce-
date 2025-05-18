@@ -19,12 +19,15 @@
             <div class="menu">
                 <div class="menu-title">Danh Mục</div>
             </div>
-            <div class="search-bar">
-                <input type="text" placeholder="Tìm kiếm sản phẩm">
-                <button type="submit">
-                    <i class="fas fa-search"></i>
-                </button>
-            </div>
+            <form class="search-bar" action="{{ route('product.search_result') }}" method="GET">
+                <div >
+                    <input type="text" name="query" placeholder="Tìm kiếm sản phẩm...">
+                    <button type="submit">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </form>
+
 
             <!-- kiểm tra xem tài khoản vừa đăng nhập là admin hay member nếu là admin sẽ hiển thị icon và các chức năng dành cho admin , ngược lại với member cũng vậy -->
             <div class="account">
@@ -89,14 +92,14 @@
                 @foreach ($categories as $category)
                 <div class="category-item">
                     <div class="category-image">
-                        <a href="{{ route('category.products', $category->id) }}">
-                            <img src="{{ asset('images/manhinhtrangchu/categories/'.$category->image) }}" alt="{{ $category->name }}" style="width:200px; height:auto;">                          
+                        <a href="{{ route('product.categoryId_Product', $category->id) }}">
+                            <img src="{{ asset('images/manhinhtrangchu/categories/'.$category->image) }}" alt="{{ $category->name }}" style="width:200px; height:auto;">
                         </a>
                     </div>
                     <div class="category-name">{{ $category->name }}</div>
                 </div>
                 @endforeach
-               
+
 
             </div>
         </section>
