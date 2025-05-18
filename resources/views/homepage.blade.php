@@ -89,12 +89,14 @@
                 @foreach ($categories as $category)
                 <div class="category-item">
                     <div class="category-image">
-                        <img src=" {{ asset('images/manhinhtrangchu/categories/' . $category->image) }}" alt=" Điện Thoại">
-
+                        <a href="{{ route('category.products', $category->id) }}">
+                            <img src="{{ asset('images/manhinhtrangchu/categories/'.$category->image) }}" alt="{{ $category->name }}" style="width:200px; height:auto;">                          
+                        </a>
                     </div>
                     <div class="category-name">{{ $category->name }}</div>
                 </div>
                 @endforeach
+               
 
             </div>
         </section>
@@ -142,10 +144,10 @@
                     <div class="product-name">{{$product->name}}</div>
                     <div class="product-price">{{$product->price}}</div>
                     <div class="product-action">
-                        <button class="buy-button">Mua ngay</button>               
+                        <button class="buy-button">Mua ngay</button>
                     </div>
                     <div><button class="add-button">Thêm vào giỏ hàng</button></div>
-                    
+
                 </div>
                 @endforeach
             </div>
