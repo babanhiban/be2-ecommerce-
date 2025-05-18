@@ -142,8 +142,10 @@
                     <div class="product-name">{{$product->name}}</div>
                     <div class="product-price">{{$product->price}}</div>
                     <div class="product-action">
-                        <button class="buy-button">Mua ngay</button>
+                        <button class="buy-button">Mua ngay</button>               
                     </div>
+                    <div><button class="add-button">Thêm vào giỏ hàng</button></div>
+                    
                 </div>
                 @endforeach
             </div>
