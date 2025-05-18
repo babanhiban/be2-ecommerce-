@@ -16,7 +16,7 @@
                     <span>Danh Mục</span>
                 </div>
                 <div class="search-container">
-                    <input type="text" placeholder="Tìm kiếm sản phẩm" value="iPhone 16">
+                    <input type="text" placeholder="Tìm kiếm sản phẩm" >
                     <button class="search-btn">
                         <i class="fas fa-search"></i>
                     </button>
@@ -36,64 +36,29 @@
     </header>
 
     <main class="container">
-        <div class="filter-container">
-            <div class="filter-options">
-                <button class="filter-btn active">Liên Quan</button>
-                <button class="filter-btn">Mới nhất</button>
-                <div class="dropdown">
-                    <button class="filter-btn dropdown-toggle">
-                        Giá
-                        <i class="fas fa-chevron-down"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="view-toggle">
-                <button class="view-btn">
-                    <i class="fas fa-list"></i>
-                </button>
-            </div>
-        </div>
-
         <div class="product-grid">
+            @if($products->isEmpty())
+        <p>Không tìm thấy sản phẩm nào.</p>
+    @else
+        <ul>
+            @foreach($products as $product)
+             <div class="product-card">
+                <div class="product-image">
+                    <img src="{{asset('images/manhinhsanpham/'.$product->image)}}" alt="iPhone 16 Blue">
+                </div>
+                <div class="product-name">
+                    <h3>{{ $product->name }}</h3>
+                </div>
+                <div style="text-align: center;">
+                      <h3>{{ $product->price }}</h3>
+                </div>
+              
+            </div>
+            @endforeach
+        </ul>
+    @endif
             <!-- Product 1 -->
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="https://i.postimg.cc/9FzJcvtL/iphone-16-blue.jpg" alt="iPhone 16 Blue">
-                </div>
-                <div class="product-name">
-                    <h3>iPhone 16</h3>
-                </div>
-            </div>
-
-            <!-- Product 2 -->
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="https://i.postimg.cc/VLpvxmKB/iphone-16-white.jpg" alt="iPhone 16 White">
-                </div>
-                <div class="product-name">
-                    <h3>iPhone 16</h3>
-                </div>
-            </div>
-
-            <!-- Product 3 -->
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="https://i.postimg.cc/Y0PKTdnb/iphone-16-black.jpg" alt="iPhone 16 Black">
-                </div>
-                <div class="product-name">
-                    <h3>iPhone 16</h3>
-                </div>
-            </div>
-
-            <!-- Product 4 -->
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="https://i.postimg.cc/xTHgSd8c/iphone-16-pink.jpg" alt="iPhone 16 Pink">
-                </div>
-                <div class="product-name">
-                    <h3>iPhone 16</h3>
-                </div>
-            </div>
+           
         </div>
 
         <div class="pagination">

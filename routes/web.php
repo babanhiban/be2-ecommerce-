@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Products;
 use App\Models\Category;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -146,6 +147,10 @@ Route::get('/search_result', function () {
 
 
 Route::get('/category/{id}', [CategoryController::class, 'showProducts'])->name('product.categoryId_Product');
+
+Route::get('/search', [HomeController::class, 'search'])->name('product.search_result');
+
+
 //Trang chủ
 Route::get('/homepage', function () {
     $user = null;
