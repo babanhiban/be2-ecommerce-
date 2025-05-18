@@ -11,6 +11,7 @@ use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Products;
 use App\Models\Category;
+use App\Http\Controllers\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -137,6 +138,8 @@ Route::post('/product/update/{id}', [ProductController::class, 'update'])->name(
 Route::get('/categoryId_Product', function () {
     return view('product.categoryId_Product');
 })->name('categoryId_Product');
+
+Route::get('/category/{id}', [CategoryController::class, 'showProducts'])->name('product.categoryId_Product');
 //Trang chủ
 Route::get('/homepage', function () {
     $user = null;
