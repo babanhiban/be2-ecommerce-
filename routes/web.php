@@ -6,7 +6,7 @@ use App\Http\Controllers\CrudUserController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\HomeController;
+
 use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Products;
@@ -133,6 +133,10 @@ Route::get('/product/edit/{id}', [ProductController::class, 'edit'])->name('prod
 
 Route::post('/product/update/{id}', [ProductController::class, 'update'])->name('product.saveProduct');
 
+// danh sach loại sản phẩm
+Route::get('/categoryId_Product', function () {
+    return view('product.categoryId_Product');
+})->name('categoryId_Product');
 //Trang chủ
 Route::get('/homepage', function () {
     $user = null;
