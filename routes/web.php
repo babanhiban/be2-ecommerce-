@@ -139,6 +139,12 @@ Route::get('/categoryId_Product', function () {
     return view('product.categoryId_Product');
 })->name('categoryId_Product');
 
+
+Route::get('/search_result', function () {
+    return view('product.search_result');
+})->name('search_result');
+
+
 Route::get('/category/{id}', [CategoryController::class, 'showProducts'])->name('product.categoryId_Product');
 //Trang chủ
 Route::get('/homepage', function () {
