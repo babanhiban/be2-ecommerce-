@@ -6,7 +6,6 @@ use App\Http\Controllers\CrudUserController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\ProductController;
-
 use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Products;
@@ -150,7 +149,7 @@ Route::get('/category/{id}', [CategoryController::class, 'showProducts'])->name(
 
 Route::get('/search', [HomeController::class, 'search'])->name('product.search_result');
 
-
+Route::get('/admin/products/search', [ProductController::class, 'search'])->name('product.search');
 //Trang chủ
 Route::get('/homepage', function () {
     $user = null;
