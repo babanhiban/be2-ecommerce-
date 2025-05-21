@@ -64,6 +64,30 @@ header {
     color: #666;
     font-size: 18px;
 }
+.search-bar {
+    flex-grow: 1;
+    display: flex;
+    margin: 0 20px;
+    background-color: white;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.search-bar input {
+    flex-grow: 1;
+    padding: 10px 15px;
+    border: none;
+    outline: none;
+    font-size: 14px;
+}
+
+.search-bar button {
+    background-color: white;
+    border: none;
+    padding: 0 15px;
+    cursor: pointer;
+}
+
 
 .cart-link {
     display: flex;

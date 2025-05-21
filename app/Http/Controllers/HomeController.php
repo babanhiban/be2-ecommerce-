@@ -11,7 +11,7 @@ class HomeController extends Controller
 {
     $query = $request->input('query');
 
-    $products = Products::where('name', 'like', '%' . $query . '%')->get();
+    $products = Products::where('name', 'like', '%' . $query . '%')->paginate(8);
 
     return view('product.search_result', compact('products', 'query'));
 }
