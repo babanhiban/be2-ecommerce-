@@ -152,7 +152,10 @@
                     <div class="product-action">
                         <button class="buy-button">Mua ngay</button>
                     </div>
-                    <div><button class="add-button">Thêm vào giỏ hàng</button></div>
+                    <div><form action="{{ route('cart.add', $product->id) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="add-button">Thêm vào giỏ</button>
+                        </form></div>
 
                 </div>
                 @endforeach
