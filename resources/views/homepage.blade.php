@@ -142,10 +142,13 @@
                 @foreach ($products as $product )
                 <div class="product-item">
                     <div class="product-image">
-                        <img src="{{ asset('images/manhinhsanpham/'.$product->image) }}" alt="{{ $product->name }}">
+                        <img src="{{ asset('images/manhinhsanpham/'.$product->image) }}" alt="Not Found">
                     </div>
                     <div class="product-name">{{$product->name}}</div>
-                    <div class="product-price">{{$product->price}}</div>
+                    <div class="product-price">Giá: {{$product->price}}</div>
+                    <div class="product-detail-link">
+                        <a href="{{ route('product.show', $product->id) }}">Xem chi tiết</a>
+                    </div>
                     <div class="product-action">
                         <button class="buy-button">Mua ngay</button>
                     </div>
