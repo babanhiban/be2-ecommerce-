@@ -32,6 +32,27 @@ class CartTableSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            [
+                'user_id' => 1,
+                'product_id' => 4,
+                'quantity' => 6,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'user_id' => 1,
+                'product_id' => 6,
+                'quantity' => 1,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'user_id' => 1,
+                'product_id' => 5,
+                'quantity' => 5,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
     }
 }

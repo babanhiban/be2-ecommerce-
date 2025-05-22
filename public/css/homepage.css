@@ -420,6 +420,13 @@ footer {
     height: auto;
 }
 
+.product-detail-link{
+    margin-bottom: 15px;
+    color: #008aff;
+    font-size: 14px;
+    text-decoration: none;
+}
+
 /* Responsive Styles */
 @media (max-width: 768px) {
     .header-top {

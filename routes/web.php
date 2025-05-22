@@ -150,3 +150,7 @@ Route::get('/homepage', function () {
 // gio hang
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::post('/cart', [CartController::class, 'update'])->name('cart.update');
+Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
+
+//chi tiết sản phẩm
+Route::get('/product/{id}', [ProductController::class, 'show'])->name('product.show');
