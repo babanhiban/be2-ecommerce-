@@ -184,4 +184,6 @@ Route::put('/orders/{order}', [OrderController::class, 'update'])->name('orders.
 Route::delete('/orders/{order}', [OrderController::class, 'destroy'])->name('orders.destroy');
 Route::get('/orders/{id}', [OrderController::class, 'show']);
 
-
+//Voucher
+Route::resource('vouchers', \App\Http\Controllers\VoucherController::class);
+Route::put('/vouchers/{id}', [VoucherController::class, 'update']);

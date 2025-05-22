@@ -14,16 +14,16 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id'); // 🔗 Liên kết đến users
-            $table->string('tennguoinhan');
-            $table->string('sdt')->nullable();
-            $table->text('diachi')->nullable();
-            $table->decimal('tongtien', 15, 2)->nullable();
-            $table->string('trangthai')->default('Chờ xử lý');
+            $table->string('customer_name');
+            $table->string('phone')->nullable();
+            $table->text('address')->nullable();
+            $table->decimal('total_price', 15, 2)->nullable();
+            $table->string('status')->default('Chờ xử lý');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-});
-        }
+        });
+    }
 
     /**
      * Reverse the migrations.

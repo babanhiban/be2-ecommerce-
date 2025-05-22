@@ -28,11 +28,11 @@ class OrdersSeeder extends Seeder
 
             DB::table('orders')->insert([
                 'user_id'       => $user->id,
-                'tennguoinhan'  => $user->name,
-                'sdt'           => $user->phone ?? '09' . rand(10000000, 99999999),
-                'diachi'        => 'Số ' . rand(1, 100) . ', Đường ' . Str::random(5) . ', Q.' . rand(1, 12) . ', TP.HCM',
-                'tongtien'      => rand(100000, 10000000),
-                'trangthai'     => collect(['Chờ xử lý', 'Đang giao', 'Đã giao', 'Đã hủy'])->random(),
+                'customer_name' => $user->name,
+                'phone'         => $user->phone ?? '09' . rand(10000000, 99999999),
+                'address'       => 'Số ' . rand(1, 100) . ', Đường ' . Str::random(5) . ', Q.' . rand(1, 12) . ', TP.HCM',
+                'total_price'   => rand(100000, 10000000),
+                'status'        => collect(['Chờ xử lý', 'Đang giao', 'Đã giao', 'Đã hủy'])->random(),
                 'created_at'    => now()->subDays(rand(0, 30)),
                 'updated_at'    => now()
             ]);
