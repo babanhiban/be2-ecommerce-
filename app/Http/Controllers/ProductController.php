@@ -132,5 +132,7 @@ public function show($id)
     // Lấy product theo id, hoặc fail 404 nếu không tồn tại
         $product = Products::findOrFail($id);
         return view('product.productDetail', compact('product'));
-    }}
+    }
+
+    
 }
