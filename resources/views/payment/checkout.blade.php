@@ -5,97 +5,95 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thanh Toán</title>
+    <link rel="stylesheet" href="{{ asset('css/checkout.css') }}">
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f0f8ff;
             margin: 0;
             padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        .cart-container {
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-        }
-
-        .cart-header {
-            background-color: #00bfff;
-            color: #fff;
-            padding: 20px;
+        .header {
+            background-color: #33ccff;
+            color: #000;
+            padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 2px solid #008ecc;
-            position: relative;
+            width: 100%;
+            box-sizing: border-box;
         }
 
-        .cart-header .brand-logo {
-            width: 50px;
-            height: 50px;
-            margin-left: 10px;
-        }
-
-        .cart-header h2 {
+        .header h1 {
             margin: 0;
             font-size: 24px;
         }
 
-        a {
-            color: #fff;
-            text-decoration: none;
-            font-weight: bold;
+        .logo {
+            width: 120px;
+            height: auto;
         }
 
-        a:hover {
-            text-decoration: underline;
-        }
-
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: white;
-        }
-
-        .checkout-container {
-            max-width: 900px;
-            margin: 20px auto;
+        .container {
             padding: 20px;
-            border-radius: 8px;
-        }
-
-        .checkout-wrapper {
-            display: flex;
-            gap: 40px;
-        }
-
-        .checkout-customer-info,
-        .checkout-cart-items {
-            flex: 1;
-        }
-
-        .checkout-customer-info label,
-        .checkout-customer-info input {
-            display: block;
+            max-width: 1000px;
             width: 100%;
-            margin-bottom: 10px;
-        }
-
-        .checkout-customer-info input {
-            padding: 6px;
             box-sizing: border-box;
         }
 
-        .checkout-cart-item {
+        .form-group {
+            margin-bottom: 15px;
             display: flex;
             align-items: center;
-            gap: 10px;
+        }
+
+        .form-group label {
+            width: 80px;
+            margin-right: 10px;
+        }
+
+        .form-group input {
+            padding: 8px;
+            width: 250px;
+            border: 1px solid #ccc;
+        }
+
+        .content-wrapper {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .left-content {
+            width: 48%;
+        }
+
+        .right-content {
+            width: 48%;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .payment-methods {
+            margin-bottom: 20px;
+        }
+
+        .payment-option {
             margin-bottom: 10px;
         }
 
-        .checkout-cart-item img {
+        .product-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .product-image {
             width: 60px;
             height: 60px;
             background-color: #f0f0f0;
@@ -106,13 +104,7 @@
             align-items: center;
         }
 
-        .checkout-total {
-            margin-top: 20px;
-            font-weight: 700;
-            font-size: 16px;
-        }
-
-        .checkout-btn {
+        .button {
             background-color: #33ccff;
             border: none;
             color: black;
@@ -121,6 +113,45 @@
             cursor: pointer;
             border-radius: 5px;
             font-weight: bold;
+        }
+
+        .payment-summary {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 20px;
+            width: 100%;
+            height: 50%;
+            box-sizing: border-box;
+        }
+
+        .voucher-input {
+            display: flex;
+            margin-bottom: 10px;
+        }
+
+        .voucher-result {
+            background-color: #f0f0f0;
+            padding: 5px 10px;
+            margin-top: 5px;
+            display: inline-block;
+        }
+
+        .total {
+            margin-top: 20px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .checkout-button {
+            background-color: #33ccff;
+            color: black;
+            padding: 10px 30px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 10px;
         }
 
         h2,
@@ -132,75 +163,76 @@
 </head>
 
 <body>
-    <div class="cart-container">
-
-        <div class="cart-header">
-            <h2>Chi tiết sản phẩm</h2>
-            <div class="header-right">
-                <a href="{{ route('home') }}">Trang Chủ</a> | <a href="{{ route('cart.index') }}"> Giỏ Hàng</a>
-                <img src="{{ asset('images/manhinhdangnhap/logo.png') }}" alt="Logo" class="brand-logo" />
-            </div>
-        </div>
+    <div class="header">
+        <h1> <a href="{{ route('home') }}" class="nav-home" style="text-decoration: none; color: black;">Trang chủ</a></h1>
+        <img src="{{ asset('images/manhinhthanhtoan/logo.png') }}" alt="STORME Logo" class="logo">
     </div>
+    <form action="{{ route('checkout.process') }}" method="POST">
+        @csrf
+        <div class="container">
+            <h2>Thông tin khách hàng</h2>
 
-    <div class="checkout-container">
-        <h2>Thông tin khách hàng</h2>
+            <div class="form-group">
+                <label for="name">Họ tên:</label>
+                <input type="text" name="name" value="{{ old('name', $user->name) }}" required>
+            </div>
 
-        <form action="{{ route('checkout.process') }}" method="POST">
-            @csrf
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" name="email" value="{{ old('email', $user->email) }}" required>
+            </div>
 
-            <div class="checkout-wrapper">
-                {{-- Thông tin khách hàng --}}
-                <div class="checkout-customer-info">
-                    <h3>Thông tin khách hàng</h3>
+            <div class="form-group">
+                <label for="phone">SĐT:</label>
+                <input type="text" name="phone" value="{{ old('phone', $user->phone ?? '') }}" required>
+            </div>
 
-                    <label>Họ tên:</label>
-                    <input type="text" name="name" value="{{ old('name', $user->name) }}" required>
+            <div class="form-group">
+                <label for="address">Địa chỉ:</label>
+                <input type="text" name="address" value="{{ old('address', $user->address ?? '') }}" required>
+            </div>
 
-                    <label>Email:</label>
-                    <input type="email" name="email" value="{{ old('email', $user->email) }}" required>
+            <div class="content-wrapper">
+                <div class="left-content">
+                    <div class="payment-methods">
+                        <h3>Phương thức thanh toán:</h3>
+                        <div class="payment-option">
 
-                    <label>SĐT:</label>
-                    <input type="text" name="phone" value="{{ old('phone', $user->phone ?? '') }}" required>
+                            <label style="color:black;text-align: center;">Thanh toán khi nhận hàng</label>
+                        </div>
 
-                    <label>Địa chỉ:</label>
-                    <input type="text" name="address" value="{{ old('address', $user->address ?? '') }}" required>
+                    </div>
                 </div>
 
-                {{-- Sản phẩm trong giỏ --}}
-                <div class="checkout-cart-items">
+                <div class="right-content">
                     <h3>Sản phẩm đã chọn</h3>
                     @foreach ($cartItems as $cartItem)
-                        <div class="checkout-cart-item">
-                            <img src="{{ asset('storage/products/' . $cartItem->product->image) }}"
-                                alt="{{ $cartItem->product->name }}">
-                            <div>
-                                <strong>{{ $cartItem->product->name }}</strong><br>
-                                {{ number_format($cartItem->product->price, 0, ',', '.') }}đ x
-                                {{ $cartItem->quantity }} =
-                                {{ number_format($cartItem->product->price * $cartItem->quantity, 0, ',', '.') }}đ
-                            </div>
+                    <div class="payment-summary">
+                        <img src="{{ asset('storage/products/' . $cartItem->product->image) }}"
+                            alt="{{ $cartItem->product->name }} " style="height: 100px;">
+                        <div>
+                            <strong>{{ $cartItem->product->name }}</strong><br>
+                            {{ number_format($cartItem->product->price, 0, ',', '.') }}đ x
+                            {{ $cartItem->quantity }} =
+                            {{ number_format($cartItem->product->price * $cartItem->quantity, 0, ',', '.') }}đ
                         </div>
+                    </div>
                     @endforeach
-
-                    <div class="checkout-total">
+                    <div class="total">
                         Tổng cộng:
                         {{ $total = array_reduce(
-                            $cartItems,
-                            function ($carry, $item) {
-                                return $carry + $item->product->price * $item->quantity;
-                            },
-                            0,
-                        ) }}đ
+$cartItems,
+function ($carry, $item) {
+return $carry + $item->product->price * $item->quantity;
+},
+0,
+) }}đ
                     </div>
-
-                    <button type="submit" class="checkout-btn">
-                        Thanh toán
-                    </button>
+                    <button class="checkout-button">Thanh toán</button>
                 </div>
             </div>
-        </form>
-    </div>
+        </div>
+    </form>
 </body>
 
 </html>
