@@ -172,7 +172,7 @@
                     <h3>Sản phẩm đã chọn</h3>
                     @foreach ($cartItems as $cartItem)
                         <div class="checkout-cart-item">
-                            <img src="{{ asset('images/manhinhsanpham/' . $cartItem->product->image) }}"
+                            <img src="{{ asset('storage/products/' . $cartItem->product->image) }}"
                                 alt="{{ $cartItem->product->name }}">
                             <div>
                                 <strong>{{ $cartItem->product->name }}</strong><br>
