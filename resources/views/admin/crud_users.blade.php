@@ -45,7 +45,7 @@
                 <div class="form-group">
                     <label for="name">Tên</label>
 
-                    <input ype="text" placeholder="Name" id="name"
+                    <input type="text" placeholder="Name" id="name"
                         class="form-control" name="name"
                         value="{{ $user->name }}"
                         required autofocus>
@@ -72,6 +72,7 @@
 
                     <button type="submit" class="btn-edit">Chỉnh sửa</button>
                 </div>
+               
 
                 <!-- Lấy số điện thoại của user -->
                 <div class="form-group">
@@ -83,6 +84,21 @@
                         name="phone" required autofocus>
                     @if ($errors->has('phone'))
                     <span class="text-danger">{{ $errors->first('phone')
+                            }}</span>
+                    @endif
+
+                    <button type="submit" class="btn-edit">Chỉnh sửa</button>
+                </div>
+                 <!-- Lấy address của user -->
+                <div class="form-group">
+                    <label for="address">Địa chỉ</label>
+
+                    <input type="text" placeholder="Dia chi"
+                        id="address" class="form-control"
+                        value="{{ $user->address }}"
+                        name="address" required autofocus>
+                    @if ($errors->has('address'))
+                    <span class="text-danger">{{ $errors->first('address')
                             }}</span>
                     @endif
 
