@@ -9,19 +9,19 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
+
 class UserSeeder extends Seeder
 {
     const MAX_RECORDS = 100;
-
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
+
         // Xóa toàn bộ dữ liệu cũ trong bảng users
         DB::table('users')->truncate();
-
-        // Thêm user admin
+        //Insert data
         DB::table('users')->insert([
             [
                 'name' => 'admin',
@@ -39,6 +39,7 @@ class UserSeeder extends Seeder
         ]);
 
         // Thêm các user giả lập
+
         for ($i = 2; $i < self::MAX_RECORDS; $i++) {
             DB::table('users')->insert([
                 [

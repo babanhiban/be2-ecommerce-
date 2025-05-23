@@ -8,11 +8,14 @@
     <link rel="stylesheet" href="{{ asset('css/search_result.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
 <body>
     <header>
         <div class="container">
             <div class="header-content">
                 <div class="category">
+
                     <span>Danh Mục</span>
                 </div>
                 <div class="search-container">
@@ -22,6 +25,18 @@
                     </button>
                 </div>
                  
+                    <span><a href="{{ route('home') }}" style="text-decoration: none; color: white;">Trang chủ</a></span>
+                </div>
+                <form class="search-bar" action="{{ route('product.search_result') }}" method="GET">
+                    <div class="search-container">
+                        <input type="text" name="query" placeholder="Tìm kiếm sản phẩm...">
+                        <button class="search-btn" type="submit">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </form>
+
+
                 <div class="cart">
                     <a href="{{ route('cart.index') }}" class="cart-link">
                         <div class="cart-icon">
@@ -29,7 +44,6 @@
                         </div>
                         <span>Giỏ Hàng</span>
                     </a>
-                   
                 </div>
             </div>
         </div>
@@ -38,41 +52,46 @@
     <main class="container">
         <div class="product-grid">
             @if($products->isEmpty())
-        <p>Không tìm thấy sản phẩm nào.</p>
-    @else
-        <ul>
+            <p>Không tìm thấy sản phẩm nào.</p>
+            @else
             @foreach($products as $product)
-             <div class="product-card">
-                <div class="product-image">
-                    <img src="{{asset('images/manhinhsanpham/'.$product->image)}}" alt="iPhone 16 Blue">
+            <ul>
+
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="{{ asset('storage/products/' . $product->image) }}" alt="iPhone 16 Blue">
+                    </div>
+                    <div class="product-name">
+                        <h3>{{ $product->name }}</h3>
+                    </div>
+                    <div style="text-align: center;">
+                        <h3>{{ number_format($product->price, 0, ',', '.') }} VND</h3>
+                    </div>
+                    @if ($product->quantity > 0)
+                    <button class="btn-buy">Mua ngay</button>
+                    <button class="btn-add-cart">Thêm vào giỏ hàng</button>
+                    @else
+                    <p class="text-muted mt-3"style="text-align: center;">⚠️ <strong>Hết hàng</strong></p>
+                 
+                    @endif
+                    
+
                 </div>
-                <div class="product-name">
-                    <h3>{{ $product->name }}</h3>
-                </div>
-                <div style="text-align: center;">
-                      <h3>{{ $product->price }}</h3>
-                </div>
-              
-            </div>
+
+            </ul>
             @endforeach
-        </ul>
-    @endif
+            @endif
             <!-- Product 1 -->
-           
+
         </div>
 
         <div class="pagination">
-            <a href="#" class="page-nav prev">
-                <i class="fas fa-chevron-left"></i>
-            </a>
-            <a href="#" class="page-number active">1</a>
-            <a href="#" class="page-number">2</a>
-            <span class="page-dots">...</span>
-            <a href="#" class="page-number">10</a>
-            <a href="#" class="page-nav next">
-                <i class="fas fa-chevron-right"></i>
-            </a>
+            {{-- PHÂN TRANG --}}
+            <div class="d-flex justify-content-center mt-4">
+                {!! $products->appends(request()->query())->links('pagination::bootstrap-5') !!}
+            </div>
         </div>
     </main>
 </body>
+
 </html>

@@ -38,7 +38,8 @@
                 <tbody>
                     @foreach ($items as $item)
                         <tr>
-                            <td><img src="{{ $item['image'] }}" alt="{{ $item['name'] }}" /></td>
+                            <td><img src="{{ asset('storage/products/' . $item['image']) }}"
+                                    alt="Not Found" /></td>
                             <td>{{ $item['name'] }}</td>
                             <td>{{ $item['category'] }}</td>
                             <td>
@@ -59,6 +60,9 @@
                 </tbody>
             </table>
 
+            <div class="pagination-wrapper">
+                {{ $cartItemsPaginate->links('pagination::bootstrap-4') }}
+            </div>
             <div class="cart-footer">
                 <div>
                     <button type="submit" name="action" value="delete" class="btn">Xóa</button>
@@ -72,14 +76,14 @@
                 <button type="submit" name="action" value="buy" class="btn">Mua</button>
             </div>
         </form>
-<script>
-document.querySelectorAll('input[type="checkbox"][name^="checked"]').forEach(cb => {
-    cb.addEventListener('change', () => {
-        // Khi checkbox thay đổi, submit form để cập nhật session và tính lại tổng tiền
-        cb.closest('form').submit();
-    });
-});
-</script>
+        <script>
+            document.querySelectorAll('input[type="checkbox"][name^="checked"]').forEach(cb => {
+                cb.addEventListener('change', () => {
+                    // Khi checkbox thay đổi, submit form để cập nhật session và tính lại tổng tiền
+                    cb.closest('form').submit();
+                });
+            });
+        </script>
     </div>
 
 </body>

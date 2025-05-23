@@ -31,7 +31,7 @@
             @foreach ($vouchers as $voucher)
             <tr>
                 <td>{{ $voucher->code }}</td>
-                <td>{{ $voucher->discount }}%</td>
+                <td>{{ rtrim(rtrim($voucher->discount, '0'), '.') }}%</td>
                 <td>{{ $voucher->start_date }}</td>
                 <td>{{ $voucher->end_date }}</td>
                 <td>
@@ -53,7 +53,8 @@
     <div class="modal fade" id="createModal">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form id="createForm">
+                <form id="createForm" method="POST" action="{{ route('vouchers.store') }}">
+                    @csrf
                     <div class="modal-header"><h5 class="modal-title">Tạo Voucher</h5></div>
                     <div class="modal-body">
                         <input name="code" class="form-control mb-2" placeholder="Mã Voucher">
@@ -62,8 +63,8 @@
                         <input name="end_date" type="date" class="form-control">
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-secondary" data-bs-dismiss="modal">Huỷ</button>
-                        <button class="btn btn-primary">Tạo</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Huỷ</button>
+                        <button type="submit" class="btn btn-primary">Tạo</button>
                     </div>
                 </form>
             </div>
@@ -83,8 +84,8 @@
                         <input name="end_date" type="date" class="form-control">
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-secondary" data-bs-dismiss="modal">Huỷ</button>
-                        <button class="btn btn-primary">Lưu</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Huỷ</button>
+                        <button type="submit" class="btn btn-primary">Lưu</button>
                     </div>
                 </form>
             </div>
@@ -103,15 +104,15 @@
             </div>
         </div>
     </div>
-<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 9999">
-    <div id="successToast" class="toast align-items-center text-white bg-success border-0" role="alert">
-        <div class="d-flex">
-            <div class="toast-body">Tạo voucher thành công!</div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 9999">
+        <div id="successToast" class="toast align-items-center text-white bg-success border-0" role="alert">
+            <div class="d-flex">
+                <div class="toast-body">Tạo voucher thành công!</div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>
         </div>
     </div>
-</div>
-
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

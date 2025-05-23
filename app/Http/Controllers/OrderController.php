@@ -26,25 +26,29 @@ class OrderController extends Controller
     }
 
     public function update(Request $request, Order $order)
-    {
-        $request->validate([
-            'customer_name' => 'required|string|max:255',
-            // thêm các trường khác nếu có
-        ]);
+{
+    $validated = $request->validate([
+        'customer_name' => 'required|string|max:255',
+        'phone' => 'required|string|max:20',
+        'address' => 'required|string|max:255',
+        'status' => 'required|string|in:Đang xử lý,Đang giao,Hoàn thành,Đã huỷ',
+    ]);
 
-        $order->update($request->all());
+    $order->update($validated);
 
-        return redirect()->route('orders.index')->with('success', 'Đơn hàng đã được cập nhật.');
-    }
+    // Trả về JSON kèm dữ liệu order nếu cần cập nhật DOM nhanh
+    return response()->json(['message' => 'Cập nhật thành công', 'order' => $order]);
+}
+
 
     public function destroy(Order $order)
-    {
-        $order->delete();
-        return redirect()->route('orders.index')->with('success', 'Đơn hàng đã được xoá.');
-    }
-    public function show($id)
 {
-    $order = Order::findOrFail($id);
+    $order->delete();
+    return response()->json(['message' => 'Đơn hàng đã được xoá.']);
+}
+ public function show($id)
+{
+    $order = Order::with('items.product')->findOrFail($id);
 
     return response()->json([
         'customer_name' => $order->customer_name,
@@ -52,6 +56,12 @@ class OrderController extends Controller
         'address' => $order->address,
         'status' => $order->status,
         'total_price' => $order->total_price,
+        'products' => $order->items->map(function ($item) {
+            return [
+                'name' => $item->product->name,
+                'quantity' => $item->quantity,
+            ];
+        }),
     ]);
 }
 

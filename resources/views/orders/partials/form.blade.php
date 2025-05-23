@@ -12,7 +12,7 @@
 <!-- Chọn danh mục -->
 <select id="category-select" class="form-select mb-2">
     <option value="">-- Chọn danh mục --</option>
-    <!-- Sẽ được fill từ JS -->
+    <!-- sẽ được fill bằng JS -->
 </select>
 
 <!-- Chọn sản phẩm -->
@@ -28,6 +28,7 @@
 
 <!-- Tổng tiền -->
 <input type="text" id="total" class="form-control mb-2" placeholder="Tổng tiền" readonly>
+
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const categorySelect = document.getElementById('category-select');
@@ -35,8 +36,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const priceInput = document.getElementById('product-price');
     const quantityInput = document.getElementById('quantity');
     const totalInput = document.getElementById('total');
-
-    let productsData = []; // Dữ liệu sản phẩm theo danh mục
 
     // Load danh mục
     fetch('/api/categories')
@@ -47,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
 
-    // Khi chọn danh mục, load sản phẩm
+    // Khi chọn danh mục, load sản phẩm tương ứng
     categorySelect.addEventListener('change', function () {
         const categoryId = this.value;
         if (!categoryId) return;
@@ -55,7 +54,6 @@ document.addEventListener('DOMContentLoaded', function () {
         fetch(`/api/categories/${categoryId}/products`)
             .then(res => res.json())
             .then(data => {
-                productsData = data;
                 productSelect.innerHTML = '<option value="">-- Chọn sản phẩm --</option>';
                 data.forEach(product => {
                     productSelect.innerHTML += `<option value="${product.id}" data-price="${product.price}">${product.name}</option>`;
@@ -73,7 +71,7 @@ document.addEventListener('DOMContentLoaded', function () {
         updateTotal();
     });
 
-    // Khi thay đổi số lượng, cập nhật tổng tiền
+    // Khi thay đổi số lượng, tính lại tổng
     quantityInput.addEventListener('input', updateTotal);
 
     function updateTotal() {
@@ -87,3 +85,4 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 </script>
+

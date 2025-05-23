@@ -6,15 +6,16 @@ use App\Http\Controllers\CrudUserController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\ProductController;
-
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckoutController;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Products;
 use App\Models\Category;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
-
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\VoucherController;
+use App\Http\Controllers\Statistical\VoucherStatisticalController;
 
 /*
 |--------------------------------------------------------------------------
@@ -152,6 +153,9 @@ Route::get('/category/{id}', [CategoryController::class, 'showProducts'])->name(
 
 Route::get('/search', [HomeController::class, 'search'])->name('product.search_result');
 
+Route::get('/admin/products/search', [ProductController::class, 'search'])->name('product.search');
+
+
 
 //Trang chủ
 Route::get('/homepage', function () {
@@ -166,6 +170,7 @@ Route::get('/homepage', function () {
     }
     return view('homepage', compact('products', 'categories', 'user'));
 })->name('home');
+
 // admin dashboard
 Route::get('/admin/dashboard', function () {
     return view('dashboard');
@@ -185,5 +190,23 @@ Route::delete('/orders/{order}', [OrderController::class, 'destroy'])->name('ord
 Route::get('/orders/{id}', [OrderController::class, 'show']);
 
 //Voucher
-Route::resource('vouchers', \App\Http\Controllers\VoucherController::class);
+Route::resource('vouchers', VoucherController::class);
 Route::put('/vouchers/{id}', [VoucherController::class, 'update']);
+Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
+//chi tiết sản phẩm
+Route::get('/product/{id}', [ProductController::class, 'show'])->name('product.show');
+
+// thanh toán 
+Route::middleware('auth')->group(function () {
+    Route::get('/checkout', [CheckoutController::class, 'show'])->name('checkout.show');
+    Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.process');
+});
+
+Route::post('/checkout/buynow', [CheckoutController::class, 'buyNow'])->name('checkout.buynow');
+
+// thống kê
+Route::middleware('auth')->group(function () {
+    Route::get('/statistical/vouchers', [VoucherStatisticalController::class, 'index'])->name('statistical.vouchers');
+    Route::get('/statistical/vouchers/export', [VoucherStatisticalController::class, 'export'])
+    ->name('vouchers.statistical.export');
+});

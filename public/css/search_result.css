@@ -64,6 +64,33 @@ header {
     color: #666;
     font-size: 18px;
 }
+<<<<<<< HEAD
+=======
+.search-bar {
+    flex-grow: 1;
+    display: flex;
+    margin: 0 20px;
+    background-color: white;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.search-bar input {
+    flex-grow: 1;
+    padding: 10px 15px;
+    border: none;
+    outline: none;
+    font-size: 14px;
+}
+
+.search-bar button {
+    background-color: white;
+    border: none;
+    padding: 0 15px;
+    cursor: pointer;
+}
+
+>>>>>>> 0d5e6fd69fdde197e7b849e68f3833fd144c2f91
 
 .cart-link {
     display: flex;
@@ -261,3 +288,30 @@ header {
         flex-wrap: wrap;
     }
 }
+<<<<<<< HEAD
+=======
+
+/* Buttons */
+.btn-buy {
+    width: 100%;
+    background-color: #ff4757;
+    color: white;
+    border: none;
+    padding: 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.btn-add-cart {
+    width: 100%;
+    background-color: #1e90ff;
+    color: white;
+    border: none;
+    padding: 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+>>>>>>> 0d5e6fd69fdde197e7b849e68f3833fd144c2f91

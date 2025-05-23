@@ -26,32 +26,25 @@ class CrudUserController extends Controller
         return view('crud_user.login');
     }
 
+    /**
+     * User submit form login
+     */
+    public function authUser(Request $request)
+    {
+        $request->validate([
+            'email' => 'required',
+            'password' => 'required',
+        ]);
 
-public function authUser(Request $request)
-{
-    $credentials = $request->only('email', 'password');
+        $credentials = $request->only('email', 'password');
 
-    if (Auth::attempt($credentials)) {
-        $user = Auth::user();
-        $user->load('roles');
-
-        if ($user->roles->contains('name', 'admin')) {
-            return redirect()->route('admin.dashboard');
-        } elseif ($user->roles->contains('name', 'user')) {
-            return redirect()->route('home');
-        } else {
-            Auth::logout();
-            return redirect()->route('login')->withErrors([
-                'email' => 'Không có quyền truy cập.'
-            ]);
+        if (Auth::attempt($credentials)) {
+            return redirect()->intended('homepage')
+                ->withSuccess('Signed in');
         }
+
+        return redirect("login")->withSuccess('Login details are not valid');
     }
-
-    return back()->withErrors([
-        'email' => 'Sai tài khoản hoặc mật khẩu.'
-    ]);
-}
-
 
     /**
      * Registration page
@@ -78,6 +71,7 @@ public function authUser(Request $request)
             'email' => $data['email'],
 
             'phone' => $data['phone'],
+            'address' => $data['address'],
             'gioitinh' => $data['gioitinh'],
             'ngaysinh' => $data['ngaysinh'],
 
@@ -147,6 +141,7 @@ public function authUser(Request $request)
         $user->email = $input['email'];
 
         $user->phone = $input['phone'];
+        $user->address = $input['address'];
         $user->gioitinh = $input['gioitinh'];
 
 

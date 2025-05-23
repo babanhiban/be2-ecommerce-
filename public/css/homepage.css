@@ -74,6 +74,10 @@ ul {
     cursor: pointer;
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 0d5e6fd69fdde197e7b849e68f3833fd144c2f91
 .account {
     margin-right: 20px;
     color: white;
@@ -433,6 +437,16 @@ footer {
     height: auto;
 }
 
+<<<<<<< HEAD
+=======
+.product-detail-link{
+    margin-bottom: 15px;
+    color: #008aff;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+>>>>>>> 0d5e6fd69fdde197e7b849e68f3833fd144c2f91
 /* Responsive Styles */
 @media (max-width: 768px) {
     .header-top {

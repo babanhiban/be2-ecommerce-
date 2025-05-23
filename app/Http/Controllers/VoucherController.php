@@ -41,14 +41,19 @@ public function store(Request $request)
 {
     $request->validate([
         'code' => 'required|unique:vouchers,code',
-        'discount' => 'required|numeric|min:0|max:100',
+        'discount' => 'required|numeric|min:1|max:100',
         'start_date' => 'required|date',
         'end_date' => 'required|date|after_or_equal:start_date',
     ]);
 
-    Voucher::create($request->all());
+    Voucher::create([
+        'code' => $request->code,
+        'discount' => $request->discount,
+        'start_date' => $request->start_date,
+        'end_date' => $request->end_date,
+    ]);
 
-    return response()->json(['message' => 'Created']);
+    return redirect()->route('vouchers.index')->with('success', 'Tạo voucher thành công!');
 }
 
 
@@ -73,7 +78,7 @@ public function update(Request $request, Voucher $voucher)
 
 public function destroy($id)
 {
-    \App\Models\Voucher::destroy($id);
+    Voucher::destroy($id);
     return response()->json(['success' => true]);
 }
 

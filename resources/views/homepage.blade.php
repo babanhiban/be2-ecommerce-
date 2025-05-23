@@ -20,7 +20,7 @@
                 <div class="menu-title">Danh Mục</div>
             </div>
             <form class="search-bar" action="{{ route('product.search_result') }}" method="GET">
-                <div >
+                <div>
                     <input type="text" name="query" placeholder="Tìm kiếm sản phẩm...">
                     <button type="submit">
                         <i class="fas fa-search"></i>
@@ -54,6 +54,11 @@
                         <a href="{{ route('user.updateUser', ['id' => $user->id]) }}"><i class="fas fa-user-edit"></i> Thông tin cá nhân</a>
                         <a href="{{ route('admin.users') }}"><i class="fas fa-users-cog"></i> Quản lý tài khoản</a>
                         <a href="{{ route('admin.products') }}"><i class="fas fa-users-cog"></i> Quản lý sản phẩm</a>
+                        <a href="{{ route('orders.index') }}"><i class="fas fa-users-cog"></i> Quản lý đơn hàng</a>
+                        <a href="{{ route('vouchers.index') }}"><i class="fas fa-users-cog"></i> Quản lý voucher</a>
+                        <a href="{{ route('statistical.vouchers') }}"><i class="fas fa-users-cog"></i> Thống kê voucher</a>
+
+
                         <a href="{{ route('logout') }}"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
                     </div>
                 </div>
@@ -151,6 +156,32 @@
                     </div>
                     <div><button class="add-button">Thêm vào giỏ hàng</button></div>
 
+                        <img src="{{ asset('storage/products/' . $product->image) }}" alt="Not Found">
+                    </div>
+                    <div class="product-name">{{$product->name}}</div>
+                    <div class="product-price">Giá: {{ number_format($product->price, 0, ',', '.') }} VND</div>
+
+                    @if ($product->quantity > 0)
+                    <div class="product-detail-link">
+                        <a href="{{ route('product.show', $product->id) }}">Xem chi tiết</a>
+                    </div>
+                    <div class="product-action">
+                        <form action="{{ route('checkout.buynow', ['product_id' => $product->id]) }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="quantity" value="1">
+                            <button type="submit" class="buy-button">Mua ngay</button>
+                        </form>
+                    </div>
+                    <div>
+                        <form action="{{ route('cart.add', $product->id) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="add-button">Thêm vào giỏ</button>
+                        </form>
+                    </div>
+                    @else
+                    <p class="text-muted mt-3">⚠️ <strong>Hết hàng</strong></p>
+                    <button class="btn btn-secondary mt-2" disabled>Không thể mua</button>
+                    @endif
                 </div>
                 @endforeach
             </div>

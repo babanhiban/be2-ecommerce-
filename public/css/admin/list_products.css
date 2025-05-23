@@ -51,7 +51,11 @@ body {
 
 .logo-container {
     width: 120px;
+<<<<<<< HEAD
     height: 60px;
+=======
+    height: 90px;
+>>>>>>> 0d5e6fd69fdde197e7b849e68f3833fd144c2f91
 }
 
 .logo {
@@ -178,3 +182,16 @@ body {
     font-weight: bold;
     border-color: #007bff;
 }
+<<<<<<< HEAD
+=======
+.d-flex.justify-content-center.mt-4 {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.nav-home {
+    font-weight: 500;
+    color: #0066ff;
+    text-decoration: underline;
+    margin-left: 10px;
+}
+>>>>>>> 0d5e6fd69fdde197e7b849e68f3833fd144c2f91

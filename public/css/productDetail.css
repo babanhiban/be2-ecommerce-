@@ -1,0 +1,135 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f8ff;
+    margin: 0;
+    padding: 0;
+}
+
+.cart-container {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.cart-header {
+    background-color: #00bfff;
+    color: #fff;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #008ecc;
+    position: relative;
+}
+
+.cart-header .brand-logo {
+    width: 50px;
+    height: 50px;
+    margin-left: 10px;
+}
+
+.cart-header h2 {
+    margin: 0;
+    font-size: 24px;
+}
+
+a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: white;
+}
+
+.product-detail {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.product-detail__wrapper {
+    display: flex;
+    gap: 30px;
+}
+
+.product-detail__image {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.product-detail__info {
+    flex: 2;
+    padding: 10px 0;
+}
+
+.product-detail__category {
+    margin: 10px 0;
+    font-size: 30px;
+    font-weight: 700;
+    color: #4a90e2;
+}
+
+.product-detail__name {
+    font-weight: 600;
+}
+
+.product-detail__price {
+    margin: 10px 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: #4a90e2;
+}
+
+.product-detail__policy {
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #555;
+}
+
+.product-detail__quantity {
+    margin-bottom: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+}
+
+.product-detail__description {
+    font-size: 14px;
+    color: #444;
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+
+.product-detail__actions {
+    margin-top: 25px;
+    display: flex;
+    gap: 15px;
+}
+
+.product-detail__btn {
+    padding: 12px 25px;
+    background-color: #4ac0ff;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.product-detail__btn:hover {
+    background-color: #3aa9e0;
+}

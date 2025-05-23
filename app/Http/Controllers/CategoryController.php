@@ -4,29 +4,33 @@ namespace App\Http\Controllers;
 
 
 use App\Models\Category;
-use Illuminate\Http\Request;
 use App\Models\Products;
+use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
     //
-   public function showProducts($id)
+    public function showProducts($id)
     {
-        $category = Category::with('products')->findOrFail($id);
+        $category = Category::findOrFail($id);
+        $products = $category->products()->paginate(8);
 
-        return view('product.categoryId_Product', compact('category'));
+        return view('product.categoryId_Product', compact('category', 'products'));
     }
-    public function index()
+
+    public function products()
     {
-        return response()->json(Category::all());
+        return $this->hasMany(Products::class);
     }
+     public function index()
+    {
+        return Category::select('id', 'name')->get();
+    }
+
     public function getProducts($id)
-{
-    try {
-        $products = Products::where('category_id', $id)->get();
-        return response()->json($products);
-    } catch (\Exception $e) {
-        return response()->json(['error' => $e->getMessage()], 500);
+    {
+        return Products::where('category_id', $id)
+            ->select('id', 'name', 'price')
+            ->get();
     }
-}
 }
