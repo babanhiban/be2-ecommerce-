@@ -20,7 +20,7 @@
                 <div class="menu-title">Danh Mục</div>
             </div>
             <form class="search-bar" action="{{ route('product.search_result') }}" method="GET">
-                <div >
+                <div>
                     <input type="text" name="query" placeholder="Tìm kiếm sản phẩm...">
                     <button type="submit">
                         <i class="fas fa-search"></i>
@@ -142,20 +142,30 @@
                 @foreach ($products as $product )
                 <div class="product-item">
                     <div class="product-image">
-                        <img src="{{ asset('images/manhinhsanpham/'.$product->image) }}" alt="Not Found">
+                        <img src="{{ asset('storage/products/' . $product->image) }}" alt="Not Found">
                     </div>
                     <div class="product-name">{{$product->name}}</div>
                     <div class="product-price">Giá: {{ number_format($product->price, 0, ',', '.') }} VND</div>
+                    
+                    @if ($product->quantity > 0)
                     <div class="product-detail-link">
                         <a href="{{ route('product.show', $product->id) }}">Xem chi tiết</a>
                     </div>
                     <div class="product-action">
                         <button class="buy-button">Mua ngay</button>
                     </div>
-                    <div><form action="{{ route('cart.add', $product->id) }}" method="POST">
+                    <div>
+                        <form action="{{ route('cart.add', $product->id) }}" method="POST">
                             @csrf
                             <button type="submit" class="add-button">Thêm vào giỏ</button>
-                        </form></div>
+                        </form>
+                    </div>
+                    @else
+                    <p class="text-muted mt-3">⚠️ <strong>Hết hàng</strong></p>
+                    <button class="btn btn-secondary mt-2" disabled>Không thể mua</button>
+                    @endif
+                    
+                    
 
                 </div>
                 @endforeach
