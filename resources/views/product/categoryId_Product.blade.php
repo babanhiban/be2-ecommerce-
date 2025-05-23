@@ -47,7 +47,7 @@
                 </div>               
                 <div class="product-info">
                     <p>{{ $product->name }}</p>
-                    <p>{{ number_format($product->price) }} VND</p>
+                    <p>{{ number_format($product->price, 0, ',', '.') }} VND</p>
                     <button class="btn-buy">Mua ngay</button>
                     <button class="btn-add-cart">Thêm vào giỏ hàng</button>
                 </div>

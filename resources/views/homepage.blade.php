@@ -145,7 +145,7 @@
                         <img src="{{ asset('images/manhinhsanpham/'.$product->image) }}" alt="Not Found">
                     </div>
                     <div class="product-name">{{$product->name}}</div>
-                    <div class="product-price">Giá: {{$product->price}}</div>
+                    <div class="product-price">Giá: {{ number_format($product->price, 0, ',', '.') }} VND</div>
                     <div class="product-detail-link">
                         <a href="{{ route('product.show', $product->id) }}">Xem chi tiết</a>
                     </div>
