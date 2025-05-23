@@ -71,6 +71,7 @@ class CrudUserController extends Controller
             'email' => $data['email'],
 
             'phone' => $data['phone'],
+            'address' => $data['address'],
             'gioitinh' => $data['gioitinh'],
             'ngaysinh' => $data['ngaysinh'],
 
@@ -140,6 +141,7 @@ class CrudUserController extends Controller
         $user->email = $input['email'];
 
         $user->phone = $input['phone'];
+        $user->address = $input['address'];
         $user->gioitinh = $input['gioitinh'];
 
 
