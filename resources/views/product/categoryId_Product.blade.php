@@ -51,14 +51,20 @@
             <div class="product-card">
                
                 <div class="product-image">
-                    <img src="{{ asset('images/manhinhsanpham/'. $product->image) }}" alt="{{ $product->name }}" width="150">            
+                    <img src="{{ asset('storage/products/' . $product->image) }}" alt="{{ $product->name }}" width="150">            
                 </div>               
                 <div class="product-info">
                     <p>{{ $product->name }}</p>
                     <p>{{ number_format($product->price, 0, ',', '.') }} VND</p>
-                    <button class="btn-buy">Mua ngay</button>
-                    <button class="btn-add-cart">Thêm vào giỏ hàng</button>
+                    
+                   
                 </div>
+                 @if ($product->quantity > 0)
+                    <button class="btn-buy">Mua ngay</button>
+                     <button class="btn-add-cart">Thêm vào giỏ hàng</button>
+                @else
+                    <p class="text-muted mt-3" style="text-align: center;">⚠️ <strong>Hết hàng</strong></p>                 
+                @endif
                 
             </div>
             @endforeach           

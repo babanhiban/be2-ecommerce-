@@ -93,7 +93,7 @@ class ProductSeeder extends Seeder
              DB::table('products')->insert([
                 [
                     'name' => 'Chuột không dây Logitech',
-                    'image' => 'chuot.jpg',
+                    'image' => 'chuotmaytinh.jpg',
                     'price' => 50000,
                     'quantity' => 10,
                     'description' => 'Mới, đầy đủ phụ kiện từ nhà sản xuấ',

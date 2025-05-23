@@ -16,7 +16,7 @@
         <div class="container">
             <div class="header-content">
                 <div class="category">
-                    <span><a href="{{ route('home') }}" style="text-decoration: none; color: white;" >Trang chủ</a></span>
+                    <span><a href="{{ route('home') }}" style="text-decoration: none; color: white;">Trang chủ</a></span>
                 </div>
                 <form class="search-bar" action="{{ route('product.search_result') }}" method="GET">
                     <div class="search-container">
@@ -26,7 +26,7 @@
                         </button>
                     </div>
                 </form>
-                          
+
 
                 <div class="cart">
                     <a href="{{ route('cart.index') }}" class="cart-link">
@@ -51,7 +51,7 @@
 
                 <div class="product-card">
                     <div class="product-image">
-                        <img src="{{asset('images/manhinhsanpham/'.$product->image)}}" alt="iPhone 16 Blue">
+                        <img src="{{ asset('storage/products/' . $product->image) }}" alt="iPhone 16 Blue">
                     </div>
                     <div class="product-name">
                         <h3>{{ $product->name }}</h3>
@@ -59,8 +59,14 @@
                     <div style="text-align: center;">
                         <h3>{{ number_format($product->price, 0, ',', '.') }} VND</h3>
                     </div>
+                    @if ($product->quantity > 0)
                     <button class="btn-buy">Mua ngay</button>
                     <button class="btn-add-cart">Thêm vào giỏ hàng</button>
+                    @else
+                    <p class="text-muted mt-3"style="text-align: center;">⚠️ <strong>Hết hàng</strong></p>
+                 
+                    @endif
+                    
 
                 </div>
 
