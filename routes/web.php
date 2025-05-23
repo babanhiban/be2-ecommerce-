@@ -7,6 +7,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckoutController;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Products;
 use App\Models\Category;
@@ -171,3 +172,9 @@ Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
 
 //chi tiết sản phẩm
 Route::get('/product/{id}', [ProductController::class, 'show'])->name('product.show');
+
+// thanh toán 
+Route::middleware('auth')->group(function () {
+    Route::get('/checkout', [CheckoutController::class, 'show'])->name('checkout.show');
+    Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.process');
+});

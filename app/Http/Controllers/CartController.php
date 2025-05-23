@@ -121,25 +121,31 @@ class CartController extends Controller
                 return redirect()->route('cart.index', ['page' => $currentPage])
                     ->with('success', 'Xóa sản phẩm thành công.');
             } elseif ($action === 'buy') {
-                if (empty($checked)) {
-                    return back()->with('error', 'Vui lòng chọn ít nhất một sản phẩm để mua.');
-                }
+    if (empty($checked)) {
+        return back()->with('error', 'Vui lòng chọn ít nhất một sản phẩm để mua.');
+    }
 
-                $names = [];
-                $totalAmount = 0;
+    // Lấy các sản phẩm được chọn
+    $selectedItems = [];
+    $totalAmount = 0;
 
-                foreach ($checked as $productId => $val) {
-                    if (isset($cartItems[$productId])) {
-                        $cart = $cartItems[$productId];
-                        $names[] = $cart->product->name;
-                        $totalAmount += $cart->quantity * $cart->product->price;
+    foreach ($checked as $productId => $val) {
+        if (isset($cartItems[$productId])) {
+            $cart = $cartItems[$productId];
+            $selectedItems[] = $cart;
+            $totalAmount += $cart->quantity * $cart->product->price;
+        }
+    }
 
-                        $cart->delete();
-                    }
-                }
-                session(['cart.checked' => []]);
+    if (empty($selectedItems)) {
+        return back()->with('error', 'Sản phẩm đã chọn không hợp lệ.');
+    }
 
-                return back()->with('success', "Bạn đã mua " . implode(', ', $names) . " với giá " . number_format($totalAmount, 0, ',', '.') . " VNĐ thành công!");
+    // Lưu dữ liệu sản phẩm đã chọn vào session để dùng trang thanh toán
+    session(['checkout.items' => $selectedItems]);
+
+    // Chuyển hướng đến trang thanh toán
+    return redirect()->route('checkout.show');
             }
         }
 
