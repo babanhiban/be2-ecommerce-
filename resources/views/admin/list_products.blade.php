@@ -62,7 +62,7 @@
                     </td>
 
                     <td>{{ $product->quantity }}</td>
-                    <td>{{ $product->price }}</td>
+                    <td>{{ number_format($product->price, 0, ',', '.') }} VND</td>
 
                     <td>
                         <button class="btn-edit"><a href="{{ route('products.deleteProduct', ['id' => $product->id]) }}"onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?');">Xóa</a></button>

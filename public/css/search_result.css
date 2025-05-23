@@ -285,3 +285,27 @@ header {
         flex-wrap: wrap;
     }
 }
+
+/* Buttons */
+.btn-buy {
+    width: 100%;
+    background-color: #ff4757;
+    color: white;
+    border: none;
+    padding: 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.btn-add-cart {
+    width: 100%;
+    background-color: #1e90ff;
+    color: white;
+    border: none;
+    padding: 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}

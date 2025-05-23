@@ -57,8 +57,10 @@
                         <h3>{{ $product->name }}</h3>
                     </div>
                     <div style="text-align: center;">
-                        <h3>{{ $product->price }}</h3>
+                        <h3>{{ number_format($product->price, 0, ',', '.') }} VND</h3>
                     </div>
+                    <button class="btn-buy">Mua ngay</button>
+                    <button class="btn-add-cart">Thêm vào giỏ hàng</button>
 
                 </div>
 
