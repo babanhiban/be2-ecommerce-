@@ -151,6 +151,8 @@ Route::get('/category/{id}', [CategoryController::class, 'showProducts'])->name(
 Route::get('/search', [HomeController::class, 'search'])->name('product.search_result');
 
 Route::get('/admin/products/search', [ProductController::class, 'search'])->name('product.search');
+
+
 //Trang chủ
 Route::get('/homepage', function () {
     $user = null;

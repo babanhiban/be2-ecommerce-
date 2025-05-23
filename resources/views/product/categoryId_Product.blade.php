@@ -7,23 +7,31 @@
     <title>Cửa hàng điện thoại</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/categoryID.css') }}">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body>
     <header>
         <div class="container header-container">
-            <div class="logo">
-                <img src="{{ asset('images/manhinhsanpham/logo.png') }}" alt="Logo">
-            </div>
-            <div class="search-box">
-                <input type="text" placeholder="Tìm kiếm sản phẩm">
-                <button type="submit"><i class="fas fa-search"></i></button>
-            </div>
             <nav>
                 <ul>
                     <li><a href="#">Danh Mục</a></li>
+                    <li><a href="{{ route('home') }}">Trang chủ</a></li>
                 </ul>
             </nav>
+            
+            <form class="search-box" action="{{ route('product.search_result') }}" method="GET">
+               <div >
+                <input type="text" name="query" placeholder="Tìm kiếm sản phẩm...">
+                <button type="submit">
+                        <i class="fas fa-search"></i>
+                    </button>
+            </div>
+            </form>
+           <div class="logo">
+                <img src="{{ asset('images/manhinhsanpham/logo.png') }}" alt="Logo">
+            </div>
+            
 
 
         </div>
@@ -39,7 +47,7 @@
 
         <div class="product-grid">
             <!-- Product 1 -->
-              @foreach ($category->products as $product)
+              @foreach ($products as $product)
             <div class="product-card">
                
                 <div class="product-image">
@@ -55,8 +63,12 @@
             </div>
             @endforeach           
         </div>
-        <button class="btn-add"><a href="{{ route('home') }}"style="text-decoration: none;">Quay lại</a></button>
+            {{-- PHÂN TRANG --}}
+        <div class="d-flex justify-content-center mt-4">
+            {!! $products->appends(request()->query())->links('pagination::bootstrap-5') !!}
+        </div>
     </div>
+
 </body>
 
 </html>
