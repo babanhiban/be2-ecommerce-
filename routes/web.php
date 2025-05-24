@@ -91,6 +91,17 @@ Route::get('crud_users', function () {
     return view('admin.crud_users');
 })->name('admin.users.edit');
 
+// Thêm tài khoản theo của admin
+Route::get('add_users_role_admin_staff', function () {
+    return view('admin.add_users_role_admin_staff');
+})->name('admin.users.add');
+
+// Xác nhận mã khi thêm tài khoản mới của admin
+Route::get('verify_add_users_role', function () {
+    return view('admin.verify_add_users_role');
+})->name('admin.users.verify');
+Route::post('verify_add_users_role', [AuthController::class, 'verifyAddUser'])->name('admin.users.verify.post');
+
 // Thanh toán
 Route::get('/pay', function () {
     return view('payment.pay');

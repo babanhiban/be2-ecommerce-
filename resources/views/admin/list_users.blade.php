@@ -83,6 +83,8 @@
         @endforeach
     </div>
 
+    <a href="{{ route('admin.users.add') }}"><i class="btn btn-warning"></i> Thêm Tài Khoản Mới</a>
+
 </body>
 
 </html>
