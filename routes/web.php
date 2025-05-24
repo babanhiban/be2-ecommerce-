@@ -212,3 +212,8 @@ Route::middleware('auth')->group(function () {
     ->name('vouchers.statistical.export');
 });
 Route::get('/vouchers/check/{code}', [VoucherController::class, 'check']);
+
+Route::prefix('statistical/vouchers')->name('vouchers.statistical.')->group(function () {
+    Route::get('/', [VoucherStatisticalController::class, 'index'])->name('index');
+    Route::get('/export', [VoucherStatisticalController::class, 'export'])->name('export');
+});

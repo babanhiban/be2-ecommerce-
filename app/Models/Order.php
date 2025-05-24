@@ -36,4 +36,5 @@ class Order extends Model
     {
         return $this->belongsTo(\App\Models\Voucher::class);
     }
+        
 }
