@@ -69,7 +69,7 @@ class VoucherStatisticalController extends Controller
         $vouchers = $query->get();
 
         $data = [];
-        $data[] = ['Mã', 'Tên', 'Loại', 'Áp dụng', 'Thành công', 'Tổng giảm', 'Ngày tạo', 'Hạn sử dụng', 'Trạng thái'];
+        $data[] = ['Mã', 'Tên', 'Loại', 'Áp dụng', 'Hoàn thành', 'Tổng giảm', 'Ngày tạo', 'Hạn sử dụng', 'Trạng thái'];
 
         foreach ($vouchers as $v) {
             $orders = Order::query()

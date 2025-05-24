@@ -60,8 +60,6 @@
             <thead class="table-light">
                 <tr>
                     <th>Mã</th>
-                    <th>Tên voucher</th>
-                    <th>Loại</th>
                     <th>Số lượt áp dụng</th>
                     <th>Đơn hàng thành công</th>
                     <th>Tổng tiền giảm</th>
@@ -74,14 +72,12 @@
                 @forelse ($vouchers as $voucher)
                 <tr>
                     <td>{{ $voucher->code }}</td>
-                    <td>{{ $voucher->name }}</td>
-                    <td>{{ $voucher->type_label }}</td>
-                    <td>{{ $voucher->usage_count }}</td>
-                    <td>{{ $voucher->successful_orders }}</td>
-                    <td>{{ number_format($voucher->total_discount, 0, ',', '.') }}đ</td>
+                    <td>{{ $voucher->apply_count }}</td>
+                    <td>{{ $voucher->success_count }}</td>
+                    <td>{{ number_format($voucher->discount_total, 0, ',', '.') }}đ</td>
                     <td>{{ $voucher->created_at->format('d/m/Y') }}</td>
                     <td>{{ \Carbon\Carbon::parse($voucher->end_date)->format('d/m/Y') }}</td>
-                         <td>
+                    <td>
                         <span class="badge text-white {{ $voucher->isExpired() ? 'bg-danger' : 'bg-success' }}">
                             {{ $voucher->isExpired() ? 'Hết hạn' : 'Đang hoạt động' }}
                         </span>
@@ -101,7 +97,7 @@
     </div>
 
     <div class="mt-5">
-       
+
         <canvas id="discountChart" height="100" class="mt-4"></canvas>
         <canvas id="usageChart" height="100" class="mt-4"></canvas>
     </div>
@@ -115,59 +111,58 @@
 @endsection
 
 @section('scripts')
-    @parent
-   
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        const vouchers = @json($vouchers->items());
+@parent
 
-        const labels = vouchers.map(v => v.code);
-        const discountTotals = vouchers.map(v => v.discount_total);
-        const applyCounts = vouchers.map(v => v.apply_count);
-        const successCounts = vouchers.map(v => v.success_count);
 
-        new Chart(document.getElementById('discountChart'), {
-            type: 'bar',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Tổng tiền giảm',
-                    backgroundColor: '#6366F1',
-                    data: discountTotals
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        ticks: {
-                            callback: value => value.toLocaleString('vi-VN') + 'đ'
-                        }
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+   const vouchers = {!! json_encode($vouchers->items()) !!};
+    const labels = vouchers.map(v => v.code);
+    const discountTotals = vouchers.map(v => v.discount_total);
+    const applyCounts = vouchers.map(v => v.apply_count);
+    const successCounts = vouchers.map(v => v.success_count);
+
+    new Chart(document.getElementById('discountChart'), {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Tổng tiền giảm',
+                backgroundColor: '#6366F1',
+                data: discountTotals
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    ticks: {
+                        callback: value => value.toLocaleString('vi-VN') + 'đ'
                     }
                 }
             }
-        });
+        }
+    });
 
-        new Chart(document.getElementById('usageChart'), {
-            type: 'line',
-            data: {
-                labels: labels,
-                datasets: [
-                    {
-                        label: 'Áp dụng',
-                        borderColor: '#3B82F6',
-                        data: applyCounts,
-                        fill: false,
-                        tension: 0.3
-                    },
-                    {
-                        label: 'Thành công',
-                        borderColor: '#10B981',
-                        data: successCounts,
-                        fill: false,
-                        tension: 0.3
-                    }
-                ]
-            }
-        });
-    </script>
+    new Chart(document.getElementById('usageChart'), {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                    label: 'Áp dụng',
+                    borderColor: '#3B82F6',
+                    data: applyCounts,
+                    fill: false,
+                    tension: 0.3
+                },
+                {
+                    label: 'Thành công',
+                    borderColor: '#10B981',
+                    data: successCounts,
+                    fill: false,
+                    tension: 0.3
+                }
+            ]
+        }
+    });
+</script>
 @endsection
