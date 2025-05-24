@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\VerificationCode;
+use App\Models\VerificationCodeFromAdmin; // Thêm model mới
 use App\Services\EmailService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -13,7 +14,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Mail; // Thêm dòng này
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -46,6 +48,116 @@ class AuthController extends Controller
 
         return redirect()->route('verify.register')
             ->with('success', 'Mã xác nhận đã được gửi đến email của bạn.');
+    }
+
+    /**
+     * Xử lý đăng ký người dùng bởi Admin - gửi mã xác nhận email
+     */
+    public function registerAddUserFormAdmin(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:100',
+            'email' => 'required|email|unique:users,email',
+            'role_id' => 'required|integer|in:1,2', // Chỉ cho phép role admin (1) hoặc staff (2)
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        // Lưu thông tin người dùng vào session để sử dụng sau khi xác minh
+        session([
+            'admin_register_name' => $request->name,
+            'admin_register_email' => $request->email,
+            'admin_register_role_id' => $request->role_id
+        ]);
+
+        // Tạo mã xác minh và gửi email cho admin
+        $this->sendAdminVerificationCode($request->email, $request->role_id, $request->name);
+
+        return redirect()->route('admin.users.verify')
+            ->with('success', 'Mã xác nhận đã được gửi đến email của bạn.');
+    }
+
+    /**
+     * Xác thực mã đăng ký và tạo tài khoản bởi Admin
+     */
+    public function verifyAddUserFormAdmin(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'verification_register' => 'required|string|min:6|max:6',
+            'password' => 'required|string|min:6|confirmed',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $email = session('admin_register_email');
+        if (!$email) {
+            return redirect()->route('admin.users.add')
+                ->with('error', 'Phiên đăng ký đã hết hạn. Vui lòng thử lại.');
+        }
+
+        // Kiểm tra mã xác minh trong bảng verification_codes_from_admin
+        $verification = VerificationCodeFromAdmin::where('email', $email)
+            ->where('code', $request->verification_register)
+            ->where('expires_at', '>', Carbon::now())
+            ->first();
+
+        if (!$verification) {
+            return redirect()->back()
+                ->with('error', 'Mã xác nhận không hợp lệ hoặc đã hết hạn.');
+        }
+
+        // Tạo tài khoản người dùng mới
+        $user = User::create([
+            'name' => session('admin_register_name'),
+            'email' => $email,
+            'password' => Hash::make($request->password),
+            'email_verified_at' => Carbon::now()
+        ]);
+
+        // Gán role dựa vào role_id trong verification record
+        $role = Role::find($verification->role_id);
+
+        if ($role) {
+            $user->roles()->attach($role->id);
+        } else {
+            // Nếu không tìm thấy role thì gán role mặc định
+            $defaultRole = Role::where('name', 'member')->first();
+            if ($defaultRole) {
+                $user->roles()->attach($defaultRole->id);
+            }
+        }
+
+        // Xóa mã xác minh và thông tin session
+        $verification->delete();
+        $request->session()->forget(['admin_register_name', 'admin_register_email', 'admin_register_role_id']);
+
+        return redirect()->route('admin.users')
+            ->with('success', 'Thêm tài khoản thành công!');
+    }
+
+    /**
+     * Gửi lại mã xác nhận đăng ký cho Admin
+     */
+    public function resendAdminRegisterCode(Request $request)
+    {
+        $email = session('admin_register_email');
+        $roleId = session('admin_register_role_id');
+        $name = session('admin_register_name');
+
+        if (!$email || !$roleId || !$name) {
+            return redirect()->route('admin.users.add')
+                ->with('error', 'Phiên đăng ký đã hết hạn. Vui lòng thử lại.');
+        }
+
+        // Gửi lại mã xác minh
+        $this->sendAdminVerificationCode($email, $roleId, $name);
+
+        return redirect()->back()
+            ->with('success', 'Mã xác nhận mới đã được gửi đến email của bạn.');
     }
 
     /**
@@ -246,7 +358,48 @@ class AuthController extends Controller
     }
 
     /**
-     * Tạo và gửi mã xác minh
+     * Tạo và gửi mã xác minh cho Admin tạo tài khoản
+     */
+    private function sendAdminVerificationCode($email, $roleId, $userName)
+    {
+        // Xóa mã xác minh cũ nếu có
+        VerificationCodeFromAdmin::where('email', $email)->delete();
+
+        // Tạo mã xác minh mới
+        $code = sprintf('%06d', mt_rand(100000, 999999));
+        $expiresAt = Carbon::now()->addMinutes(10);
+
+        // Xác định type dựa trên role_id
+        $type = $roleId == 1 ? 'admin' : 'staff';
+
+        // Lưu mã xác minh vào database
+        VerificationCodeFromAdmin::create([
+            'email' => $email,
+            'code' => $code,
+            'type' => $type,
+            'role_id' => $roleId,
+            'created_by_admin_id' => Auth::id(), // ID của admin hiện tại
+            'expires_at' => $expiresAt
+        ]);
+
+        // Tạo subject và body cho email
+        $roleName = $roleId == 1 ? 'Admin' : 'Staff';
+        $subject = "Mã xác nhận tạo tài khoản $roleName";
+        $body = "Chào $userName,\n\n";
+        $body .= "Admin đã tạo tài khoản $roleName cho bạn.\n";
+        $body .= "Mã xác nhận của bạn là: $code\n";
+        $body .= "Mã có hiệu lực trong 10 phút.\n\n";
+        $body .= "Vui lòng sử dụng mã này để hoàn tất việc tạo tài khoản và đặt mật khẩu.";
+
+        // Gửi email với mã xác minh
+        Mail::raw($body, function ($message) use ($email, $subject) {
+            $message->to($email)
+                ->subject($subject);
+        });
+    }
+
+    /**
+     * Tạo và gửi mã xác minh (cho register thông thường và reset password)
      */
     private function sendVerificationCode($email, $type)
     {
@@ -268,18 +421,36 @@ class AuthController extends Controller
         ]);
 
         // Tạo subject và body cho email
-        $subject = ($type == 'register')
-            ? 'Mã xác nhận đăng ký tài khoản'
-            : 'Mã xác nhận quên mật khẩu';
-
-        $body = ($type == 'register')
-            ? "Mã xác nhận đăng ký tài khoản của bạn là: $code. Mã có hiệu lực trong 10 phút."
-            : "Mã xác nhận quên mật khẩu của bạn là: $code. Mã có hiệu lực trong 10 phút.";
+        switch ($type) {
+            case 'register':
+                $subject = 'Mã xác nhận đăng ký tài khoản';
+                $body = "Mã xác nhận đăng ký tài khoản của bạn là: $code. Mã có hiệu lực trong 10 phút.";
+                break;
+            case 'reset':
+                $subject = 'Mã xác nhận quên mật khẩu';
+                $body = "Mã xác nhận quên mật khẩu của bạn là: $code. Mã có hiệu lực trong 10 phút.";
+                break;
+            default:
+                $subject = 'Mã xác nhận';
+                $body = "Mã xác nhận của bạn là: $code. Mã có hiệu lực trong 10 phút.";
+        }
 
         // Gửi email với mã xác minh bằng Mail::raw
         Mail::raw($body, function ($message) use ($email, $subject) {
             $message->to($email)
                 ->subject($subject);
         });
+    }
+
+    // Hiển thị form thêm tài khoản từ Admin
+    public function showAddUserForm()
+    {
+        return view('admin.add_users_role_admin_staff');
+    }
+
+    // Hiển thị form xác minh mã thêm tài khoản từ Admin
+    public function showVerifyAddUserForm()
+    {
+        return view('admin.verify_add_user_role');
     }
 }

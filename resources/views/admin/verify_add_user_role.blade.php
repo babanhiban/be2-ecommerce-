@@ -4,40 +4,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chỉnh Sửa Tài Khoản</title>
+    <title>Xác Nhận Thêm Tài Khoản</title>
     <link rel="stylesheet" href="{{ asset('css/admin/crud_users.css') }}">
-
-    <!-- Kết nối đến css thông báo -->
     <link rel="stylesheet" href="{{ asset('css/alert.css') }}">
 </head>
 
 <body>
     <div class="header">
         <div class="header-title">
-            <h1>THÊM TÀI KHOẢN</h1>
+            <h1>XÁC NHẬN THÊM TÀI KHOẢN</h1>
         </div>
-
-        <!-- Hiển thị logo trên thanh tashbar -->
         <img src="{{ asset('images/manhinhdangnhap/logo.png') }}" alt="Logo" class="logo-header">
-
     </div>
+
     <div class="main-container">
         <div class="sidebar">
-
-            <!-- Hiển thị avatar của user -->
             <img src="{{ asset('images/manhinhchinhsuataikhoan/icon_user.png') }}" alt="Avatar" class="avatar">
-
-            <!-- Các bút button giúp quay lại trang danh sách user bạn đang chỉnh sửa -->
-            <a href="{{ route('home') }}" class="btn-nav" style="text-decoration: none;">Quay lại</a>
-
+            <a href="{{ route('admin.users') }}" class="btn-nav" style="text-decoration: none;">Quay lại</a>
         </div>
 
         <div class="form-container">
-
             <div class="login-form">
-                <h2>Xác nhận mã để đăng ký</h2>
+                <h2>Xác nhận mã để tạo tài khoản</h2>
 
-                <!-- Thông báo tất cả các lỗi lỗi đỏ AuthController -->
+                <!-- Thông báo lỗi -->
                 @if ($errors->any())
                 <div class="alert alert-danger">
                     <ul>
@@ -48,29 +38,43 @@
                 </div>
                 @endif
 
-                <!-- Thông báo xanh "Mã xác nhận đã gửi" được lấy từ bên AuthController -->
+                <!-- Thông báo thành công -->
                 @if (session('success'))
                 <div class="alert alert-success">
                     {{ session('success') }}
                 </div>
                 @endif
 
-                <!-- Thông báo lỗi đỏ ở trong AuthController -->
+                <!-- Thông báo lỗi khác -->
                 @if (session('error'))
                 <div class="alert alert-danger">
                     {{ session('error') }}
                 </div>
                 @endif
 
-                <!-- Hiển thị text thông báo cho biết hệ thống đã gửi mã xác nhận về email nào  -->
-                <p>Chúng tôi đã gửi mã xác nhận đến email: <strong>{{ session('register_email') }}</strong></p>
+                <!-- Thông tin tài khoản -->
+                <p>Chúng tôi đã gửi mã xác nhận đến email: <strong>{{ session('admin_register_email') }}</strong></p>
+                <p>Tên tài khoản: <strong>{{ session('admin_register_name') }}</strong></p>
+                <p>Vai trò: <strong>
+                        @switch(session('admin_register_role_id'))
+                        @case(1)
+                        Admin
+                        @break
+                        @case(2)
+                        Staff
+                        @break
+                        @default
+                        Không xác định
+                        @endswitch
+                    </strong></p>
+
                 <br>
 
-                <!-- Form hiển thị các thông tin yêu cầu nhập các thông tin cần thiết -->
+                <!-- Form xác nhận mã và tạo mật khẩu -->
                 <form method="POST" action="{{ route('admin.users.verify.post') }}">
                     @csrf
                     <div class="form-group">
-                        <input type="text" name="verification_register" class="form-control" placeholder="Nhập mã xác nhận" required>
+                        <input type="text" name="verification_register" class="form-control" placeholder="Nhập mã xác nhận (6 số)" maxlength="6" required autocomplete="off">
                     </div>
                     <div class="form-group">
                         <input type="password" name="password" class="form-control" placeholder="Nhập mật khẩu mới" required>
@@ -78,19 +82,25 @@
                     <div class="form-group">
                         <input type="password" name="password_confirmation" class="form-control" placeholder="Xác nhận lại mật khẩu" required>
                     </div>
-                    <button type="submit" class="btn-reset">Xác nhận</button>
+                    <button type="submit" class="btn-reset" style="background-color: #28a745; color: white; padding: 12px 24px; font-size: 16px; border: none; border-radius: 6px; cursor: pointer; width: 100%;">
+                        Xác nhận và tạo tài khoản
+                    </button>
                 </form>
 
-                <!-- Hiển thị text thông báo cho người dùng đọc nếu xác nhận không thành công để người dùng có thể kiểm tra lại mình sai chỗ nào -->
                 <br>
-                <p style="color: red;">Nếu bạn không nhận được mã thì bạn có thể kiểm tra lại email xem đã đúng hoặc email có tồn tại hay không , bạn có thể chọn gửi lại mã</p>
+                <p style="color: #666; font-size: 14px;">
+                    <strong>Lưu ý:</strong> Nếu bạn không nhận được mã, vui lòng kiểm tra hộp thư spam hoặc chọn "Gửi lại mã" bên dưới. Mã xác nhận có hiệu lực trong 10 phút.
+                </p>
+
                 <br>
 
-                <!-- Nút gửi lại mã giúp gửi lại mã mới vào email nếu email đó chưa nhận được hoặc mã đã hết hạn -->
-                <div class="resend-code">
-                    <form method="POST" action="{{ route('resend.register.code') }}">
+                <!-- Gửi lại mã xác nhận -->
+                <div class="resend-code" style="text-align: center;">
+                    <form method="POST" action="{{ route('resend.admin.register.code') }}">
                         @csrf
-                        <button type="submit" class="btn-resend">Gửi lại mã</button>
+                        <button type="submit" class="btn-resend" style="background-color: #007bff; color: white; padding: 10px 20px; font-size: 14px; border: none; border-radius: 4px; cursor: pointer;">
+                            Gửi lại mã
+                        </button>
                     </form>
                 </div>
 

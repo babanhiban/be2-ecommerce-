@@ -91,16 +91,15 @@ Route::get('crud_users', function () {
     return view('admin.crud_users');
 })->name('admin.users.edit');
 
-// Thêm tài khoản theo của admin
-Route::get('add_users_role_admin_staff', function () {
-    return view('admin.add_users_role_admin_staff');
-})->name('admin.users.add');
+// Thêm tài khoản bởi Admin
+Route::get('add_users_role_admin_staff', [AuthController::class, 'showAddUserForm'])->name('admin.users.add');
+Route::post('add_users_role_admin_staff', [AuthController::class, 'registerAddUserFormAdmin'])->name('admin.users.add.post');
 
-// Xác nhận mã khi thêm tài khoản mới của admin
-Route::get('verify_add_users_role', function () {
-    return view('admin.verify_add_users_role');
-})->name('admin.users.verify');
-Route::post('verify_add_users_role', [AuthController::class, 'verifyAddUser'])->name('admin.users.verify.post');
+// Xác nhận mã khi thêm tài khoản mới bởi Admin
+Route::get('verify_add_user_role', [AuthController::class, 'showVerifyAddUserForm'])->name('admin.users.verify');
+Route::post('verify_add_user_role', [AuthController::class, 'verifyAddUserFormAdmin'])->name('admin.users.verify.post');
+Route::post('/resend-admin-register-code', [AuthController::class, 'resendAdminRegisterCode'])->name('resend.admin.register.code');
+
 
 // Thanh toán
 Route::get('/pay', function () {
