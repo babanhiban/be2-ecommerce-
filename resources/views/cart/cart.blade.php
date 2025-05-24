@@ -38,7 +38,7 @@
                 <tbody>
                     @foreach ($items as $item)
                         <tr>
-                            <td><img src="{{ asset('storage/products/' . $item['image']) }}"
+                            <td><img src="{{ asset('images/manhinhsanpham/' . $item['image']) }}"
                                     alt="Not Found" /></td>
                             <td>{{ $item['name'] }}</td>
                             <td>{{ $item['category'] }}</td>

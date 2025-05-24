@@ -142,7 +142,7 @@
                 @foreach ($products as $product )
                 <div class="product-item">
                     <div class="product-image">
-                        <img src="{{ asset('storage/products/' . $product->image) }}" alt="Not Found">
+                        <img src="{{ asset('images/manhinhsanpham/' . $product->image) }}" alt="Not Found">
                     </div>
                     <div class="product-name">{{$product->name}}</div>
                     <div class="product-price">Giá: {{ number_format($product->price, 0, ',', '.') }} VND</div>

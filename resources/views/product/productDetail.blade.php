@@ -25,7 +25,7 @@
             <div class="product-detail__wrapper">
 
                 <div class="product-detail__image">
-                    <img src="{{ asset('storage/products/' . $product->image) }}"
+                    <img src="{{ asset('images/manhinhsanpham/' . $product->image) }}"
                                     alt="Not Found" />
                 </div>
 

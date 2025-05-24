@@ -21,33 +21,7 @@ class ProductController extends Controller
         $categories = Category::all(); // Lấy danh sách danh mục từ DB
         return view('product.addProduct', compact('categories')); // Truyền sang view
     }
-<<<<<<< HEAD
 
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'quantity' => 'required|integer|min:1',
-            'price' => 'required|numeric|min:0',
-            'category_id' => 'required|exists:category,id',
-            'image' => 'nullable|image|mimetypes:image/jpeg,image/png,image/jpg',
-        ]);
-
-        // Xử lý upload hình
-        if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $fileName = $file->getClientOriginalName();
-            $file->storeAs('public/products', $fileName);
-            $validated['image'] = $fileName;
-        } else {
-            // Nếu không có hình thì gán ảnh mặc định
-            $validated['image'] = 'logo.jpg'; // Đảm bảo bạn có file này trong thư mục public/products/
-        }
-
-        Products::create($validated); // Tạo sản phẩm
-
-=======
 
     public function store(Request $request)
     {
@@ -77,7 +51,6 @@ class ProductController extends Controller
 
         Products::create($validated); // Tạo sản phẩm
 
->>>>>>> function_addProduct
         return redirect()->back()->with('success', 'Thêm sản phẩm thành công!');
     }
     public function deleteProduct(Request $request)
