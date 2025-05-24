@@ -91,6 +91,16 @@ Route::get('crud_users', function () {
     return view('admin.crud_users');
 })->name('admin.users.edit');
 
+// Thêm tài khoản bởi Admin
+Route::get('add_users_role_admin_staff', [AuthController::class, 'showAddUserForm'])->name('admin.users.add');
+Route::post('add_users_role_admin_staff', [AuthController::class, 'registerAddUserFormAdmin'])->name('admin.users.add.post');
+
+// Xác nhận mã khi thêm tài khoản mới bởi Admin
+Route::get('verify_add_user_role', [AuthController::class, 'showVerifyAddUserForm'])->name('admin.users.verify');
+Route::post('verify_add_user_role', [AuthController::class, 'verifyAddUserFormAdmin'])->name('admin.users.verify.post');
+Route::post('/resend-admin-register-code', [AuthController::class, 'resendAdminRegisterCode'])->name('resend.admin.register.code');
+
+
 // Thanh toán
 Route::get('/pay', function () {
     return view('payment.pay');

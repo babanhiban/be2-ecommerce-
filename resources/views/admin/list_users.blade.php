@@ -81,7 +81,11 @@
             Danh Sách Người Dùng
         </a>
         @endforeach
+
+        <a href="{{ route('admin.users.add') }}" class="btn-adduser" style="text-decoration: none;"> Thêm Tài Khoản Mới</a>
     </div>
+
+
 
 </body>
 
