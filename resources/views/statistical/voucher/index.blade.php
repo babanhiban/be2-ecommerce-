@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('content')
+
 <div class="container py-4">
     <h2 class="mb-4 text-center">Thống kê Voucher</h2>
 
@@ -108,7 +108,6 @@
         background-color: #f8f9fa;
     }
 </style>
-@endsection
 
 @section('scripts')
 @parent
