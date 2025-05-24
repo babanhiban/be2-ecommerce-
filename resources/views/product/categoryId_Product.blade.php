@@ -51,7 +51,7 @@
             <div class="product-card">
                
                 <div class="product-image">
-                    <img src="{{ asset('storage/products/' . $product->image) }}" alt="{{ $product->name }}" width="150">            
+                    <img src="{{ asset('images/manhinhsanpham/' . $product->image) }}" alt="{{ $product->name }}" width="150">            
                 </div>               
                 <div class="product-info">
                     <p>{{ $product->name }}</p>
