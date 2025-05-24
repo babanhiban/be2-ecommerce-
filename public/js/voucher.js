@@ -91,21 +91,37 @@ $('#createForm button[type=submit]').on('click', function () {
 $('#createForm').on('submit', function (e) {
     e.preventDefault();
 
-    // Nếu không bấm nút "Tạo" thì thoát
     if (!createSubmitted) return;
     createSubmitted = false;
 
-    $.post('/vouchers', $(this).serialize())
-        .done(function () {
+    $.ajax({
+        url: '/vouchers',
+        type: 'POST',
+        data: $(this).serialize(),
+        success: function () {
             $('#createModal').modal('hide');
-            $('#createForm')[0].reset(); // reset form
+            $('#createForm')[0].reset();
+
             const toast = new bootstrap.Toast(document.getElementById('successToast'));
             toast.show();
-        })
-        .fail(function () {
-            alert('Tạo voucher thất bại.');
-        });
+
+            // ✅ Chờ 1.5 giây rồi reload để toast kịp hiển thị
+            setTimeout(() => {
+                location.reload();
+            }, 1500);
+        },
+        error: function (xhr) {
+            let errors = xhr.responseJSON?.errors;
+            if (errors) {
+                let messages = Object.values(errors).map(e => `- ${e}`).join('\n');
+                alert("Lỗi tạo voucher:\n" + messages);
+            } else {
+                alert("Tạo voucher thất bại.");
+            }
+        }
+    });
 });
+
 
 
 });

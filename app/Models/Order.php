@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\OrderItem;
 
 class Order extends Model
 {
@@ -13,9 +14,11 @@ class Order extends Model
         'customer_name',
         'phone',
         'address',
-        'total_price',
-        'user_id', // nếu bạn dùng liên kết tới bảng users
+        'user_id',
         'status',
+        'total_price',
+        'voucher_code',
+         'voucher_id',
     ];
 
     /**
@@ -26,7 +29,11 @@ class Order extends Model
         return $this->belongsTo(User::class);
     }
     public function items()
-{
-    return $this->hasMany(OrderItem::class);
-}
+    {
+        return $this->hasMany(OrderItem::class);
+    }
+    public function voucher()
+    {
+        return $this->belongsTo(\App\Models\Voucher::class);
+    }
 }

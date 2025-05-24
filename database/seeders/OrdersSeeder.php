@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 use App\Models\User;
 
 class OrdersSeeder extends Seeder
@@ -23,19 +22,23 @@ class OrdersSeeder extends Seeder
             return;
         }
 
+        $orders = [];
+
         for ($i = 1; $i <= self::MAX_ORDERS; $i++) {
             $user = $users->random();
 
-            DB::table('orders')->insert([
+            $orders[] = [
                 'user_id'       => $user->id,
                 'customer_name' => $user->name,
                 'phone'         => $user->phone ?? '09' . rand(10000000, 99999999),
-                'address'       => 'Số ' . rand(1, 100) . ', Đường ' . Str::random(5) . ', Q.' . rand(1, 12) . ', TP.HCM',
+                'address'       => $user->address ?? 'Chưa cập nhật',
                 'total_price'   => rand(100000, 10000000),
-                'status'        => collect(['Chờ xử lý', 'Đang giao', 'Đã giao', 'Đã hủy'])->random(),
+                'status'        => collect(['Đang xử lý', 'Đang giao', 'Hoàn thành', 'Đã hủy'])->random(),
                 'created_at'    => now()->subDays(rand(0, 30)),
                 'updated_at'    => now()
-            ]);
+            ];
         }
+
+        DB::table('orders')->insert($orders);
     }
 }

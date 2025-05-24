@@ -1,0 +1,16 @@
+.custom-header {
+    background-color: #00d9ff;
+    height: 70px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.logo img {
+    height: 60px;
+}
+
+.left-space {
+    width: 100%;
+}

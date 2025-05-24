@@ -3,7 +3,7 @@
     <input name="code" class="form-control" value="{{ old('code') }}">
     @error('code')
         <small class="text-danger">{{ $message }}</small>
-    @enderror
+    @enderror   
 </div>
 
 <div class="mb-2">

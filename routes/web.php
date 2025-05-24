@@ -193,6 +193,7 @@ Route::get('/orders/{id}', [OrderController::class, 'show']);
 Route::resource('vouchers', VoucherController::class);
 Route::put('/vouchers/{id}', [VoucherController::class, 'update']);
 Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
+
 //chi tiết sản phẩm
 Route::get('/product/{id}', [ProductController::class, 'show'])->name('product.show');
 
@@ -210,3 +211,4 @@ Route::middleware('auth')->group(function () {
     Route::get('/statistical/vouchers/export', [VoucherStatisticalController::class, 'export'])
     ->name('vouchers.statistical.export');
 });
+Route::get('/vouchers/check/{code}', [VoucherController::class, 'check']);

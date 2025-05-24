@@ -14,8 +14,7 @@ class VoucherController extends Controller
     $query = \App\Models\Voucher::query();
 
     if ($request->filled('keyword')) {
-        $query->where('code', 'like', '%' . $request->keyword . '%')
-              ->orWhere('name', 'like', '%' . $request->keyword . '%');
+        $query->where('code', 'like', '%' . $request->keyword . '%');
     }
 
     if ($request->filled('from_date')) {
@@ -81,5 +80,14 @@ public function destroy($id)
     Voucher::destroy($id);
     return response()->json(['success' => true]);
 }
+public function check($code)
+{
+    $voucher = Voucher::where('code', $code)->first();
 
+    if (!$voucher) {
+        return response()->json(['message' => 'Mã không tồn tại'], 404);
+    }
+
+    return response()->json($voucher);
+}
 }
