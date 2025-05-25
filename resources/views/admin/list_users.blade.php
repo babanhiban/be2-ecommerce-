@@ -33,6 +33,11 @@
 
             <!-- dùng vòng lập để lấy toàn bộ user vào load lên danh sách -->
             <tbody>
+                @if($users->count() == 0)
+                <tr>
+                    <td colspan="5" style="text-align: center; color: #999;">Danh sách rỗng, không có tài khoản nào.</td>
+                </tr>
+                @else
                 @foreach($users as $user)
                 <tr>
                     <th>{{ $user->name }}</th>
@@ -54,6 +59,7 @@
 
                 </tr>
                 @endforeach
+                @endif
             </tbody>
 
         </table>
@@ -66,7 +72,6 @@
 
     <!-- Các nút button giúp load lại danh sách theo role bằng cách chuyển trang qua list_role_user -->
     <div class="navigation-buttons">
-        @foreach($user->roles as $role)
         <a href="{{ route('home') }}" class="btn-nav">Quay lại</a>
 
         <a href="{{ route('user.role.show', ['id' => 1]) }}" class="btn-nav">
@@ -80,11 +85,9 @@
         <a href="{{ route('user.role.show', ['id' => 3]) }}" class="btn-nav">
             Danh Sách Người Dùng
         </a>
-        @endforeach
 
         <a href="{{ route('admin.users.add') }}" class="btn-adduser" style="text-decoration: none;"> Thêm Tài Khoản Mới</a>
     </div>
-
 
 
 </body>
