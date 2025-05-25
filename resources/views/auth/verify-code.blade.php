@@ -74,8 +74,21 @@
             <form method="POST" action="{{ route('verify.code') }}">
                 @csrf
                 <div class="form-group">
-                    <input type="text" name="verification_code" class="form-control" placeholder="Nhập mã xác nhận" required>
+                    <input type="text"
+                        name="verification_register"
+                        class="form-control"
+                        placeholder="Nhập mã xác nhận (6 số)"
+                        required
+                        maxlength="6"
+                        pattern="\d{6}"
+                        inputmode="numeric"
+                        title="Mã xác nhận chỉ được chứa 6 chữ số"
+                        oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                 </div>
+                <!-- Hiển thị các thông báo lỗi dưới input nếu có -->
+                @error('verification_register')
+                <small class="text-danger">{{ $message }}</small>
+                @enderror
                 <button type="submit" class="btn-reset">Tiếp theo</button>
             </form>
 

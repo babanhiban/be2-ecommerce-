@@ -84,6 +84,18 @@ body {
     color: #fff;
 }
 
+
+.btn-adduser {
+     display: inline-block;
+    padding: 10px 20px;
+    background-color: greenyellow;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
 .btn-delete:hover,
 .btn-edit:hover {
     opacity: 0.85;

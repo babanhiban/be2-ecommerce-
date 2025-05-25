@@ -51,7 +51,7 @@ body {
 
 .logo-container {
     width: 120px;
-    height: 60px;
+    height: 90px;
 }
 
 .logo {
@@ -177,4 +177,14 @@ body {
     color: white;
     font-weight: bold;
     border-color: #007bff;
+}
+.d-flex.justify-content-center.mt-4 {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.nav-home {
+    font-weight: 500;
+    color: #0066ff;
+    text-decoration: underline;
+    margin-left: 10px;
 }

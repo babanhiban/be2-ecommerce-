@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thanh Toán</title>
+    <link rel="stylesheet" href="{{ asset('css/checkout.css') }}">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -13,6 +15,7 @@
             flex-direction: column;
             align-items: center;
         }
+
         .header {
             background-color: #33ccff;
             color: #000;
@@ -23,60 +26,73 @@
             width: 100%;
             box-sizing: border-box;
         }
+
         .header h1 {
             margin: 0;
             font-size: 24px;
         }
+
         .logo {
             width: 120px;
             height: auto;
         }
+
         .container {
             padding: 20px;
             max-width: 1000px;
             width: 100%;
             box-sizing: border-box;
         }
+
         .form-group {
             margin-bottom: 15px;
             display: flex;
             align-items: center;
         }
+
         .form-group label {
             width: 80px;
             margin-right: 10px;
         }
+
         .form-group input {
             padding: 8px;
             width: 250px;
             border: 1px solid #ccc;
         }
+
         .content-wrapper {
             display: flex;
             justify-content: space-between;
             width: 100%;
             margin-top: 20px;
         }
+
         .left-content {
             width: 48%;
         }
+
         .right-content {
             width: 48%;
             display: flex;
             flex-direction: column;
             align-items: flex-end;
         }
+
         .payment-methods {
             margin-bottom: 20px;
         }
+
         .payment-option {
             margin-bottom: 10px;
         }
+
         .product-info {
             display: flex;
             align-items: center;
             margin-bottom: 20px;
         }
+
         .product-image {
             width: 60px;
             height: 60px;
@@ -87,6 +103,7 @@
             justify-content: center;
             align-items: center;
         }
+
         .button {
             background-color: #33ccff;
             border: none;
@@ -97,23 +114,28 @@
             border-radius: 5px;
             font-weight: bold;
         }
+
         .payment-summary {
             border: 1px solid #ddd;
             padding: 15px;
             margin-bottom: 20px;
             width: 100%;
+            height: 50%;
             box-sizing: border-box;
         }
+
         .voucher-input {
             display: flex;
             margin-bottom: 10px;
         }
+
         .voucher-result {
             background-color: #f0f0f0;
             padding: 5px 10px;
             margin-top: 5px;
             display: inline-block;
         }
+
         .total {
             margin-top: 20px;
             font-weight: bold;
@@ -121,6 +143,7 @@
             justify-content: space-between;
             width: 100%;
         }
+
         .checkout-button {
             background-color: #33ccff;
             color: black;
@@ -130,82 +153,86 @@
             font-weight: bold;
             margin-top: 10px;
         }
-        h2, h3 {
+
+        h2,
+        h3 {
             text-align: left;
             width: 100%;
         }
     </style>
 </head>
+
 <body>
     <div class="header">
-        <h1>Thanh Toán</h1>
+        <h1> <a href="{{ route('home') }}" class="nav-home" style="text-decoration: none; color: black;">Trang chủ</a></h1>
         <img src="{{ asset('images/manhinhthanhtoan/logo.png') }}" alt="STORME Logo" class="logo">
     </div>
-    
-    <div class="container">
-        <h2>Thông tin khách hàng</h2>
-        
-        <div class="form-group">
-            <label for="name">Họ tên:</label>
-            <input type="text" id="name">
-        </div>
-        
-        <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" id="email">
-        </div>
-        
-        <div class="form-group">
-            <label for="phone">SĐT:</label>
-            <input type="tel" id="phone">
-        </div>
-        
-        <div class="form-group">
-            <label for="address">Địa chỉ:</label>
-            <input type="text" id="address">
-        </div>
-        
-        <div class="content-wrapper">
-            <div class="left-content">
-               
-                
-                <div>
-                    <h3>Mã giảm giá</h3>
-                    <div class="voucher-input">
-                        <input type="text" placeholder="abx-ynx-yuna" style="width: 150px;">
-                    </div>
-                   
-                </div>
-                
-                <div class="product-info">
-                    <div class="product-image">
-                        <img src="{{ assert('images/manhinhthanhtoan/iphone.jpg') }}" alt="">
-                    </div>
-                    <div>
-                        <h3>Iphone 16 128gb</h3>
-                        <p>22.690.000đ x 1 = 22.690.000đ</p>
-                        <a href="#" style="font-size: 12px;">Xem chi tiết tại đây</a>
-                    </div>
-                </div>
-                
-                <button class="button"><a href="{{ route('bill')}}">Hóa Đơn</a></button>
+    <form action="{{ route('checkout.process') }}" method="POST">
+        @csrf
+        <div class="container">
+            <h2>Thông tin khách hàng</h2>
+
+            <div class="form-group">
+                <label for="name">Họ tên:</label>
+                <input type="text" name="name" value="{{ old('name', $user->name) }}" required>
             </div>
-            
-            <div class="right-content" >
-                <div class="payment-summary">
-                    <h3>Chi tiết thanh toán:</h3>
-                    <p>Tổng tiền hàng : 22.690.000đ</p>
-                    <p>Tổng thanh toán: <input type="text" value="22.610.000đ" style="width: 120px;"></p>
+
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" name="email" value="{{ old('email', $user->email) }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">SĐT:</label>
+                <input type="text" name="phone" value="{{ old('phone', $user->phone ?? '') }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="address">Địa chỉ:</label>
+                <input type="text" name="address" value="{{ old('address', $user->address ?? '') }}" required>
+            </div>
+
+            <div class="content-wrapper">
+                <div class="left-content">
+                    <div class="payment-methods">
+                        <h3>Phương thức thanh toán:</h3>
+                        <div class="payment-option">
+
+                            <label style="color:black;text-align: center;">Thanh toán khi nhận hàng</label>
+                        </div>
+
+                    </div>
                 </div>
-                
-                <div class="total">
-                    <span>Tổng cộng:</span>
-                    <span>22.610.000đ</span>
+
+                <div class="right-content">
+                    <h3>Sản phẩm đã chọn</h3>
+                    @foreach ($cartItems as $cartItem)
+                    <div class="payment-summary">
+                        <img src="{{ asset('storage/products/' . $cartItem->product->image) }}"
+                            alt="{{ $cartItem->product->name }} " style="height: 100px;">
+                        <div>
+                            <strong>{{ $cartItem->product->name }}</strong><br>
+                            {{ number_format($cartItem->product->price, 0, ',', '.') }}đ x
+                            {{ $cartItem->quantity }} =
+                            {{ number_format($cartItem->product->price * $cartItem->quantity, 0, ',', '.') }}đ
+                        </div>
+                    </div>
+                    @endforeach
+                    <div class="total">
+                        Tổng cộng:
+                        {{ $total = array_reduce(
+$cartItems,
+function ($carry, $item) {
+return $carry + $item->product->price * $item->quantity;
+},
+0,
+) }}đ
+                    </div>
+                    <button class="checkout-button">Thanh toán</button>
                 </div>
-                
-                <button class="checkout-button mt-5"><a href="{{ route('statuspay')}}">Thanh Toán</a></button>
             </div>
         </div>
-    </div>
+    </form>
 </body>
+
 </html>

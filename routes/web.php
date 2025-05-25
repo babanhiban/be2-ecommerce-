@@ -6,7 +6,13 @@ use App\Http\Controllers\CrudUserController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckoutController;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Products;
+use App\Models\Category;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -85,6 +91,16 @@ Route::get('crud_users', function () {
     return view('admin.crud_users');
 })->name('admin.users.edit');
 
+// Thêm tài khoản bởi Admin
+Route::get('add_users_role_admin_staff', [AuthController::class, 'showAddUserForm'])->name('admin.users.add');
+Route::post('add_users_role_admin_staff', [AuthController::class, 'registerAddUserFormAdmin'])->name('admin.users.add.post');
+
+// Xác nhận mã khi thêm tài khoản mới bởi Admin
+Route::get('verify_add_user_role', [AuthController::class, 'showVerifyAddUserForm'])->name('admin.users.verify');
+Route::post('verify_add_user_role', [AuthController::class, 'verifyAddUserFormAdmin'])->name('admin.users.verify.post');
+Route::post('/resend-admin-register-code', [AuthController::class, 'resendAdminRegisterCode'])->name('resend.admin.register.code');
+
+
 // Thanh toán
 Route::get('/pay', function () {
     return view('payment.pay');
@@ -120,7 +136,7 @@ Route::get('/addProduct', [ProductController::class, 'create'])->name('product.a
 // theem san phaam
 Route::post('/addProduct', [ProductController::class, 'store'])->name('products.store');
 // Xóa san pham
-Route::get('delete', [ProductController::class, 'deleteProduct'])->name('products.deleteProduct');
+Route::get('delete2', [ProductController::class, 'deleteProduct'])->name('products.deleteProduct');
 // sua san phẩmphẩm
 Route::get('/editProduct', function () {
     return view('product.editProduct');
@@ -129,25 +145,50 @@ Route::get('/product/edit/{id}', [ProductController::class, 'edit'])->name('prod
 
 Route::post('/product/update/{id}', [ProductController::class, 'update'])->name('product.saveProduct');
 
+// danh sach loại sản phẩm
+Route::get('/categoryId_Product', function () {
+    return view('product.categoryId_Product');
+})->name('categoryId_Product');
 
-// Trang chủ
+
+Route::get('/search_result', function () {
+    return view('product.search_result');
+})->name('search_result');
+
+
+Route::get('/category/{id}', [CategoryController::class, 'showProducts'])->name('product.categoryId_Product');
+
+Route::get('/search', [HomeController::class, 'search'])->name('product.search_result');
+
+Route::get('/admin/products/search', [ProductController::class, 'search'])->name('product.search');
+
+
+//Trang chủ
 Route::get('/homepage', function () {
     $user = null;
+    $products = Products::all();
+    $categories = Category::all(); // ✅ Lấy danh mục
     if (Auth::check()) {
         $user = Auth::user();
         if ($user) {
             $user->load('roles');
         }
     }
-    return view('homepage', ['user' => $user]);
+    return view('homepage', compact('products', 'categories', 'user'));
 })->name('home');
 
-// Giỏ hàng
-Route::get('/cart', function () {
-    // Xử lý giỏ hàng
-    return view('cart');
-})->name('cart');
-Route::get('/cart', function () {
-    // Xử lý giỏ hàng
-    return view('cart');
-})->name('cart');
+// gio hang
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::post('/cart', [CartController::class, 'update'])->name('cart.update');
+Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
+
+//chi tiết sản phẩm
+Route::get('/product/{id}', [ProductController::class, 'show'])->name('product.show');
+
+// thanh toán 
+Route::middleware('auth')->group(function () {
+    Route::get('/checkout', [CheckoutController::class, 'show'])->name('checkout.show');
+    Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.process');
+});
+
+Route::post('/checkout/buynow', [CheckoutController::class, 'buyNow'])->name('checkout.buynow');

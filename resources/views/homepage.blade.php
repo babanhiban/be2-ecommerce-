@@ -19,12 +19,15 @@
             <div class="menu">
                 <div class="menu-title">Danh Mục</div>
             </div>
-            <div class="search-bar">
-                <input type="text" placeholder="Tìm kiếm sản phẩm">
-                <button type="submit">
-                    <i class="fas fa-search"></i>
-                </button>
-            </div>
+            <form class="search-bar" action="{{ route('product.search_result') }}" method="GET">
+                <div>
+                    <input type="text" name="query" placeholder="Tìm kiếm sản phẩm...">
+                    <button type="submit">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </form>
+
 
             <!-- kiểm tra xem tài khoản vừa đăng nhập là admin hay member nếu là admin sẽ hiển thị icon và các chức năng dành cho admin , ngược lại với member cũng vậy -->
             <div class="account">
@@ -76,7 +79,7 @@
 
 
             <div class="cart">
-                <a href="{{ route('cart') }}">
+                <a href="{{ route('cart.index') }}">
                     <i class="fas fa-shopping-cart"></i>
                 </a>
             </div>
@@ -86,55 +89,18 @@
     <main>
         <section class="categories">
             <div class="category-container">
+                @foreach ($categories as $category)
                 <div class="category-item">
                     <div class="category-image">
-                        <img src=" {{ asset('images/manhinhtrangchu/categories/dienthoai.png') }}" alt=" Điện Thoại">
-
+                        <a href="{{ route('product.categoryId_Product', $category->id) }}">
+                            <img src="{{ asset('images/manhinhtrangchu/categories/'.$category->image) }}" alt="{{ $category->name }}" style="width:200px; height:auto;">
+                        </a>
                     </div>
-                    <div class="category-name">Điện Thoại</div>
+                    <div class="category-name">{{ $category->name }}</div>
                 </div>
+                @endforeach
 
-                <div class="category-item">
-                    <div class="category-image">
-                        <img src="{{ asset('images/manhinhtrangchu/categories/laptop.png') }}" alt="Laptop">
-                    </div>
-                    <div class="category-name">Laptop</div>
-                </div>
 
-                <div class="category-item">
-                    <div class="category-image">
-                        <img src="{{ asset('images/manhinhtrangchu/categories/mayanh.png') }}" alt="Máy Ảnh">
-                    </div>
-                    <div class="category-name">Máy Ảnh</div>
-                </div>
-
-                <div class="category-item">
-                    <div class="category-image">
-                        <img src="{{ asset('images/manhinhtrangchu/categories/tainghe.png') }}" alt="Tai Nghe">
-                    </div>
-                    <div class="category-name">Tai Nghe</div>
-                </div>
-
-                <div class="category-item">
-                    <div class="category-image">
-                        <img src="{{ asset('images/manhinhtrangchu/categories/manhinh.png') }}" alt="Màn Hình">
-                    </div>
-                    <div class="category-name">Màn Hình</div>
-                </div>
-
-                <div class="category-item">
-                    <div class="category-image">
-                        <img src="{{ asset('images/manhinhtrangchu/categories/chuotmaytinh.png') }}" alt="Chuột Máy Tính">
-                    </div>
-                    <div class="category-name">Chuột Máy Tính</div>
-                </div>
-
-                <div class="category-item">
-                    <div class="category-image">
-                        <img src="{{ asset('images/manhinhtrangchu/categories/phukien.png') }}" alt="Phụ Kiện Khác">
-                    </div>
-                    <div class="category-name">Phụ Kiện Khác</div>
-                </div>
             </div>
         </section>
 
@@ -173,17 +139,40 @@
             </div>
 
             <div class="products-container">
-                @for ($i = 1; $i <= 8; $i++)
-                    <div class="product-item">
+                @foreach ($products as $product )
+                <div class="product-item">
                     <div class="product-image">
-                        <img src="{{ asset('images/manhinhtrangchu/products/iphone12promax.png') }}" alt="Điện thoại">
+                        <img src="{{ asset('images/manhinhsanpham/' . $product->image) }}" alt="Not Found">
                     </div>
-                    <div class="product-price">16.500.000đ</div>
+                    <div class="product-name">{{$product->name}}</div>
+                    <div class="product-price">Giá: {{ number_format($product->price, 0, ',', '.') }} VND</div>
+
+                    @if ($product->quantity > 0)
+                    <div class="product-detail-link">
+                        <a href="{{ route('product.show', $product->id) }}">Xem chi tiết</a>
+                    </div>
                     <div class="product-action">
-                        <button class="buy-button">Mua ngay</button>
+                        <form action="{{ route('checkout.buynow', ['product_id' => $product->id]) }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="quantity" value="1">
+                            <button type="submit" class="buy-button">Mua ngay</button>
+                        </form>
                     </div>
-            </div>
-            @endfor
+                    <div>
+                        <form action="{{ route('cart.add', $product->id) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="add-button">Thêm vào giỏ</button>
+                        </form>
+                    </div>
+                    @else
+                    <p class="text-muted mt-3">⚠️ <strong>Hết hàng</strong></p>
+                    <button class="btn btn-secondary mt-2" disabled>Không thể mua</button>
+                    @endif
+
+
+
+                </div>
+                @endforeach
             </div>
         </section>
     </main>

@@ -74,6 +74,7 @@ ul {
     cursor: pointer;
 }
 
+
 .account {
     margin-right: 20px;
     color: white;
@@ -343,6 +344,19 @@ ul {
     font-weight: 500;
     transition: background-color 0.3s;
 }
+.add-button {
+    background-color: #4dff7c;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.3s;
+}
+.add-button:hover {
+    background-color: #30ff8d;
+}
 
 .buy-button:hover {
     background-color: #ff3034;
@@ -418,6 +432,13 @@ footer {
 .certification img {
     max-width: 100px;
     height: auto;
+}
+
+.product-detail-link{
+    margin-bottom: 15px;
+    color: #008aff;
+    font-size: 14px;
+    text-decoration: none;
 }
 
 /* Responsive Styles */
