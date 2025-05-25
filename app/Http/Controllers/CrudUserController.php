@@ -153,6 +153,20 @@ class CrudUserController extends Controller
             'password.min' => 'Mật khẩu ít nhất 6 ký tự.',
         ]);
 
+        // Tiếp tục kiểm tra updated_at
+        $user = User::find($input['id']);
+        if (!$user) {
+            return back()->withErrors(['msg' => 'Người dùng không tồn tại']);
+        }
+
+        $formUpdatedAt = \Carbon\Carbon::parse($input['updated_at']);
+        $dbUpdatedAt = \Carbon\Carbon::parse($user->updated_at);
+
+        if (!$formUpdatedAt->eq($dbUpdatedAt)) {
+            return back()->withErrors(['msg' => 'Thông tin tài khoản đã được thay đổi ở nơi khác. Vui lòng tải lại trang để cập nhật dữ liệu mới nhất.']);
+        }
+        
+
         $user = User::find($input['id']);
         $user->name = $input['name'];
         $user->email = $input['email'];
