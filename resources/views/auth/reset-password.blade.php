@@ -72,10 +72,12 @@
                 @csrf
                 <input type="hidden" name="email" value="{{ old('email', request('email')) }}">
                 <div class="form-group">
-                    <input type="password" name="password" class="form-control" placeholder="Nhập mật khẩu mới" required>
+                    <input type="password" name="password" class="form-control" placeholder="Nhập mật khẩu mới" attern="^(?!^\s)(?!^\u3000)(?!.*\s$)(?!.*\u3000$)(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$"
+                        title="Mật khẩu ít nhất 6 ký tự, gồm chữ hoa, thường và số" required>
                 </div>
                 <div class="form-group">
-                    <input type="password" name="password_confirmation" class="form-control" placeholder="Xác nhận lại mật khẩu" required>
+                    <input type="password" name="password_confirmation" class="form-control" placeholder="Xác nhận lại mật khẩu" attern="^^(?!^\s)(?!^\u3000)(?!.*\s$)(?!.*\u3000$)(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$"
+                        title="Mật khẩu ít nhất 6 ký tự, gồm chữ hoa, thường và số" required>
                 </div>
                 <button type="submit" class="btn-submit">Đặt lại mật khẩu</button>
             </form>
