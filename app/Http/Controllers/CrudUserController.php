@@ -130,12 +130,24 @@ class CrudUserController extends Controller
 
         $input = $request->all();
 
+        // Xử lý loại bỏ khoảng trắng ở đầu, cuối và khoảng trắng Unicode đặc biệt
+        $cleanInput = $input;
+        foreach (['name', 'email', 'address', 'password'] as $field) {
+            if (isset($cleanInput[$field])) {
+                // Loại bỏ khoảng trắng thông thường và khoảng trắng Unicode (full-width space)
+                $cleanInput[$field] = preg_replace('/^[\s\x{3000}]+|[\s\x{3000}]+$/u', '', $cleanInput[$field]);
+            }
+        }
+
+        $request->merge($cleanInput); // Gộp dữ liệu đã làm sạch vào lại request để validate
+
+        // Validation
         $request->validate([
             'name' => 'required|string|max:30',
             'email' => 'required|email|unique:users,email,' . $input['id'],
             'phone' => [
                 'required',
-                'regex:/^[0-9]{10,15}$/', // từ 10 đến 15 số, không chữ
+                'regex:/^[0-9]{10,15}$/',
             ],
             'address' => 'required|string|max:255',
             'gioitinh' => 'required|in:Nam,Nữ',
@@ -153,42 +165,40 @@ class CrudUserController extends Controller
             'password.min' => 'Mật khẩu ít nhất 6 ký tự.',
         ]);
 
-        // Tiếp tục kiểm tra updated_at
+        // Kiểm tra tồn tại
         $user = User::find($input['id']);
         if (!$user) {
             return back()->withErrors(['msg' => 'Người dùng không tồn tại']);
         }
 
+        // So sánh updated_at
         $formUpdatedAt = \Carbon\Carbon::parse($input['updated_at']);
         $dbUpdatedAt = \Carbon\Carbon::parse($user->updated_at);
 
         if (!$formUpdatedAt->eq($dbUpdatedAt)) {
             return back()->withErrors(['msg' => 'Thông tin tài khoản đã được thay đổi ở nơi khác. Vui lòng tải lại trang để cập nhật dữ liệu mới nhất.']);
         }
-        
 
-        $user = User::find($input['id']);
-        $user->name = $input['name'];
-        $user->email = $input['email'];
-        $user->phone = $input['phone'];
-        $user->address = $input['address'];
+        // Cập nhật thông tin
+        $user->name = $cleanInput['name'];
+        $user->email = $cleanInput['email'];
+        $user->phone = $input['phone']; // phone không trim để tránh mất số
+        $user->address = $cleanInput['address'];
         $user->gioitinh = $input['gioitinh'];
 
-        // Chuyển định dạng ngày sinh từ dd/MM/yyyy sang yyyy-MM-dd
         try {
             $user->ngaysinh = Carbon::createFromFormat('d/m/Y', $input['ngaysinh'])->format('Y-m-d');
         } catch (\Exception $e) {
             return back()->withErrors(['ngaysinh' => 'Ngày sinh không hợp lệ. Định dạng đúng là dd/mm/yyyy']);
         }
 
-
-        // Kiểm tra nếu password có nhập thì mới update, nếu không thì giữ nguyên mật khẩu cũ
-        if (!empty($input['password'])) {
-            $user->password = Hash::make($input['password']);
+        // Cập nhật mật khẩu nếu có
+        if (!empty($cleanInput['password'])) {
+            $user->password = Hash::make($cleanInput['password']);
         }
 
         $user->save();
-        // Quay lại trang danh sách người dùng sau khi sửa thành công
+
         return redirect()->route('admin.users')->withSuccess('User update successfully');
     }
 

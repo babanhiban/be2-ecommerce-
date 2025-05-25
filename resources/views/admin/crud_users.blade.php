@@ -43,7 +43,7 @@
                 <div class="form-group">
                     <label for="name">Tên</label>
                     <input type="text" id="name" name="name" placeholder="Name"
-                        class="form-control" value="{{ old('name', $user->name) }}"
+                        class="form-control" value="{{ old('name', $user->name) }}" pattern="^(?!.*\s$)(?!.*\u3000$).{1,30}$"
                         maxlength="30" required autofocus>
                     @error('name')
                     <span class="text-danger">{{ $message }}</span>
@@ -54,7 +54,10 @@
                 <div class="form-group">
                     <label for="email">Email</label>
                     <input type="email" id="email_address" name="email" placeholder="Email"
-                        class="form-control" value="{{ old('email', $user->email) }}" required>
+                        class="form-control" value="{{ old('email', $user->email) }}"
+                        pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+                        title="Email phải hợp lệ, ví dụ: ten@example.com"
+                        required>
                     @error('email')
                     <span class="text-danger">{{ $message }}</span>
                     @enderror
@@ -78,7 +81,10 @@
                 <div class="form-group">
                     <label for="address">Địa chỉ</label>
                     <input type="text" id="address" name="address" placeholder="Địa chỉ"
-                        class="form-control" value="{{ old('address', $user->address) }}" required>
+                        class="form-control" value="{{ old('address', $user->address) }}"
+                        pattern="^[^<>{}]{5,100}$"
+                        title="Địa chỉ phải từ 5 đến 100 ký tự, không chứa ký tự đặc biệt như < > { }"
+                        required>
                     @error('address')
                     <span class="text-danger">{{ $message }}</span>
                     @enderror
@@ -114,7 +120,9 @@
                 <div class="form-group">
                     <label for="password">Mật khẩu (bỏ trống nếu không đổi)</label>
                     <input type="password" id="password" name="password" placeholder="Password"
-                        class="form-control">
+                        class="form-control"
+                        pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$"
+                        title="Mật khẩu ít nhất 6 ký tự, gồm chữ hoa, thường và số. Bỏ trống nếu không đổi.">
                     @error('password')
                     <span class="text-danger">{{ $message }}</span>
                     @enderror
