@@ -33,14 +33,7 @@
         </div>
 
         <div class="row g-3 mt-3">
-            <div class="col-md-3">
-                <label class="form-label">Loại voucher</label>
-                <select name="type" class="form-select">
-                    <option value="">Tất cả</option>
-                    <option value="percent" {{ request('type') === 'percent' ? 'selected' : '' }}>Giảm %</option>
-                    <option value="fixed" {{ request('type') === 'fixed' ? 'selected' : '' }}>Giảm cố định</option>
-                </select>
-            </div>
+            
             <div class="col-md-3">
                 <label class="form-label">Tổng giảm tối thiểu</label>
                 <input type="number" name="min_discount" class="form-control" value="{{ request('min_discount') }}">

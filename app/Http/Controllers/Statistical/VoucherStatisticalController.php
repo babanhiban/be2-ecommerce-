@@ -19,7 +19,6 @@ class VoucherStatisticalController extends Controller
             ->when($request->search, fn($q) => $q->where(function ($q) use ($request) {
                 $q->where('code', 'like', '%' . $request->search . '%');
             }))
-            ->when($request->type, fn($q) => $q->where('type', $request->type))
             ->when($request->min_discount, fn($q) => $q->where('discount', '>=', $request->min_discount))
             ->when($request->max_discount, fn($q) => $q->where('discount', '<=', $request->max_discount))
             ->orderByDesc('created_at');
