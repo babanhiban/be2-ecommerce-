@@ -27,10 +27,29 @@ class AuthController extends Controller
     }
 
     /**
+     * Xử lý khoảng trắng khi nhập các trường dữ liệu
+     */
+    protected function trimInputFields(Request $request, array $fields)
+    {
+        $input = $request->all();
+
+        foreach ($fields as $field) {
+            if (isset($input[$field])) {
+                // Loại bỏ khoảng trắng thông thường và khoảng trắng Unicode (full-width space)
+                $input[$field] = preg_replace('/^[\s\x{3000}]+|[\s\x{3000}]+$/u', '', $input[$field]);
+            }
+        }
+
+        $request->merge($input); // Gộp lại vào request
+    }
+
+    /**
      * Xử lý đăng ký người dùng - gửi mã xác nhận email
      */
     public function register(Request $request)
     {
+        $this->trimInputFields($request, ['name', 'email']);
+
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:30',
             'email' => 'required|email|unique:users,email',
@@ -55,6 +74,8 @@ class AuthController extends Controller
      */
     public function registerAddUserFormAdmin(Request $request)
     {
+        $this->trimInputFields($request, ['name', 'email']);
+
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:30',
             'email' => 'required|email|unique:users,email',
@@ -84,6 +105,9 @@ class AuthController extends Controller
      */
     public function verifyAddUserFormAdmin(Request $request)
     {
+        // Trim các field cần thiết trước khi validate
+        $this->trimInputFields($request, ['verification_register', 'password', 'password_confirmation']);
+
         $validator = Validator::make($request->all(), [
             'verification_register' => [
                 'required',
@@ -174,6 +198,9 @@ class AuthController extends Controller
      */
     public function verifyRegister(Request $request)
     {
+        // Trim các field cần thiết trước khi validate
+        $this->trimInputFields($request, ['verification_register', 'password', 'password_confirmation']);
+
         $validator = Validator::make($request->all(), [
             'verification_register' => [
                 'required',

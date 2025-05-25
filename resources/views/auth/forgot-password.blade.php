@@ -72,7 +72,8 @@
             <form method="POST" action="{{ route('password.email') }}">
                 @csrf
                 <div class="form-group">
-                    <input type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="Nhập email" required>
+                    <input type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="Nhập email" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+                        title="Email phải hợp lệ, ví dụ: ten@example.com" required>
                 </div>
                 <button type="submit" class="btn-reset">Lấy lại mật khẩu</button>
             </form>

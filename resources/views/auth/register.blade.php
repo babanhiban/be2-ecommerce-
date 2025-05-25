@@ -71,10 +71,13 @@
             <form method="POST" action="{{ route('register.post') }}">
                 @csrf
                 <div class="form-group">
-                    <input type="text" class="form-control" name="name" value="{{ old('name') }}" placeholder="Nhập tên tài khoản" required maxlength="30">
+                    <input type="text" class="form-control" name="name" value="{{ old('name') }}" placeholder="Nhập tên tài khoản" pattern="^(?!.*\s$)(?!.*\u3000$).{1,30}$"
+                        maxlength="30" required autofocus>
                 </div>
                 <div class="form-group">
-                    <input type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="Nhập email" required>
+                    <input type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="Nhập email" pattern="^(?!^\s)(?!^\u3000)(?!.*\s$)(?!.*\u3000$)[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+                        title="Email phải hợp lệ, ví dụ: ten@example.com"
+                        required>
                 </div>
                 <button type="submit" class="btn-register">Đăng ký</button>
             </form>
