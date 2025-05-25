@@ -26,5 +26,9 @@ class Products extends Model
     {
         return $this->quantity > 0;
     }
+     public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class);
+    }
 
 }

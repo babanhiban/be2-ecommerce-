@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -18,25 +17,27 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        
-        //Truncate table
-         DB::table('users')->truncate();
+
+        // Xóa toàn bộ dữ liệu cũ trong bảng users
+        DB::table('users')->truncate();
         //Insert data
         DB::table('users')->insert([
             [
                 'name' => 'admin',
                 'email' => 'admin@gmail.com',
                 'email_verified_at' => now(),
-                'password' => Hash::make('123456'),
+                'password' => Hash::make('Admin123'),
                 'remember_token' => Str::random(10),
                 'phone' => '0123456789',
-                'address' => 'thu duc',
                 'gioitinh' => 'Nam',
+                'address' => '123 Nguyễn Trãi, Hà Nội',
                 'ngaysinh' => '1990-01-01',
                 'created_at' => now(),
                 'updated_at' => now(),
             ]
         ]);
+
+        // Thêm các user giả lập
 
         for ($i = 2; $i < self::MAX_RECORDS; $i++) {
             DB::table('users')->insert([
@@ -44,11 +45,11 @@ class UserSeeder extends Seeder
                     'name' => 'user' . $i,
                     'email' => "admin{$i}@gmail.com",
                     'email_verified_at' => now(),
-                    'password' => Hash::make('123456'),
+                    'password' => Hash::make('User123'),
                     'remember_token' => Str::random(10),
                     'phone' => '09' . rand(10000000, 99999999),
-                    'address' => 'ho chi minh',
                     'gioitinh' => rand(0, 1) ? 'Nam' : 'Nữ',
+                    'address' => 'Số ' . rand(1, 999) . ' Đường 3/2, Quận ' . rand(1, 12) . ', TP.HCM',
                     'ngaysinh' => now()->subYears(rand(18, 40))->subDays(rand(0, 365))->format('Y-m-d'),
                     'created_at' => now(),
                     'updated_at' => now(),

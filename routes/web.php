@@ -13,7 +13,7 @@ use App\Models\Products;
 use App\Models\Category;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
-
+use App\Http\Controllers\OrderController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -192,3 +192,12 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::post('/checkout/buynow', [CheckoutController::class, 'buyNow'])->name('checkout.buynow');
+
+//đơn hàng
+
+Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
+Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+Route::put('/orders/{order}', [OrderController::class, 'update'])->name('orders.update');
+Route::delete('/orders/{order}', [OrderController::class, 'destroy'])->name('orders.destroy');
+Route::get('/orders/{id}', [OrderController::class, 'show']);
