@@ -144,7 +144,7 @@
                     <label for="password">Mật khẩu</label>
 
                     <input type="password" placeholder="Password" id="password" class="form-control"
-                        name="password" value="{{ $user->password }}">
+                        name="password">
                     @if ($errors->has('password'))
                     <span class="text-danger">{{ $errors->first('password') }}</span>
                     @endif
