@@ -56,7 +56,7 @@
                 <form method="POST" action="{{ route('admin.users.add.post') }}">
                     @csrf
                     <div class="form-group">
-                        <input type="text" class="form-control" name="name" value="{{ old('name') }}" placeholder="Nhập tên tài khoản" required>
+                        <input type="text" class="form-control" name="name" value="{{ old('name') }}" placeholder="Nhập tên tài khoản" required maxlength="30">
                     </div>
 
                     <div class="form-group">

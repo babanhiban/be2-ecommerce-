@@ -71,7 +71,7 @@
             <form method="POST" action="{{ route('register.post') }}">
                 @csrf
                 <div class="form-group">
-                    <input type="text" class="form-control" name="name" value="{{ old('name') }}" placeholder="Nhập tên tài khoản" required>
+                    <input type="text" class="form-control" name="name" value="{{ old('name') }}" placeholder="Nhập tên tài khoản" required maxlength="30">
                 </div>
                 <div class="form-group">
                     <input type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="Nhập email" required>

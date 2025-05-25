@@ -131,19 +131,48 @@ class CrudUserController extends Controller
         $input = $request->all();
 
         $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users,id,' . $input['id'],
-            'password' => 'required|min:6', // Cho phép password rỗng (nếu không muốn đổi mật khẩu)
+            'name' => 'required|string|max:30',
+            'email' => 'required|email|unique:users,email,' . $input['id'],
+            'phone' => [
+                'required',
+                'regex:/^[0-9]{10,15}$/', // từ 10 đến 15 số, không chữ
+            ],
+            'address' => 'required|string|max:255',
+            'gioitinh' => 'required|in:Nam,Nữ',
+            'ngaysinh' => [
+                'required',
+                'regex:/^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/[0-9]{4}$/'
+            ],
+            'password' => 'nullable|min:6',
+        ], [
+            'name.max' => 'Tên không được vượt quá 30 ký tự.',
+            'email.email' => 'Email không hợp lệ.',
+            'email.unique' => 'Email đã tồn tại.',
+            'phone.regex' => 'Số điện thoại phải từ 10 đến 15 chữ số và không được chứa chữ.',
+            'ngaysinh.regex' => 'Ngày sinh không đúng định dạng dd/mm/yyyy. Ví dụ: 27/11/2004',
+            'password.min' => 'Mật khẩu ít nhất 6 ký tự.',
         ]);
+
+        // Tiếp tục kiểm tra updated_at
+        $user = User::find($input['id']);
+        if (!$user) {
+            return back()->withErrors(['msg' => 'Người dùng không tồn tại']);
+        }
+
+        $formUpdatedAt = \Carbon\Carbon::parse($input['updated_at']);
+        $dbUpdatedAt = \Carbon\Carbon::parse($user->updated_at);
+
+        if (!$formUpdatedAt->eq($dbUpdatedAt)) {
+            return back()->withErrors(['msg' => 'Thông tin tài khoản đã được thay đổi ở nơi khác. Vui lòng tải lại trang để cập nhật dữ liệu mới nhất.']);
+        }
+        
 
         $user = User::find($input['id']);
         $user->name = $input['name'];
         $user->email = $input['email'];
-
         $user->phone = $input['phone'];
         $user->address = $input['address'];
         $user->gioitinh = $input['gioitinh'];
-
 
         // Chuyển định dạng ngày sinh từ dd/MM/yyyy sang yyyy-MM-dd
         try {
@@ -187,7 +216,7 @@ class CrudUserController extends Controller
 
         // return redirect("login")->withSuccess('You are not allowed to access');
     }
-  
+
 
     /**
      * Sign out

@@ -33,7 +33,11 @@
 
 
             <tbody>
-                <!-- dùng vòng lập để lấy toàn bộ user vào load lên danh sách -->
+                @if($users->count() == 0)
+                <tr>
+                    <td colspan="5">Không có tài khoản nào thuộc vai trò {{ $role->name }}</td>
+                </tr>
+                @else
                 @foreach($users as $user)
                 <tr>
                     <th>{{ $user->name }}</th>
@@ -41,20 +45,18 @@
                     <th>{{ $user->phone }}</th>
                     <th>
                         @foreach($user->roles as $role)
-
-                        {{ $role->name}}
-
+                        {{ $role->name }}
                         @endforeach
                     </th>
-
-                    <!-- Các nút button chuyển hướng đến trang thông tin user hoặc xóa thẳng user -->
                     <th class="action-buttons">
                         <a href="{{ route('user.deleteUser', ['id' => $user->id]) }}" class="btn-delete">Xóa</a>
-                        <button class="btn-edit"><a href="{{ route('user.updateUser', ['id' => $user->id]) }}">Sửa</a></button>
+                        <button class="btn-edit">
+                            <a href="{{ route('user.updateUser', ['id' => $user->id]) }}">Sửa</a>
+                        </button>
                     </th>
-
                 </tr>
                 @endforeach
+                @endif
             </tbody>
 
         </table>
@@ -67,24 +69,23 @@
 
     <!-- Các nút button giúp load lại danh sách theo role bằng cách chuyển trang qua list_role_user -->
     <div class="navigation-buttons">
-        <a href="{{ route('admin.users') }}" class="btn-nav">Quay lại</a>
+        <a href="{{ route('home') }}" class="btn-nav">Quay lại</a>
 
-        @foreach($user->roles as $role)
-        <a href="{{ route('user.role', ['id' => $role->id]) }}">
-            <a href="{{ route('user.role.show', ['id' => 1]) }}" class="btn-nav">
-                Danh Sách Quản Lý
-            </a>
-
-            <a href="{{ route('user.role.show', ['id' => 2]) }}" class="btn-nav">
-                Danh Sách Nhân Viên
-            </a>
-
-            <a href="{{ route('user.role.show', ['id' => 3]) }}" class="btn-nav">
-                Danh Sách Người Dùng
-            </a>
+        <a href="{{ route('user.role.show', ['id' => 1]) }}" class="btn-nav">
+            Danh Sách Quản Lý
         </a>
-        @endforeach
+
+        <a href="{{ route('user.role.show', ['id' => 2]) }}" class="btn-nav">
+            Danh Sách Nhân Viên
+        </a>
+
+        <a href="{{ route('user.role.show', ['id' => 3]) }}" class="btn-nav">
+            Danh Sách Người Dùng
+        </a>
+
+        <a href="{{ route('admin.users.add') }}" class="btn-adduser" style="text-decoration: none;"> Thêm Tài Khoản Mới</a>
     </div>
+
 </body>
 
 </html>
