@@ -14,6 +14,7 @@ use App\Models\Category;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\VoucherController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -201,3 +202,9 @@ Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.sh
 Route::put('/orders/{order}', [OrderController::class, 'update'])->name('orders.update');
 Route::delete('/orders/{order}', [OrderController::class, 'destroy'])->name('orders.destroy');
 Route::get('/orders/{id}', [OrderController::class, 'show']);
+
+//Voucher
+Route::resource('vouchers', VoucherController::class);
+Route::put('/vouchers/{id}', [VoucherController::class, 'update']);
+Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
+Route::get('/vouchers/check/{code}', [VoucherController::class, 'check']);
