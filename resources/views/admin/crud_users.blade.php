@@ -48,7 +48,7 @@
                     <input type="text" placeholder="Name" id="name"
                         class="form-control" name="name"
                         value="{{ $user->name }}"
-                        required autofocus>
+                        maxlength="30" required autofocus>
                     @if ($errors->has('name'))
                     <span class="text-danger">{{ $errors->first('name')
                             }}</span>
@@ -61,10 +61,10 @@
                 <div class="form-group">
                     <label for="email">Email</label>
 
-                    <input type="text" placeholder="Email"
+                    <input type="email" placeholder="Email"
                         id="email_address" class="form-control"
                         value="{{ $user->email }}"
-                        name="email" required autofocus>
+                        name="email" required>
                     @if ($errors->has('email'))
                     <span class="text-danger">{{ $errors->first('email')
                             }}</span>
@@ -72,16 +72,20 @@
 
                     <button type="submit" class="btn-edit">Chỉnh sửa</button>
                 </div>
-               
+
 
                 <!-- Lấy số điện thoại của user -->
                 <div class="form-group">
                     <label for="phone">Số điện thoại</label>
 
-                    <input type="number" placeholder="Số Điện Thoại"
+                    <input type="text" placeholder="Số Điện Thoại"
                         id="phone" class="form-control"
                         value="{{ $user->phone }}"
-                        name="phone" required autofocus>
+                        name="phone"
+                        minlength="10" maxlength="15"
+                        pattern="[0-9]{10,15}"
+                        title="Số điện thoại phải từ 10 đến 15 chữ số"
+                        required>
                     @if ($errors->has('phone'))
                     <span class="text-danger">{{ $errors->first('phone')
                             }}</span>
@@ -89,7 +93,7 @@
 
                     <button type="submit" class="btn-edit">Chỉnh sửa</button>
                 </div>
-                 <!-- Lấy address của user -->
+                <!-- Lấy address của user -->
                 <div class="form-group">
                     <label for="address">Địa chỉ</label>
 
@@ -122,7 +126,10 @@
                     <input type="text" placeholder="Ngày Sinh"
                         id="ngaysinh" class="form-control"
                         value="{{ \Carbon\Carbon::parse($user->ngaysinh)->format('d/m/Y') }}"
-                        name="ngaysinh" required autofocus>
+                        name="ngaysinh"
+                        pattern="^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$"
+                        title="Nhập đúng định dạng dd/mm/yyyy, ví dụ: 27/11/2004"
+                        required>
                     @if ($errors->has('ngaysinh'))
                     <span class="text-danger">{{ $errors->first('ngaysinh')
                             }}</span>

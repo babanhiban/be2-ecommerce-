@@ -32,7 +32,7 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:100',
+            'name' => 'required|string|max:30',
             'email' => 'required|email|unique:users,email',
         ]);
 
@@ -56,7 +56,7 @@ class AuthController extends Controller
     public function registerAddUserFormAdmin(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:100',
+            'name' => 'required|string|max:30',
             'email' => 'required|email|unique:users,email',
             'role_id' => 'required|integer|in:1,2', // Chỉ cho phép role admin (1) hoặc staff (2)
         ]);
@@ -85,8 +85,17 @@ class AuthController extends Controller
     public function verifyAddUserFormAdmin(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'verification_register' => 'required|string|min:6|max:6',
+            'verification_register' => [
+                'required',
+                'regex:/^\d{6}$/',
+            ],
             'password' => 'required|string|min:6|confirmed',
+        ], [
+            'verification_register.required' => 'Vui lòng nhập mã xác nhận.',
+            'verification_register.regex' => 'Mã xác nhận phải gồm đúng 6 chữ số.',
+            'password.required' => 'Vui lòng nhập mật khẩu.',
+            'password.min' => 'Mật khẩu phải có ít nhất 6 ký tự.',
+            'password.confirmed' => 'Xác nhận mật khẩu không khớp.',
         ]);
 
         if ($validator->fails()) {
@@ -166,8 +175,17 @@ class AuthController extends Controller
     public function verifyRegister(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'verification_register' => 'required|string|min:6|max:6',
+            'verification_register' => [
+                'required',
+                'regex:/^\d{6}$/',
+            ],
             'password' => 'required|string|min:6|confirmed',
+        ], [
+            'verification_register.required' => 'Vui lòng nhập mã xác nhận.',
+            'verification_register.regex' => 'Mã xác nhận phải gồm đúng 6 chữ số.',
+            'password.required' => 'Vui lòng nhập mật khẩu.',
+            'password.min' => 'Mật khẩu phải có ít nhất 6 ký tự.',
+            'password.confirmed' => 'Xác nhận mật khẩu không khớp.',
         ]);
 
         if ($validator->fails()) {
@@ -265,7 +283,7 @@ class AuthController extends Controller
     public function verifyResetCode(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'verification_code' => 'required|string|min:6|max:6',
+            'verification_code' => ['required', 'string', 'size:6', 'regex:/^\d{6}$/'],
         ]);
 
         if ($validator->fails()) {
