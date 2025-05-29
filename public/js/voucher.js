@@ -23,91 +23,166 @@ $(document).ready(function () {
     });
 
     // Hiển thị form sửa
-    $('.editBtn').on('click', function () {
-        const id = $(this).data('id');
-        $.get(`/vouchers/${id}`, function (v) {
-            $('#editForm').attr('action', `/vouchers/${id}`);
-            $('#editForm input[name=code]').val(v.code);
-            $('#editForm input[name=discount]').val(v.discount);
-            $('#editForm input[name=start_date]').val(v.start_date);
-            $('#editForm input[name=end_date]').val(v.end_date);
-            new bootstrap.Modal('#editModal').show();
-        }).fail(() => {
+   $('.editBtn').on('click', function () {
+    const id = $(this).data('id');
+      localStorage.removeItem('voucher_updated_' + id);
+    $.get(`/vouchers/${id}`, function (v) {
+        $('#editForm').attr('action', `/vouchers/${id}`);
+        $('#editForm input[name="id"]').val(id);
+        $('#editForm input[name=code]').val(v.code);
+        $('#editForm input[name=discount]').val(v.discount);
+        $('#editForm input[name=start_date]').val(v.start_date);
+        $('#editForm input[name=end_date]').val(v.end_date);
+
+        // Thêm dòng này để hiện modal
+        new bootstrap.Modal(document.getElementById('editModal')).show();
+
+    }).fail((xhr) => {
+        if (xhr.status === 404) {
+            Swal.fire('Không tìm thấy', 'Voucher không tồn tại.', 'error');
+        } else if (xhr.status === 400) {
+            Swal.fire('Lỗi', 'ID không hợp lệ.', 'error');
+        } else {
             Swal.fire('Lỗi', 'Không thể tải dữ liệu voucher.', 'error');
-        });
+        }
     });
+});
+
 
     // Cập nhật voucher
-    let editSubmitted = false;
+let editSubmitted = false;
+let originalData = null; // Lưu dữ liệu gốc khi mở modal
 
-    $('#editForm button[type=submit]').on('click', function () {
-        editSubmitted = true;
-    });
+// Khi mở modal edit, lưu lại dữ liệu ban đầu
+$('#editModal').on('show.bs.modal', function () {
+    const form = $(this).find('form')[0];
+    originalData = $(form).serialize();
+});
 
-    $('#editForm').on('submit', function (e) {
-        e.preventDefault();
+$('#editForm button[type=submit]').on('click', function () {
+    editSubmitted = true;
+});
 
-        if (!editSubmitted) return;
-        editSubmitted = false;
+$('#editForm').on('submit', function (e) {
+    e.preventDefault();
 
-        const url = $(this).attr('action');
-        $.ajax({
-            url: url,
-            type: 'POST',
-            data: $(this).serialize() + '&_method=PUT',
-            success: function () {
-                $('#editModal').modal('hide');
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Cập nhật thành công!',
-                    showConfirmButton: false,
-                    timer: 1500
-                });
-                setTimeout(() => location.reload(), 1500);
-            },
-            error: function () {
-                Swal.fire('Lỗi', 'Cập nhật voucher thất bại.', 'error');
-            }
-        });
-    });
+    if (!editSubmitted) return;
+    editSubmitted = false;
 
-    // Xoá voucher
-    $('.deleteBtn').on('click', function () {
-        const id = $(this).data('id');
+    const form = this;
+    const currentData = $(form).serialize();
+
+    // So sánh dữ liệu có thay đổi không
+    if (currentData === originalData) {
         Swal.fire({
-            title: 'Bạn có chắc muốn xoá?',
-            text: "Hành động này không thể hoàn tác!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#aaa',
-            confirmButtonText: 'Xoá',
-            cancelButtonText: 'Hủy'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    url: `/vouchers/${id}`,
-                    type: 'DELETE',
-                    data: { _token: $('meta[name="csrf-token"]').attr('content') },
-                    success: function (response) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Đã xoá!',
-                            text: response.message,
-                            timer: 1500,
-                            showConfirmButton: false
-                        });
-                        if (response.success) {
-                            setTimeout(() => location.reload(), 1500);
-                        }
-                    },
-                    error: function (xhr) {
-                        Swal.fire('Lỗi', xhr.responseJSON?.message || 'Xóa voucher thất bại.', 'error');
-                    }
-                });
-            }
+            icon: 'info',
+            title: 'Không có thay đổi',
+            text: 'Bạn chưa chỉnh sửa dữ liệu nào.',
+            timer: 1500,
+            showConfirmButton: false
         });
+        return; // Dừng gửi ajax
+    }
+
+    const voucherId = $(form).find('input[name="id"]').val();
+
+    // Kiểm tra dữ liệu đã thay đổi bên tab khác chưa
+    if (localStorage.getItem('voucher_updated_' + voucherId) === 'true') {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Dữ liệu đã thay đổi',
+            text: 'Vui lòng tải lại trang trước khi cập nhật.',
+            confirmButtonText: 'Tải lại trang'
+        }).then(() => location.reload());
+        return; // Dừng không gửi ajax
+    }
+
+    const url = $(form).attr('action');
+
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data: currentData + '&_method=PUT',
+        success: function () {
+            $('#editModal').modal('hide');
+
+            // Đánh dấu voucher đã được update, để tab khác biết
+            localStorage.setItem('voucher_updated_' + voucherId, 'true');
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Cập nhật thành công!',
+                showConfirmButton: false,
+                timer: 1500
+            });
+            setTimeout(() => location.reload(), 1500);
+        },
+        error: function () {
+            Swal.fire('Lỗi', 'Cập nhật voucher thất bại.', 'error');
+        }
     });
+});
+
+
+
+// Xoá voucher
+$('.deleteBtn').on('click', function () {
+    const id = $(this).data('id');
+    const urlParams = new URLSearchParams(window.location.search);
+    const currentPage = urlParams.get('page') || 1;
+
+    Swal.fire({
+        title: 'Bạn có chắc muốn xoá?',
+        text: "Hành động này không thể hoàn tác!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#aaa',
+        confirmButtonText: 'Xoá',
+        cancelButtonText: 'Hủy'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: `/vouchers/${id}`,
+                type: 'DELETE',
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr('content'),
+                    page: currentPage
+                },
+                success: function (response) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Đã xoá!',
+                        text: response.message,
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+
+                    setTimeout(() => {
+                        if (response.remainingOnPage === 0 && response.currentPage > 1) {
+                            window.location.href = '/vouchers'; // chuyển về trang đầu
+                        } else {
+                            location.reload();
+                        }
+                    }, 1500);
+                },
+                error: function (xhr) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: xhr.responseJSON?.message || 'Xóa voucher thất bại.',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                    setTimeout(() => location.reload(), 2000);
+                }
+            });
+        }
+    });
+});
+
+
+
 
     // Tạo Voucher
     let createSubmitted = false;
