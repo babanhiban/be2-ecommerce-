@@ -11,6 +11,18 @@ class VoucherController extends Controller
      */
    public function index(Request $request)
 {
+    $page = $request->query('page', 1);
+
+  if (!is_numeric($page) || $page < 1) {
+    abort(404); // Hiện trang lỗi 404.blade.php
+}
+
+    $vouchers = Voucher::paginate(10);
+
+ if ($vouchers->currentPage() > $vouchers->lastPage()) {
+     abort(404);
+}
+    
     $query = \App\Models\Voucher::query();
 
     if ($request->filled('keyword')) {
@@ -58,9 +70,18 @@ public function store(Request $request)
 
 public function show($id)
 {
-    return response()->json(\App\Models\Voucher::findOrFail($id));
-}
+    if (!is_numeric($id)) {
+        return response()->json(['message' => 'ID không hợp lệ'], 400);
+    }
 
+    $voucher = \App\Models\Voucher::find($id);
+
+    if (!$voucher) {
+        return response()->json(['message' => 'Không tìm thấy voucher'], 404);
+    }
+
+    return response()->json($voucher);
+}
 public function update(Request $request, Voucher $voucher)
 {
     $validated = $request->validate([
@@ -88,11 +109,26 @@ public function destroy($id)
 
     $voucher->delete();
 
+    // Lấy số trang hiện tại từ request (mặc định 1)
+    $page = request()->input('page', 1);
+
+    // Số bản ghi mỗi trang, thay cho đúng paginate của bạn
+    $perPage = 10;
+
+    // Lấy voucher paginate theo trang hiện tại
+    $vouchers = Voucher::paginate($perPage, ['*'], 'page', $page);
+
+    // Đếm số voucher còn lại trên trang hiện tại
+    $remainingOnPage = $vouchers->count();
+
     return response()->json([
         'success' => true,
-        'message' => 'Xóa voucher thành công!'
+        'message' => 'Xóa voucher thành công!',
+        'remainingOnPage' => $remainingOnPage,
+        'currentPage' => (int)$page
     ]);
 }
+
 
 public function check($code)
 {
