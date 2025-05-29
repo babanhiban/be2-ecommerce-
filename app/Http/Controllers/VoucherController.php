@@ -77,9 +77,23 @@ public function update(Request $request, Voucher $voucher)
 
 public function destroy($id)
 {
-    Voucher::destroy($id);
-    return response()->json(['success' => true]);
+    $voucher = Voucher::find($id);
+
+    if (!$voucher) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Xóa không hợp lệ: voucher không tồn tại hoặc đã bị xóa.'
+        ], 404);
+    }
+
+    $voucher->delete();
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Xóa voucher thành công!'
+    ]);
 }
+
 public function check($code)
 {
     $voucher = Voucher::where('code', $code)->first();
@@ -90,4 +104,5 @@ public function check($code)
 
     return response()->json($voucher);
 }
+
 }
