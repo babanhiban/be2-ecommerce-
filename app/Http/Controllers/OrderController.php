@@ -6,6 +6,7 @@ use App\Models\Order;
 use Illuminate\Http\Request;
 use App\Models\Voucher;
 use App\Models\Products; 
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
@@ -106,4 +107,6 @@ class OrderController extends Controller
             }),
         ]);
     }
+
+
 }
