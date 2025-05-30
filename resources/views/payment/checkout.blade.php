@@ -251,14 +251,14 @@
                     </div>
                 </div>
             </div>
+            <form action="{{ route('checkout.process') }}" method="POST">
+                <!-- Cột phải: Sản phẩm đã chọn (2/3) -->
+                <div class="right-column">
+                    <h2>Sản phẩm đã chọn</h2>
 
-            <!-- Cột phải: Sản phẩm đã chọn (2/3) -->
-            <div class="right-column">
-                <h2>Sản phẩm đã chọn</h2>
-
-                @foreach ($cartItems as $cartItem)
+                    @foreach ($cartItems as $cartItem)
                     <div class="product-item">
-                        <img src="{{ asset('storage/products/' . $cartItem->product->image) }}"
+                        <img src="{{ asset('images/manhinhsanpham/' . $cartItem->product->image) }}"
                             alt="{{ $cartItem->product->name }}" class="product-image">
                         <div class="product-details">
                             <div class="product-name">{{ $cartItem->product->name }}</div>
@@ -271,13 +271,14 @@
                                 {{ number_format($cartItem->product->price * $cartItem->quantity, 0, ',', '.') }}đ
                             </div>
                         </div>
+                        <input type="hidden" name="selected_cart_ids[]" value="{{ $cartItem->id }}">
                     </div>
-                @endforeach
+                    @endforeach
 
-                <div class="total-section">
-                    <div class="total-row total-final">
-                        <span>Tổng cộng:</span>
-                        <span>{{ number_format(
+                    <div class="total-section">
+                        <div class="total-row total-final">
+                            <span>Tổng cộng:</span>
+                            <span>{{ number_format(
                             array_reduce(
                                 $cartItems,
                                 function ($carry, $item) {
@@ -289,11 +290,12 @@
                             ',',
                             '.',
                         ) }}đ</span>
+                        </div>
                     </div>
-                </div>
 
-                <button type="submit" class="checkout-button">Xác nhận thanh toán</button>
-            </div>
+                    <button type="submit" class="checkout-button">Xác nhận thanh toán</button>
+                </div>
+            </form>
         </div>
     </form>
 </body>

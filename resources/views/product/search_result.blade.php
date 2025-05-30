@@ -60,13 +60,16 @@
                         <h3>{{ number_format($product->price, 0, ',', '.') }} VND</h3>
                     </div>
                     @if ($product->quantity > 0)
-                    
-                    <button class="btn-add-cart">Thêm vào giỏ hàng</button>
+                    <form action="{{ route('cart.add', $product->id) }}" method="POST">
+                        @csrf
+                        <button type="submit" class="btn-add-cart">Thêm vào giỏ</button>
+                    </form>
+
                     @else
-                    <p class="text-muted mt-3"style="text-align: center;">⚠️ <strong>Hết hàng</strong></p>
-                 
+                    <p class="text-muted mt-3" style="text-align: center;">⚠️ <strong>Hết hàng</strong></p>
+
                     @endif
-                    
+
 
                 </div>
 
