@@ -258,7 +258,7 @@
 
                 @foreach ($cartItems as $cartItem)
                     <div class="product-item">
-                        <img src="{{ asset('storage/products/' . $cartItem->product->image) }}"
+                        <img src="{{ asset('images/manhinhsanpham/' . $cartItem->product->image) }}"
                             alt="{{ $cartItem->product->name }}" class="product-image">
                         <div class="product-details">
                             <div class="product-name">{{ $cartItem->product->name }}</div>
