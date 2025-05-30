@@ -17,10 +17,15 @@
             <div class="header-title me-3">Quản lý sản phẩm</div>
             <a href="{{ route('home') }}" class="nav-home" style="text-decoration: none; color: black;">Trang chủ</a>
         </div>
-
+@if ($products->isEmpty())
+    <div class="alert alert-warning" role="alert">
+        Không tìm thấy sản phẩm nào.
+    </div>
+@endif
         <div class="search-container">
             <form action="{{ route('product.search') }}" method="GET" style="display: flex; align-items: center;">
-                <input type="text" name="query" placeholder="Tìm kiếm sản phẩm..." class="search-input" value="{{ request('query') }}">
+                <input type="text" name="query" placeholder="Tìm kiếm sản phẩm..." class="search-input" value="{{ request('query') }}" pattern="^[a-zA-Z0-9À-ỹ\s]+$"
+                    title="Không được nhập ký tự đặc biệt (chỉ cho phép chữ, số và khoảng trắng)">
                 <button type="submit" class="search-button">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="11" cy="11" r="8"></circle>
@@ -65,8 +70,8 @@
                     <td>{{ number_format($product->price, 0, ',', '.') }} VND</td>
 
                     <td>
-                        
-                        <button class="btn-edit"><a href="{{ route('products.deleteProduct', ['id' => $product->id]) }}"onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?');">Xóa</a></button>
+
+                        <button class="btn-edit"><a href="{{ route('products.deleteProduct', ['id' => $product->id]) }}" onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?');">Xóa</a></button>
                         <button class="btn-edit"><a href="{{ route('product.updateProduct', ['id' => $product->id]) }}">Sửa</a></button>
                     </td>
                 </tr>

@@ -225,29 +225,29 @@
 
                 <div class="form-group">
                     <label for="name">Họ tên:</label>
-                    <input type="text" name="name" value="{{ old('name', $user->name) }}" required>
+                    <input type="text" name="name" value="{{ old('name', $user->name) }}" required readonly>
                 </div>
 
                 <div class="form-group">
                     <label for="email">Email:</label>
-                    <input type="email" name="email" value="{{ old('email', $user->email) }}" required>
+                    <input type="email" name="email" value="{{ old('email', $user->email) }}" required readonly>
                 </div>
 
                 <div class="form-group">
                     <label for="phone">Số điện thoại:</label>
-                    <input type="text" name="phone" value="{{ old('phone', $user->phone ?? '') }}" required>
+                    <input type="text" name="phone" value="{{ old('phone', $user->phone ?? '') }}" required readonly>
                 </div>
 
                 <div class="form-group">
                     <label for="address">Địa chỉ:</label>
-                    <input type="text" name="address" value="{{ old('address', $user->address ?? '') }}" required>
+                    <input type="text" name="address" value="{{ old('address', $user->address ?? '') }}" required readonly>
                 </div>
 
                 <div class="payment-methods">
                     <h3>Phương thức thanh toán</h3>
                     <div class="payment-option">
                         <input type="radio" id="cod" name="payment_method" value="cod" checked>
-                        <label for="cod">Thanh toán khi nhận hàng</label>
+                        <label for="cod" style="color:black;">Thanh toán khi nhận hàng</label>
                     </div>
                 </div>
             </div>
