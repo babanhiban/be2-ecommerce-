@@ -142,7 +142,7 @@ Route::get('/addProduct', [ProductController::class, 'create'])->name('product.a
 // theem san phaam
 Route::post('/addProduct', [ProductController::class, 'store'])->name('products.store');
 // Xóa san pham
-Route::get('delete2', [ProductController::class, 'deleteProduct'])->name('products.deleteProduct');
+Route::delete('/products/{id}', [ProductController::class, 'deleteProduct'])->name('products.deleteProduct');
 // sua san phẩmphẩm
 Route::get('/editProduct', function () {
     return view('product.editProduct');
