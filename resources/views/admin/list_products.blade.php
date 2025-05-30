@@ -65,12 +65,8 @@
                     <td>{{ number_format($product->price, 0, ',', '.') }} VND</td>
 
                     <td>
-                        <form method="POST" action="{{ route('products.deleteProduct', ['id' => $product->id, 'key' => $keys[$product->id]]) }}"
-                            onsubmit="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?');">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn-edit">Xóa</button>
-                        </form>
+                        
+                        <button class="btn-edit"><a href="{{ route('products.deleteProduct', ['id' => $product->id]) }}"onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?');">Xóa</a></button>
                         <button class="btn-edit"><a href="{{ route('product.updateProduct', ['id' => $product->id]) }}">Sửa</a></button>
                     </td>
                 </tr>
