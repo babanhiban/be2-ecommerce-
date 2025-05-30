@@ -124,9 +124,10 @@ class AuthController extends Controller
                 'string',
                 'min:6',
                 'confirmed',
-                'regex:/[a-zA-Z]/',        // ít nhất 1 chữ cái
-                'regex:/[0-9]/',           // ít nhất 1 số
-                'regex:/[\W]/',            // ít nhất 1 ký tự đặc biệt
+                'regex:/[A-Z]/',
+                'regex:/[a-z]/',
+                'regex:/[0-9]/',
+                'regex:/[\W_]/',
             ],
         ], [
             'verification_register.required' => 'Vui lòng nhập mã xác nhận.',
@@ -134,7 +135,7 @@ class AuthController extends Controller
             'password.required' => 'Vui lòng nhập mật khẩu.',
             'password.min' => 'Mật khẩu phải có ít nhất 6 ký tự.',
             'password.confirmed' => 'Xác nhận mật khẩu không khớp.',
-            'password.regex' => 'Mật khẩu phải chứa ít nhất một chữ cái, một số và một ký tự đặc biệt.',
+            'password.regex' => 'Mật khẩu phải có ít nhất 1 chữ hoa, 1 chữ thường, 1 số và 1 ký tự đặc biệt.',
         ]);
 
         if ($validator->fails()) {
@@ -225,9 +226,10 @@ class AuthController extends Controller
                 'string',
                 'min:6',
                 'confirmed',
-                'regex:/[a-zA-Z]/',
-                'regex:/[0-9]/',
-                'regex:/[\W]/',
+                'regex:/[A-Z]/',    // chữ HOA
+                'regex:/[a-z]/',    // chữ thường
+                'regex:/[0-9]/',    // số
+                'regex:/[\W_]/',    // ký tự đặc biệt
             ],
         ], [
             'verification_register.required' => 'Vui lòng nhập mã xác nhận.',
@@ -235,7 +237,7 @@ class AuthController extends Controller
             'password.required' => 'Vui lòng nhập mật khẩu.',
             'password.min' => 'Mật khẩu phải có ít nhất 6 ký tự.',
             'password.confirmed' => 'Xác nhận mật khẩu không khớp.',
-            'password.regex' => 'Mật khẩu phải chứa ít nhất một chữ cái, một số và một ký tự đặc biệt.',
+            'password.regex' => 'Mật khẩu phải có ít nhất 1 chữ hoa, 1 chữ thường, 1 số và 1 ký tự đặc biệt.',
         ]);
 
         if ($validator->fails()) {
@@ -384,9 +386,10 @@ class AuthController extends Controller
                 'string',
                 'min:6',
                 'confirmed',
-                'regex:/[a-zA-Z]/',
-                'regex:/[0-9]/',
-                'regex:/[\W]/',
+                'regex:/[A-Z]/',    // ít nhất 1 chữ HOA
+                'regex:/[a-z]/',    // ít nhất 1 chữ thường
+                'regex:/[0-9]/',    // ít nhất 1 số
+                'regex:/[\W_]/',    // ít nhất 1 ký tự đặc biệt
             ],
         ], [
             'email.required' => 'Vui lòng nhập email.',
@@ -395,7 +398,7 @@ class AuthController extends Controller
             'password.required' => 'Vui lòng nhập mật khẩu.',
             'password.min' => 'Mật khẩu phải có ít nhất 6 ký tự.',
             'password.confirmed' => 'Xác nhận mật khẩu không khớp.',
-            'password.regex' => 'Mật khẩu phải chứa ít nhất một chữ cái, một số và một ký tự đặc biệt.',
+            'password.regex' => 'Mật khẩu phải có ít nhất 1 chữ hoa, 1 chữ thường, 1 số và 1 ký tự đặc biệt.',
         ]);
 
         if ($validator->fails()) {
