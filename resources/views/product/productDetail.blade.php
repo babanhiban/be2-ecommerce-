@@ -8,7 +8,21 @@
 </head>
 
 <body>
+@if(session('error'))
+    <div id="notification" class="notification error">
+        <span class="icon">⚠️</span>
+        <span>{{ session('error') }}</span>
+        <button onclick="closeNotification()" class="close-btn">&times;</button>
+    </div>
+@endif
 
+@if(session('success'))
+    <div id="notification" class="notification success">
+        <span class="icon">✅</span>
+        <span>{{ session('success') }}</span>
+        <button onclick="closeNotification()" class="close-btn">&times;</button>
+    </div>
+@endif
 
     <link rel="stylesheet" href="{{ asset('css/productDetail.css') }}">
 
@@ -20,7 +34,7 @@
                 <img src="{{ asset('images/manhinhdangnhap/logo.png') }}" alt="Logo" class="brand-logo" />
             </div>
         </div>
-
+        
         <div class="product-detail">
             <div class="product-detail__wrapper">
 
@@ -60,21 +74,53 @@
                     </div>
 
                     <div class="product-detail__actions">
-                        <form action="{{ route('cart.add', $product->id) }}" method="POST">
-                            @csrf
-                            <button type="submit" class="product-detail__btn">Thêm vào giỏ</button>
-                        </form>
-
-                        {{-- <form action="{{ route('checkout.buyNow', $product->id) }}" method="POST">
-                            @csrf
-                            <button type="submit" class="product-detail__btn">Mua ngay</button>
-                        </form> --}}
+                        @if ($product->quantity > 0)
+                        <div class="product-action">
+                            <form action="{{ route('checkout.buynow', ['product_id' => $product->id]) }}"
+                                method="POST">
+                                @csrf
+                                <input type="hidden" name="quantity" value="1">
+                                <button type="submit" class="buy-button">Mua ngay</button>
+                            </form>
+                        </div>
+                        <div>
+                            <form action="{{ route('cart.add', $product->id) }}" method="POST">
+                                @csrf
+                                <button type="submit" class="add-button">Thêm vào giỏ</button>
+                            </form>
+                        </div>
+                    @else
+                        <p class="text-muted mt-3">⚠️ <strong>Hết hàng</strong></p>
+                        <button class="btn btn-secondary mt-2" disabled>Không thể mua</button>
+                    @endif
                     </div>
                 </div>
             </div>
         </div>
+        
     </div>
+<script>
+// Xử lý thông báo popup
+function closeNotification() {
+    const notification = document.getElementById('notification');
+    if (notification) {
+        notification.style.animation = 'slideOut 0.3s ease-in';
+        setTimeout(() => {
+            notification.remove();
+        }, 300);
+    }
+}
 
+// Tự động ẩn thông báo sau 5 giây
+document.addEventListener('DOMContentLoaded', function() {
+    const notification = document.getElementById('notification');
+    if (notification) {
+        setTimeout(() => {
+            closeNotification();
+        }, 5000);
+    }
+});
+</script>
 </body>
 
 </html>

@@ -479,3 +479,68 @@ footer {
         grid-template-columns: 1fr;
     }
 }
+
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: white;
+    border-radius: 8px;
+    padding: 15px 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 1000;
+    max-width: 400px;
+    animation: slideIn 0.3s ease-out;
+}
+
+.notification.error {
+    border-left: 4px solid #e74c3c;
+    background-color: #fdf2f2;
+}
+
+.notification.success {
+    border-left: 4px solid #27ae60;
+    background-color: #f0f9f0;
+}
+
+.notification .icon {
+    font-size: 18px;
+}
+
+.notification .close-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #666;
+    margin-left: auto;
+}
+
+.notification .close-btn:hover {
+    color: #333;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
