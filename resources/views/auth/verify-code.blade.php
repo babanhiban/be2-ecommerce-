@@ -75,7 +75,7 @@
                 @csrf
                 <div class="form-group">
                     <input type="text"
-                        name="verification_register"
+                        name="verification_code"
                         class="form-control"
                         placeholder="Nhập mã xác nhận (6 số)"
                         required
