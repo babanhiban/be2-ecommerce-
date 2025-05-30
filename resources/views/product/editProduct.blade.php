@@ -21,9 +21,16 @@
             <img src="{{ asset('images/manhinhthemsanpham/logo.png') }}" alt="Logo" class="logo">
         </div>
     </header>
-
+    @if (session('msg'))
+    <div class="alert alert-info" style="padding:10px; margin-bottom:15px; background-color:#d9edf7; color:#31708f; border-radius:4px;">
+        {{ session('msg') }}
+    </div>
+    @endif
     <form method="POST" action="{{ route('product.saveProduct', ['id' => $product->id])  }}" enctype="multipart/form-data">
         @csrf
+        <input type="hidden" name="updated_at" value="{{ $product->updated_at }}">
+
+        <input name="id" type="hidden" value="{{ $product->id }}">
         <main class="main-content">
             <div class="add-product-container">
                 <div class="image-upload-container">
