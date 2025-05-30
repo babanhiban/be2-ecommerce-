@@ -31,7 +31,7 @@
         </div>
 
         <div class="logo-container">
-            <img src="{{ asset('images/manhinhsanpham/logo.png')}}" alt="Logo" class="logo" >
+            <img src="{{ asset('images/manhinhsanpham/logo.png')}}" alt="Logo" class="logo">
         </div>
     </header>
 
@@ -54,7 +54,7 @@
 
                 @foreach($products as $product)
                 <tr>
-                    <td><img src="{{ asset('images/manhinhsanpham/' . $product->image) }}"alt="{{ $product->name }}" class="product-image" width="100"></td>
+                    <td><img src="{{ asset('images/manhinhsanpham/' . $product->image) }}" alt="{{ $product->name }}" class="product-image" width="100"></td>
                     <td>{{ $product->name }}</td>
 
                     <td>
@@ -65,7 +65,12 @@
                     <td>{{ number_format($product->price, 0, ',', '.') }} VND</td>
 
                     <td>
-                        <button class="btn-edit"><a href="{{ route('products.deleteProduct', ['id' => $product->id]) }}"onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?');">Xóa</a></button>
+                        <form method="POST" action="{{ route('products.deleteProduct', ['id' => $product->id, 'key' => $keys[$product->id]]) }}"
+                            onsubmit="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn-edit">Xóa</button>
+                        </form>
                         <button class="btn-edit"><a href="{{ route('product.updateProduct', ['id' => $product->id]) }}">Sửa</a></button>
                     </td>
                 </tr>

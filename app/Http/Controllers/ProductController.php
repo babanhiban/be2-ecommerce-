@@ -53,10 +53,17 @@ class ProductController extends Controller
 
         return redirect()->back()->with('success', 'Thêm sản phẩm thành công!');
     }
-    public function deleteProduct(Request $request)
+    public function deleteProduct(Request $request, $id)
     {
-        $product_id = $request->get('id');
-        $product = Products::destroy($product_id);
+        $key = $request->query('key');
+        $validKey = hash_hmac('sha256', $id, config('app.key'));
+
+        if ($key !== $validKey) {
+            abort(403, 'Key không hợp lệ.');
+        }
+
+        Products::findOrFail($id)->delete();
+
 
 
         // Quay lại trang danh sách sau khi xóa thành công
@@ -76,10 +83,17 @@ class ProductController extends Controller
     // }
     public function listProduct()
     {
-        return view('admin.list_products', [
+        // Lấy danh sách sản phẩm kèm category
+        $products = Products::with('category')->paginate(5);
 
-            'products' => Products::with('category')->paginate(5)
-        ]);
+        // Tạo mảng chứa key cho từng sản phẩm trong trang hiện tại
+        $keys = [];
+        foreach ($products as $product) {
+            $keys[$product->id] = hash_hmac('sha256', $product->id, config('app.key'));
+        }
+
+        // Truyền products và keys sang view
+        return view('admin.list_products', compact('products', 'keys'));
     }
     public function edit($id)
     {
@@ -132,14 +146,10 @@ class ProductController extends Controller
 
         return view('admin.list_products', compact('products'));
     }
-public function show($id)
+    public function show($id)
     {
-    // Lấy product theo id, hoặc fail 404 nếu không tồn tại
+        // Lấy product theo id, hoặc fail 404 nếu không tồn tại
         $product = Products::findOrFail($id);
         return view('product.productDetail', compact('product'));
     }
-
-    
 }
-
-
