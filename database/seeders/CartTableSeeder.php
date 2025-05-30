@@ -28,14 +28,14 @@ class CartTableSeeder extends Seeder
             [
                 'user_id' => 1,
                 'product_id' => 2,
-                'quantity' => 10,
+                'quantity' => 2,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
                 'user_id' => 1,
                 'product_id' => 4,
-                'quantity' => 6,
+                'quantity' => 2,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -49,7 +49,7 @@ class CartTableSeeder extends Seeder
             [
                 'user_id' => 1,
                 'product_id' => 5,
-                'quantity' => 5,
+                'quantity' => 2,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
