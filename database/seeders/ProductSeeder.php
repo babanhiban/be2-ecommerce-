@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 class ProductSeeder extends Seeder
 {
     /**
@@ -114,5 +115,24 @@ class ProductSeeder extends Seeder
                     'updated_at' => now(),
                 ],
             ]);
+
+            $faker = \Faker\Factory::create();
+
+        $products = [];
+
+        for ($i = 0; $i < 50; $i++) {
+            $products[] = [
+                'name' => 'Product ' . Str::random(5),
+                'image' => 'product' . rand(1, 7) . '.jpg', // bạn có thể chuẩn bị sẵn ảnh product1.jpg -> product10.jpg
+                'price' => $faker->numberBetween(10000, 1000000),
+                'quantity' => $faker->numberBetween(1, 10),
+                'description' => $faker->sentence(),
+                'category_id' => rand(1, 7), // giả sử bạn có 5 category
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        }
+
+        DB::table('products')->insert($products);
     }
 }

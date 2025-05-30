@@ -60,7 +60,7 @@
                    
                 </div>
                  @if ($product->quantity > 0)
-                    <button class="btn-buy">Mua ngay</button>
+                    
                      <button class="btn-add-cart">Thêm vào giỏ hàng</button>
                 @else
                     <p class="text-muted mt-3" style="text-align: center;">⚠️ <strong>Hết hàng</strong></p>                 

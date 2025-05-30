@@ -152,13 +152,7 @@
                     <div class="product-detail-link">
                         <a href="{{ route('product.show', $product->id) }}">Xem chi tiết</a>
                     </div>
-                    <div class="product-action">
-                        <form action="{{ route('checkout.buynow', ['product_id' => $product->id]) }}" method="POST">
-                            @csrf
-                            <input type="hidden" name="quantity" value="1">
-                            <button type="submit" class="buy-button">Mua ngay</button>
-                        </form>
-                    </div>
+                    
                     <div>
                         <form action="{{ route('cart.add', $product->id) }}" method="POST">
                             @csrf

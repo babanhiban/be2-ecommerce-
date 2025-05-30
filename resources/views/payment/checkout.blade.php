@@ -203,33 +203,35 @@
 
                     </div>
                 </div>
-
-                <div class="right-content">
-                    <h3>Sản phẩm đã chọn</h3>
-                    @foreach ($cartItems as $cartItem)
-                    <div class="payment-summary">
-                        <img src="{{ asset('storage/products/' . $cartItem->product->image) }}"
-                            alt="{{ $cartItem->product->name }} " style="height: 100px;">
-                        <div>
-                            <strong>{{ $cartItem->product->name }}</strong><br>
-                            {{ number_format($cartItem->product->price, 0, ',', '.') }}đ x
-                            {{ $cartItem->quantity }} =
-                            {{ number_format($cartItem->product->price * $cartItem->quantity, 0, ',', '.') }}đ
+                <form action="{{ route('checkout.process') }}" method="POST">
+                    @csrf
+                    <div class="right-content">
+                        <h3>Sản phẩm đã chọn</h3>
+                        @foreach ($cartItems as $cartItem)
+                        <div class="payment-summary">
+                            <img src="{{ asset('images/manhinhsanpham/' . $cartItem->product->image) }}"
+                                alt="{{ $cartItem->product->name }} " style="height: 100px;">
+                            <div>
+                                <strong>{{ $cartItem->product->name }}</strong><br>
+                                {{ number_format($cartItem->product->price, 0, ',', '.') }}đ x
+                                {{ $cartItem->quantity }} =
+                                {{ number_format($cartItem->product->price * $cartItem->quantity, 0, ',', '.') }}đ
+                            </div>
                         </div>
+                        @endforeach
+                        <div class="total">
+                            Tổng cộng:
+                            {{ $total = array_reduce(
+                                $cartItems,
+                                function ($carry, $item) {
+                                return $carry + $item->product->price * $item->quantity;
+                                },
+                                0,
+                                ) }}đ
+                        </div>
+                        <button class="checkout-button">Thanh toán</button>
                     </div>
-                    @endforeach
-                    <div class="total">
-                        Tổng cộng:
-                        {{ $total = array_reduce(
-$cartItems,
-function ($carry, $item) {
-return $carry + $item->product->price * $item->quantity;
-},
-0,
-) }}đ
-                    </div>
-                    <button class="checkout-button">Thanh toán</button>
-                </div>
+                </form>
             </div>
         </div>
     </form>
