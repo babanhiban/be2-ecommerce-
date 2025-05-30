@@ -150,3 +150,117 @@ a:hover {
     background: #f8f9fa;
     border-color: #dee2e6;
 }
+
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    min-width: 300px;
+    max-width: 500px;
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    animation: slideIn 0.3s ease-out;
+    color: white;
+    font-weight: 500;
+}
+
+.notification.error {
+    background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+}
+
+.notification.success {
+    background: linear-gradient(135deg, #51cf66, #40c057);
+}
+
+.notification .icon {
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.notification .close-btn {
+    margin-left: auto;
+    background: none;
+    border: none;
+    color: inherit;
+    font-size: 18px;
+    cursor: pointer;
+    opacity: 0.8;
+    padding: 0;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.notification .close-btn:hover {
+    opacity: 1;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+/* Alternative: Alert dạng banner */
+.alert-banner {
+    position: relative;
+    padding: 12px 20px;
+    margin-bottom: 20px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.alert-banner.error {
+    background-color: #fee;
+    color: #c53030;
+    border: 1px solid #feb2b2;
+}
+
+.alert-banner.success {
+    background-color: #f0fff4;
+    color: #2d7d32;
+    border: 1px solid #9ae6b4;
+}
+
+.alert-banner .close-btn {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    background: none;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    font-size: 16px;
+    opacity: 0.7;
+}
+
+.alert-banner .close-btn:hover {
+    opacity: 1;
+}
