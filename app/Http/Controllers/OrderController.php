@@ -10,11 +10,12 @@ use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
-    public function index()
-    {
-        $orders = Order::with('user')->orderByDesc('created_at')->get();
-        return view('orders.index', compact('orders'));
-    }
+   public function index()
+{
+    $orders = Order::orderBy('created_at', 'desc')->paginate(10); // 10 đơn hàng mỗi trang
+    return view('orders.index', compact('orders'));
+}
+
 
     public function store(Request $request)
     {

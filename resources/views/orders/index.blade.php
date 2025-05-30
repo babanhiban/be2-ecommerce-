@@ -36,25 +36,20 @@
         height: 55px;
         border-radius: 10px;
     }
-</style>
-
-
+    </style>
 </head>
 
 <body>
 
     <!-- ✅ Header logo -->
-   <header class="custom-header">
-    <div class="title">
-        <i class="bi bi-clipboard-check-fill"></i> Danh sách đơn hàng
-    </div>
-    <div class="logo">
-        <a href="/homepage"><img src="{{ asset('images/manhinhdangnhap/logo.png') }}" alt="Logo"></a>
-       
-    </div>
-</header>
-
-
+    <header class="custom-header">
+        <div class="title">
+            <i class="bi bi-clipboard-check-fill"></i> Danh sách đơn hàng
+        </div>
+        <div class="logo">
+            <a href="/homepage"><img src="{{ asset('images/manhinhdangnhap/logo.png') }}" alt="Logo"></a>
+        </div>
+    </header>
 
     <!-- ✅ Nội dung chính -->
     <div class="p-4">
@@ -91,6 +86,11 @@
             </tbody>
         </table>
 
+        <!-- ✅ Phân trang -->
+        <div class="d-flex justify-content-center">
+            {{ $orders->links() }}
+        </div>
+
         <!-- Modals -->
         @include('orders.modals.create')
         @include('orders.modals.edit')
@@ -100,6 +100,7 @@
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('js/orders.js') }}"></script>
 </body>
 

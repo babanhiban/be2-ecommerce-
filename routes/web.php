@@ -16,6 +16,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\VoucherController;
 use App\Http\Controllers\StatisticsController;
+use App\Http\Controllers\VoucherStatisticsController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -216,7 +217,8 @@ Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
 Route::get('/vouchers/check/{code}', [VoucherController::class, 'check']);
 
     // Thống kê voucher
-Route::get('/statistics/vouchers', [VoucherController::class, 'statistics'])->name('statistics.vouchers');
+Route::get('/statistics/vouchers', [VoucherStatisticsController::class, 'index'])->name('statistics.vouchers');
+Route::get('/statistics/vouchers/export', [\App\Http\Controllers\VoucherStatisticsController::class, 'export'])->name('statistics.vouchers.export');
 
 // Thống kê đơn hàng
 Route::get('/statistics/orders', [StatisticsController::class, 'index'])->name('statistics.orders');
@@ -225,3 +227,4 @@ Route::get('/statistics/orders/export', [StatisticsController::class, 'export'])
 // thanh toan san pham
 //Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.process');
 
+//

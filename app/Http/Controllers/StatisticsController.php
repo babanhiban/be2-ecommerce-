@@ -75,7 +75,7 @@ class StatisticsController extends Controller
         if ($fromDate) $query->whereDate('created_at', '>=', $fromDate);
         if ($toDate) $query->whereDate('created_at', '<=', $toDate);
 
-        $orders = $query->get(['id', 'created_at', 'status', 'total_price', 'voucher_code']);
+        $orders = $query->get(['id', 'created_at', 'status', 'total_price', 'voucher_id']);
 
         $filename = 'orders_export_' . now()->format('Ymd_His') . '.csv';
 
