@@ -13,7 +13,9 @@ use App\Models\Products;
 use App\Models\Category;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
-
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\VoucherController;
+use App\Http\Controllers\StatisticsController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -192,3 +194,27 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::post('/checkout/buynow', [CheckoutController::class, 'buyNow'])->name('checkout.buynow');
+
+//đơn hàng
+
+Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
+Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+Route::put('/orders/{order}', [OrderController::class, 'update'])->name('orders.update');
+Route::delete('/orders/{order}', [OrderController::class, 'destroy'])->name('orders.destroy');
+Route::get('/orders/{id}', [OrderController::class, 'show']);
+
+
+//Voucher
+Route::resource('vouchers', VoucherController::class);
+Route::put('/vouchers/{id}', [VoucherController::class, 'update']);
+Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
+Route::get('/vouchers/check/{code}', [VoucherController::class, 'check']);
+
+    // Thống kê voucher
+Route::get('/statistics/vouchers', [VoucherController::class, 'statistics'])->name('statistics.vouchers');
+
+// Thống kê đơn hàng
+Route::get('/statistics/orders', [StatisticsController::class, 'index'])->name('statistics.orders');
+Route::get('/statistics/orders/export', [StatisticsController::class, 'export'])->name('statistics.orders.export');
+

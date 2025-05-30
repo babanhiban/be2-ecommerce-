@@ -22,4 +22,16 @@ class CategoryController extends Controller
     {
         return $this->hasMany(Products::class);
     }
+
+    public function index()
+    {
+        return Category::select('id', 'name')->get();
+    }
+
+    public function getProducts($id)
+    {
+        return Products::where('category_id', $id)
+            ->select('id', 'name', 'price')
+            ->get();
+    }
 }

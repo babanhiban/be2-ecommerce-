@@ -71,10 +71,14 @@
             <form method="POST" action="{{ route('login.post') }}">
                 @csrf
                 <div class="form-group">
-                    <input type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="Nhập email" required>
+                    <input type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="Nhập email" pattern="^(?!^\s)(?!^\u3000)(?!.*\s$)(?!.*\u3000$)[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+                        title="Email phải hợp lệ, ví dụ: ten@example.com"
+                        required>
                 </div>
                 <div class="form-group">
-                    <input type="password" class="form-control" name="password" placeholder="Nhập mật khẩu" required>
+                    <input type="password" class="form-control" name="password" placeholder="Nhập mật khẩu"
+                        pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{6,}$"
+                        title="Mật khẩu ít nhất 6 ký tự, gồm chữ hoa, thường, số và ký tự đặc biệt" required>
                 </div>
                 <button type="submit" class="btn-login">Đăng nhập</button>
             </form>

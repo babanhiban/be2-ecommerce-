@@ -43,7 +43,7 @@
                 <div class="form-group">
                     <label for="name">Tên</label>
                     <input type="text" id="name" name="name" placeholder="Name"
-                        class="form-control" value="{{ old('name', $user->name) }}"
+                        class="form-control" value="{{ old('name', $user->name) }}" pattern="^(?!^\s)(?!^\u3000)(?!.*\s$)(?!.*\u3000$).{1,30}$"
                         maxlength="30" required autofocus>
                     @error('name')
                     <span class="text-danger">{{ $message }}</span>
@@ -54,7 +54,10 @@
                 <div class="form-group">
                     <label for="email">Email</label>
                     <input type="email" id="email_address" name="email" placeholder="Email"
-                        class="form-control" value="{{ old('email', $user->email) }}" required>
+                        class="form-control" value="{{ old('email', $user->email) }}"
+                        pattern="^(?!^\s)(?!^\u3000)(?!.*\s$)(?!.*\u3000$)[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+                        title="Email phải hợp lệ, ví dụ: ten@example.com"
+                        required>
                     @error('email')
                     <span class="text-danger">{{ $message }}</span>
                     @enderror
@@ -66,7 +69,7 @@
                     <input type="text" id="phone" name="phone" placeholder="Số điện thoại"
                         class="form-control" value="{{ old('phone', $user->phone) }}"
                         minlength="10" maxlength="15"
-                        pattern="[0-9]{10,15}"
+                        pattern="^(?!^\s)(?!^\u3000)(?!.*\s$)(?!.*\u3000$)[0-9]{10,15}$"
                         title="Số điện thoại phải từ 10 đến 15 chữ số"
                         required>
                     @error('phone')
@@ -78,7 +81,10 @@
                 <div class="form-group">
                     <label for="address">Địa chỉ</label>
                     <input type="text" id="address" name="address" placeholder="Địa chỉ"
-                        class="form-control" value="{{ old('address', $user->address) }}" required>
+                        class="form-control" value="{{ old('address', $user->address) }}"
+                        pattern="(?!^\s)(?!^\u3000)(?!.*\s$)(?!.*\u3000$)[^<>{}]{5,100}$"
+                        title="Địa chỉ phải từ 5 đến 100 ký tự, không chứa ký tự đặc biệt như < > { }"
+                        required>
                     @error('address')
                     <span class="text-danger">{{ $message }}</span>
                     @enderror
@@ -113,8 +119,9 @@
                 <!-- Mật khẩu -->
                 <div class="form-group">
                     <label for="password">Mật khẩu (bỏ trống nếu không đổi)</label>
-                    <input type="password" id="password" name="password" placeholder="Password"
-                        class="form-control">
+                    <input type="password" class="form-control" name="password" placeholder="Nhập mật khẩu"
+                        pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{6,}$"
+                        title="Mật khẩu ít nhất 6 ký tự, gồm chữ hoa, thường, số và ký tự đặc biệt">
                     @error('password')
                     <span class="text-danger">{{ $message }}</span>
                     @enderror

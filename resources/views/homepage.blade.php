@@ -54,6 +54,7 @@
                         <a href="{{ route('user.updateUser', ['id' => $user->id]) }}"><i class="fas fa-user-edit"></i> Thông tin cá nhân</a>
                         <a href="{{ route('admin.users') }}"><i class="fas fa-users-cog"></i> Quản lý tài khoản</a>
                         <a href="{{ route('admin.products') }}"><i class="fas fa-users-cog"></i> Quản lý sản phẩm</a>
+                        <a href="{{ route('orders.index') }}"><i class="fas fa-users-cog"></i> Quản lý đơn hàng</a>
                         <a href="{{ route('logout') }}"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
                     </div>
                 </div>
