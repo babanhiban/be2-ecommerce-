@@ -10,6 +10,11 @@
 </head>
 
 <body>
+    @if ($errors->has('image'))
+    <div class="alert alert-danger">
+        {{ $errors->first('image') }}
+    </div>
+    @endif
     <header class="header">
         <div class="header-title">Thêm sản phẩm</div>
         <div class="logo-container">
@@ -35,7 +40,9 @@
 
                     <div class="form-group">
                         <label for="product-name">Tên sản phẩm:</label>
-                        <input type="text" id="product-name" name="name" class="form-control" value="{{ old('name', $product->name) }}">
+                        <input type="text" id="product-name" name="name" class="form-control" value="{{ old('name', $product->name) }} " required maxlength="50"
+                            pattern="^[a-zA-Z0-9À-ỹ\s]+$"
+                            title="Không được chứa ký tự đặc biệt và tối đa 50 ký tự">
                     </div>
 
                     <div class="form-group">
@@ -45,17 +52,26 @@
 
                     <div class="form-group">
                         <label for="product-quantity">Số lượng:</label>
-                        <input type="number" id="product-quantity" name="quantity" class="form-control" value="{{ old('quantity', $product->quantity) }}">
+                        <input type="number" id="product-quantity" name="quantity" class="form-control" value="{{ old('quantity', $product->quantity) }}" required min="1"
+                            max="20"
+                            step="1"
+                            oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 2);"
+                            title="Chỉ được nhập số nguyên dương từ 1 đến 20">
                     </div>
 
                     <div class="form-group">
                         <label for="product-price">Đơn giá:</label>
-                        <input type="text" id="product-price" name="price" class="form-control" value="{{ old('price', $product->price) }}">
+                        <input type="text" id="product-price" name="price" class="form-control" value="{{ old('price', $product->price) }}" required
+                            min="0"
+                            max="1000000000"
+                            step="1"
+                            oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);"
+                            title="Chỉ được nhập số và tối đa là 1.000.000.000">
                     </div>
 
                     <div class="form-group">
                         <label for="product-category">Danh mục:</label>
-                        <select id="product-category" name="category_id" class="form-control">
+                        <select id="product-category" name="category_id" class="form-control" required>
                             <option value="">-- Chọn danh mục --</option>
                             @foreach ($categories as $category)
                             <option value="{{ $category->id }}" {{ $product->category_id == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
