@@ -119,10 +119,9 @@
                 <!-- Mật khẩu -->
                 <div class="form-group">
                     <label for="password">Mật khẩu (bỏ trống nếu không đổi)</label>
-                    <input type="password" id="password" name="password" placeholder="Password"
-                        class="form-control"
-                        pattern="^(?!^\s)(?!^\u3000)(?!.*\s$)(?!.*\u3000$)(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$"
-                        title="Mật khẩu ít nhất 6 ký tự, gồm chữ hoa, thường và số. Bỏ trống nếu không đổi.">
+                    <input type="password" class="form-control" name="password" placeholder="Nhập mật khẩu"
+                        pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{6,}$"
+                        title="Mật khẩu ít nhất 6 ký tự, gồm chữ hoa, thường, số và ký tự đặc biệt">
                     @error('password')
                     <span class="text-danger">{{ $message }}</span>
                     @enderror

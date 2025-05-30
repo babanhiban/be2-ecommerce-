@@ -19,6 +19,19 @@ class CrudUserController extends Controller
 
     public function authUser(Request $request)
     {
+        // Lấy input và trim khoảng trắng, cả khoảng trắng thường và khoảng trắng Unicode (ví dụ dấu cách toàn bộ)
+        $input = $request->only('email', 'password');
+
+        foreach (['email', 'password'] as $field) {
+            if (isset($input[$field])) {
+                $input[$field] = preg_replace('/^[\s\x{3000}]+|[\s\x{3000}]+$/u', '', $input[$field]);
+            }
+        }
+
+        // Gán lại dữ liệu đã trim vào request để validate và Auth dùng
+        $request->merge($input);
+
+        // Validate dữ liệu
         $request->validate([
             'email' => 'required|email',
             'password' => 'required',

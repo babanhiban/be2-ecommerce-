@@ -32,15 +32,12 @@ class AuthController extends Controller
     protected function trimInputFields(Request $request, array $fields)
     {
         $input = $request->all();
-
         foreach ($fields as $field) {
             if (isset($input[$field])) {
-                // Loại bỏ khoảng trắng thông thường và khoảng trắng Unicode (full-width space)
                 $input[$field] = preg_replace('/^[\s\x{3000}]+|[\s\x{3000}]+$/u', '', $input[$field]);
             }
         }
-
-        $request->merge($input); // Gộp lại vào request
+        $request->merge($input);
     }
 
     /**
@@ -48,11 +45,20 @@ class AuthController extends Controller
      */
     public function register(Request $request)
     {
+        // Trim khoảng trắng đầu cuối cho các trường name, email
         $this->trimInputFields($request, ['name', 'email']);
 
+        // Validate dữ liệu
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:30',
-            'email' => 'required|email|unique:users,email',
+            'email' => [
+                'required',
+                'email',
+                'unique:users,email',
+                'regex:/^\S+@\S+\.\S+$/',  // Không cho phép khoảng trắng trong email
+            ],
+        ], [
+            'email.regex' => 'Email không được chứa khoảng trắng.',
         ]);
 
         if ($validator->fails()) {
@@ -105,7 +111,7 @@ class AuthController extends Controller
      */
     public function verifyAddUserFormAdmin(Request $request)
     {
-        // Trim các field cần thiết trước khi validate
+
         $this->trimInputFields($request, ['verification_register', 'password', 'password_confirmation']);
 
         $validator = Validator::make($request->all(), [
@@ -113,13 +119,23 @@ class AuthController extends Controller
                 'required',
                 'regex:/^\d{6}$/',
             ],
-            'password' => 'required|string|min:6|confirmed',
+            'password' => [
+                'required',
+                'string',
+                'min:6',
+                'confirmed',
+                'regex:/[A-Z]/',
+                'regex:/[a-z]/',
+                'regex:/[0-9]/',
+                'regex:/[\W_]/',
+            ],
         ], [
             'verification_register.required' => 'Vui lòng nhập mã xác nhận.',
             'verification_register.regex' => 'Mã xác nhận phải gồm đúng 6 chữ số.',
             'password.required' => 'Vui lòng nhập mật khẩu.',
             'password.min' => 'Mật khẩu phải có ít nhất 6 ký tự.',
             'password.confirmed' => 'Xác nhận mật khẩu không khớp.',
+            'password.regex' => 'Mật khẩu phải có ít nhất 1 chữ hoa, 1 chữ thường, 1 số và 1 ký tự đặc biệt.',
         ]);
 
         if ($validator->fails()) {
@@ -198,7 +214,6 @@ class AuthController extends Controller
      */
     public function verifyRegister(Request $request)
     {
-        // Trim các field cần thiết trước khi validate
         $this->trimInputFields($request, ['verification_register', 'password', 'password_confirmation']);
 
         $validator = Validator::make($request->all(), [
@@ -206,13 +221,23 @@ class AuthController extends Controller
                 'required',
                 'regex:/^\d{6}$/',
             ],
-            'password' => 'required|string|min:6|confirmed',
+            'password' => [
+                'required',
+                'string',
+                'min:6',
+                'confirmed',
+                'regex:/[A-Z]/',    // chữ HOA
+                'regex:/[a-z]/',    // chữ thường
+                'regex:/[0-9]/',    // số
+                'regex:/[\W_]/',    // ký tự đặc biệt
+            ],
         ], [
             'verification_register.required' => 'Vui lòng nhập mã xác nhận.',
             'verification_register.regex' => 'Mã xác nhận phải gồm đúng 6 chữ số.',
             'password.required' => 'Vui lòng nhập mật khẩu.',
             'password.min' => 'Mật khẩu phải có ít nhất 6 ký tự.',
             'password.confirmed' => 'Xác nhận mật khẩu không khớp.',
+            'password.regex' => 'Mật khẩu phải có ít nhất 1 chữ hoa, 1 chữ thường, 1 số và 1 ký tự đặc biệt.',
         ]);
 
         if ($validator->fails()) {
@@ -355,8 +380,25 @@ class AuthController extends Controller
     public function resetPassword(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'password' => 'required|string|min:6|confirmed',
             'email' => 'required|email|exists:users,email',
+            'password' => [
+                'required',
+                'string',
+                'min:6',
+                'confirmed',
+                'regex:/[A-Z]/',    // ít nhất 1 chữ HOA
+                'regex:/[a-z]/',    // ít nhất 1 chữ thường
+                'regex:/[0-9]/',    // ít nhất 1 số
+                'regex:/[\W_]/',    // ít nhất 1 ký tự đặc biệt
+            ],
+        ], [
+            'email.required' => 'Vui lòng nhập email.',
+            'email.email' => 'Email không đúng định dạng.',
+            'email.exists' => 'Email không tồn tại trong hệ thống.',
+            'password.required' => 'Vui lòng nhập mật khẩu.',
+            'password.min' => 'Mật khẩu phải có ít nhất 6 ký tự.',
+            'password.confirmed' => 'Xác nhận mật khẩu không khớp.',
+            'password.regex' => 'Mật khẩu phải có ít nhất 1 chữ hoa, 1 chữ thường, 1 số và 1 ký tự đặc biệt.',
         ]);
 
         if ($validator->fails()) {
