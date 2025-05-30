@@ -214,4 +214,20 @@ class CartController extends Controller
 
         return redirect()->route('cart.index')->with('success', 'Đã thêm sản phẩm vào giỏ hàng.');
     }
+     public function updateQuantity(Request $request, $id)
+    {
+        $cartItem = Cart::findOrFail($id);
+        
+        if ($request->input('action') === 'increase') {
+            $cartItem->increment('quantity');
+        } elseif ($request->input('action') === 'decrease') {
+            if ($cartItem->quantity > 1) {
+                $cartItem->decrement('quantity');
+            } else {
+                $cartItem->delete();
+            }
+        }
+        
+        return response()->json(['success' => true]);
+    }
 }
