@@ -124,9 +124,13 @@ Route::get('/history', function () {
 })->name('history');
 
 // trang thai giao dich
-Route::get('/statuspay', function () {
+// Route::get('/statuspay', function () {
+//     return view('payment.status');
+// })->name('statuspay');
+
+Route::get('/payment/status', function() {
     return view('payment.status');
-})->name('statuspay');
+})->name('payment.status');
 
 Route::get('/addProduct', function () {
     return view('product.addProduct');
@@ -193,7 +197,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.process');
 });
 
-Route::post('/checkout/buynow', [CheckoutController::class, 'buyNow'])->name('checkout.buynow');
+Route::match(['GET', 'POST'], '/checkout/buynow', [CheckoutController::class, 'buynow'])->name('checkout.buynow');
 
 //đơn hàng
 
@@ -217,4 +221,7 @@ Route::get('/statistics/vouchers', [VoucherController::class, 'statistics'])->na
 // Thống kê đơn hàng
 Route::get('/statistics/orders', [StatisticsController::class, 'index'])->name('statistics.orders');
 Route::get('/statistics/orders/export', [StatisticsController::class, 'export'])->name('statistics.orders.export');
+
+// thanh toan san pham
+//Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.process');
 
