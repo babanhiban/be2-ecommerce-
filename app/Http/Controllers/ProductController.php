@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Carbon\Carbon;
 use App\Models\Products;
 use App\Models\Category;
 use Illuminate\Http\Request;
@@ -78,7 +78,7 @@ class ProductController extends Controller
     {
         // Lấy danh sách sản phẩm kèm category
         $products = Products::with('category')->paginate(5);
-    
+
 
         // Truyền products và keys sang view
         return view('admin.list_products', compact('products'));
@@ -97,8 +97,14 @@ class ProductController extends Controller
     }
     public function update(Request $request, $id)
     {
+        $input = $request->all();
         $product = Products::findOrFail($id);
+        $formUpdatedAt = Carbon::parse($input['updated_at']);
+        $dbUpdatedAt = Carbon::parse($product->updated_at);
 
+        if (!$formUpdatedAt->eq($dbUpdatedAt)) {
+            return back()->withErrors(['msg' => 'Thông tin đã bị thay đổi ở nơi khác. Vui lòng tải lại.']);
+        }
         // Cập nhật thông tin cơ bản
         $product->name = $request->input('name');
         $product->description = $request->input('description');
