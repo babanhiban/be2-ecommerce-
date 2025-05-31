@@ -22,6 +22,18 @@
         Không tìm thấy sản phẩm nào.
     </div>
 @endif
+{{-- Thông báo thành công hoặc lỗi --}}
+@if (session('success'))
+    <div class="alert alert-success text-center mt-3">
+        {{ session('success') }}
+    </div>
+@endif
+
+@if (session('error'))
+    <div class="alert alert-danger text-center mt-3">
+        {{ session('error') }}
+    </div>
+@endif
         <div class="search-container">
             <form action="{{ route('product.search') }}" method="GET" style="display: flex; align-items: center;">
                 <input type="text" name="query" placeholder="Tìm kiếm sản phẩm..." class="search-input" value="{{ request('query') }}" pattern="^[a-zA-Z0-9À-ỹ\s]+$"

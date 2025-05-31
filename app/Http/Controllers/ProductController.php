@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Carbon\Carbon;
 use App\Models\Products;
 use App\Models\Category;
@@ -56,24 +57,17 @@ class ProductController extends Controller
     public function deleteProduct(Request $request)
     {
         $product_id = $request->get('id');
-        $product = Products::destroy($product_id);
+        $product = Products::find($product_id);
 
+        if (!$product) {
+            return redirect()->route('admin.products')->with('error', 'Sản phẩm không tồn tại hoặc đã bị xóa.');
+        }
 
-        // Quay lại trang danh sách sau khi xóa thành công
-        return redirect()->route('admin.products')->withSuccess('User deleted successfully');
+        $product->delete();
 
-        // $user_id = $request->get('id');
-        // $user = User::destroy($user_id);
-
-        // return redirect("list")->withSuccess('You have signed-in');
+        return redirect()->route('admin.products')->with('success', 'Sản phẩm đã được xóa.');
     }
-    //  public function updateUser(Request $request)
-    // {
-    //     $product_id = $request->get('id');
-    //     $product = Products::find($product_id);
 
-    //     return view('admin.crud_users', ['product' => $product]);
-    // }
     public function listProduct()
     {
         // Lấy danh sách sản phẩm kèm category
