@@ -14,7 +14,7 @@ $(document).ready(function () {
     const voucherCodeInput = $('#voucher-code');
     const applyVoucherBtn = $('#apply-voucher');
     const voucherInfo = $('#voucher-discount-info');
-    const hiddenVoucherId = $('#hidden-voucher-id'); // ✅ đổi tên biến
+    const hiddenVoucherId = $('#hidden-voucher-id');
 
     let discountAmount = 0;
 
@@ -61,17 +61,34 @@ $(document).ready(function () {
         $.get(`/vouchers/check/${code}`)
             .done(function (voucher) {
                 const now = new Date().toISOString().slice(0, 10);
-                if (voucher.end_date < now) throw new Error("Voucher đã hết hạn");
+                if (voucher.end_date < now) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi',
+                        text: 'Voucher đã hết hạn',
+                    });
+                    throw new Error("Voucher đã hết hạn");
+                }
 
                 discountAmount = Math.round((voucher.discount / 100) * total);
                 voucherInfo.text(`Áp dụng mã "${voucher.code}" - Giảm ${discountAmount.toLocaleString('vi-VN')}đ`);
-                hiddenVoucherId.val(voucher.id); // ✅ lưu voucher_id
+                hiddenVoucherId.val(voucher.id);
                 updateTotal();
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Thành công',
+                    text: `Áp dụng voucher "${voucher.code}" thành công!`,
+                });
             })
             .fail(function () {
                 discountAmount = 0;
                 hiddenVoucherId.val('');
-                voucherInfo.text('Mã không hợp lệ hoặc đã hết hạn');
+                voucherInfo.text('');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi',
+                    text: 'Mã không hợp lệ hoặc đã hết hạn',
+                });
                 updateTotal();
             });
     });
@@ -94,22 +111,36 @@ $(document).ready(function () {
             status: 'Đang xử lý',
             product_id: productSelect.val(),
             quantity: quantityInput.val(),
-            voucher_id: hiddenVoucherId.val(), // ✅ gửi voucher_id
+            voucher_id: hiddenVoucherId.val(),
             _token: $('meta[name="csrf-token"]').attr('content')
         };
 
         if (!data.product_id || !data.quantity) {
-            alert('Vui lòng chọn sản phẩm và nhập số lượng');
+            Swal.fire({
+                icon: 'warning',
+                title: 'Chú ý',
+                text: 'Vui lòng chọn sản phẩm và nhập số lượng',
+            });
             return;
         }
 
         $.post('/orders', data)
             .done(function () {
                 $('#createModal').modal('hide');
-                location.reload();
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Thành công',
+                    text: 'Tạo đơn hàng thành công!',
+                }).then(() => {
+                    location.reload();
+                });
             })
             .fail(function (xhr) {
-                alert('Tạo đơn hàng thất bại.');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi',
+                    text: 'Tạo đơn hàng thất bại.',
+                });
                 console.error(xhr.responseText);
             });
     });
@@ -124,9 +155,16 @@ $(document).ready(function () {
             $('#edit_address').val(res.address);
             $('#edit_status').val((res.status || '').trim());
 
+              $('#edit_updated_at').val(res.updated_at);
             const modal = new bootstrap.Modal(document.getElementById('editModal'));
             modal.show();
-        }).fail(() => alert('Không thể tải dữ liệu đơn hàng.'));
+        }).fail(() => {
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi',
+                text: 'Không thể tải dữ liệu đơn hàng.',
+            });
+        });
     });
 
     $('#editForm').on('submit', function (e) {
@@ -138,16 +176,35 @@ $(document).ready(function () {
 
         $.ajax({
             url: actionUrl,
-            method: 'POST', // Vì dùng @method('PUT')
+            method: 'POST',
             data: formData,
             success: function () {
                 $('#editModal').modal('hide');
-                location.reload();
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Thành công',
+                    text: 'Cập nhật đơn hàng thành công!',
+                }).then(() => {
+                    location.reload();
+                });
             },
-            error: function (xhr) {
-                alert('Cập nhật đơn hàng thất bại.');
-                console.error(xhr.responseText);
-            }
+          error: function (xhr) {
+    if (xhr.status === 409) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Thông báo',
+            text: 'Dữ liệu đã bị thay đổi. Vui lòng tải lại trang trước khi cập nhật.',
+        });
+    } else {
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi',
+            text: 'Cập nhật đơn hàng thất bại.',
+        });
+        console.error(xhr.responseText);
+    }
+}
+
         });
     });
 
@@ -172,23 +229,44 @@ $(document).ready(function () {
 
             const modal = new bootstrap.Modal(document.getElementById('viewModal'));
             modal.show();
-        }).fail(() => alert('Không thể tải dữ liệu.'));
+        }).fail(() => {
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi',
+                text: 'Không thể tải dữ liệu.',
+            });
+        });
     });
 
     $('.deleteBtn').on('click', function () {
         const id = $(this).data('id');
-        if (confirm('Bạn có chắc muốn xoá đơn hàng này không?')) {
-            $.ajax({
-                url: `/orders/${id}`,
-                method: 'DELETE',
-                success: function () {
-                    alert('Đã xoá thành công.');
-                    location.reload();
-                },
-                error: function () {
-                    alert('Xoá thất bại.');
-                }
-            });
-        }
+        Swal.fire({
+            title: 'Bạn có chắc muốn xoá đơn hàng này không?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Có, xoá đi',
+            cancelButtonText: 'Hủy',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: `/orders/${id}`,
+                    method: 'DELETE',
+                    success: function () {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Đã xoá thành công.',
+                        }).then(() => {
+                            location.reload();
+                        });
+                    },
+                    error: function () {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Xoá thất bại.',
+                        });
+                    }
+                });
+            }
+        });
     });
 });

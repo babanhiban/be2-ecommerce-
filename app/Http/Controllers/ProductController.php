@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Products;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use App\Models\User;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -56,30 +58,25 @@ class ProductController extends Controller
     public function deleteProduct(Request $request)
     {
         $product_id = $request->get('id');
-        $product = Products::destroy($product_id);
+        $product = Products::find($product_id);
 
+        if (!$product) {
+            return redirect()->route('admin.products')->with('error', 'Sản phẩm không tồn tại hoặc đã bị xóa.');
+        }
 
-        // Quay lại trang danh sách sau khi xóa thành công
-        return redirect()->route('admin.products')->withSuccess('User deleted successfully');
+        $product->delete();
 
-        // $user_id = $request->get('id');
-        // $user = User::destroy($user_id);
-
-        // return redirect("list")->withSuccess('You have signed-in');
+        return redirect()->route('admin.products')->with('success', 'Sản phẩm đã được xóa.');
     }
-    //  public function updateUser(Request $request)
-    // {
-    //     $product_id = $request->get('id');
-    //     $product = Products::find($product_id);
 
-    //     return view('admin.crud_users', ['product' => $product]);
-    // }
     public function listProduct()
     {
-        return view('admin.list_products', [
+        // Lấy danh sách sản phẩm kèm category
+        $products = Products::with('category')->paginate(5);
 
-            'products' => Products::with('category')->paginate(5)
-        ]);
+
+        // Truyền products và keys sang view
+        return view('admin.list_products', compact('products'));
     }
     public function edit($id)
     {
@@ -95,8 +92,25 @@ class ProductController extends Controller
     }
     public function update(Request $request, $id)
     {
-        $product = Products::findOrFail($id);
+       // Kiểm tra id có phải số hay không
+    if (!is_numeric($id)) {
+        return redirect()->route('admin.products')->with('error', 'ID không hợp lệ.');
+    }
 
+    // Tìm sản phẩm, nếu không có thì báo lỗi và redirect
+    $product = Products::find($id);
+    if (!$product) {
+        return redirect()->route('admin.products')->with('error', 'Sản phẩm không tồn tại.');
+    }
+
+        $input = $request->all();
+        $product = Products::findOrFail($id);
+        $formUpdatedAt = Carbon::parse($input['updated_at']);
+        $dbUpdatedAt = Carbon::parse($product->updated_at);
+
+        if (!$formUpdatedAt->eq($dbUpdatedAt)) {
+            return back()->withErrors(['msg' => 'Thông tin đã bị thay đổi ở nơi khác. Vui lòng tải lại.']);
+        }
         // Cập nhật thông tin cơ bản
         $product->name = $request->input('name');
         $product->description = $request->input('description');
@@ -132,12 +146,10 @@ class ProductController extends Controller
 
         return view('admin.list_products', compact('products'));
     }
-public function show($id)
+    public function show($id)
     {
-    // Lấy product theo id, hoặc fail 404 nếu không tồn tại
+        // Lấy product theo id, hoặc fail 404 nếu không tồn tại
         $product = Products::findOrFail($id);
         return view('product.productDetail', compact('product'));
     }
-
-    
 }

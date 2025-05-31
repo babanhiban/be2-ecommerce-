@@ -13,6 +13,23 @@
     <link rel="stylesheet" href="{{ asset('css/CartPage.css') }}">
 
     <div class="cart-container">
+        <!-- Hiển thị thông báo dạng popup (góc phải màn hình) -->
+        @if(session('error'))
+            <div id="notification" class="notification error">
+                <span class="icon">⚠️</span>
+                <span>{{ session('error') }}</span>
+                <button onclick="closeNotification()" class="close-btn">&times;</button>
+            </div>
+        @endif
+
+        @if(session('success'))
+            <div id="notification" class="notification success">
+                <span class="icon">✅</span>
+                <span>{{ session('success') }}</span>
+                <button onclick="closeNotification()" class="close-btn">&times;</button>
+            </div>
+        @endif
+
         <div class="cart-header">
             <h2>🛒 Giỏ Hàng</h2>
             <div class="header-right">
@@ -75,12 +92,35 @@
                 <button type="submit" name="action" value="buy" class="btn">Mua</button>
             </div>
         </form>
+
         <script>
+            // Xử lý checkbox
             document.querySelectorAll('input[type="checkbox"][name^="checked"]').forEach(cb => {
                 cb.addEventListener('change', () => {
                     // Khi checkbox thay đổi, submit form để cập nhật session và tính lại tổng tiền
                     cb.closest('form').submit();
                 });
+            });
+
+            // Xử lý thông báo popup
+            function closeNotification() {
+                const notification = document.getElementById('notification');
+                if (notification) {
+                    notification.style.animation = 'slideOut 0.3s ease-in';
+                    setTimeout(() => {
+                        notification.remove();
+                    }, 300);
+                }
+            }
+
+            // Tự động ẩn thông báo sau 5 giây
+            document.addEventListener('DOMContentLoaded', function() {
+                const notification = document.getElementById('notification');
+                if (notification) {
+                    setTimeout(() => {
+                        closeNotification();
+                    }, 5000);
+                }
             });
         </script>
     </div>

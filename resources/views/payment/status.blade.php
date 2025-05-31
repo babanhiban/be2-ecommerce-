@@ -3,171 +3,134 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hiện Thị Trạng Thái Thanh Toán</title>
+    <title>Trạng thái thanh toán</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-        
-        .header {
-            background-color: #5ad4f1;
-            color: #000;
-            padding: 15px 20px;
+        .status-container {
+            min-height: 100vh;
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
-        
-        .logo {
-            width: 120px;
-            height: auto;
-        }
-        
-        .container {
-            width: 90%;
-            max-width: 1000px;
-            margin: 20px auto;
-            display: flex;
-            flex-wrap: wrap;
-        }
-        
-        .customer-info {
-            width: 40%;
-            padding-right: 20px;
-        }
-        
-        .status-section {
-            width: 55%;
-            border-left: 1px solid #ddd;
-        }
-        
-        h2 {
-            font-size: 20px;
-            margin-bottom: 20px;
-        }
-        
-        .form-group {
-            margin-bottom: 15px;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 5px;
-        }
-        
-        input[type="text"], 
-        input[type="email"] {
-            width: 90%;
-            padding: 8px;
-            border: 1px solid #ccc;
-        }
-        
-        .product-info {
-            margin-top: 20px;
-        }
-        
-        .congratulations {
+        .status-card {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
             text-align: center;
-            padding: 30px 0;
+            max-width: 500px;
+            width: 90%;
         }
-        
-        .congratulations img {
-            max-width: 100%;
+        .success-icon {
+            font-size: 4rem;
+            color: #28a745;
+            margin-bottom: 1rem;
         }
-        
-        .status-options {
-            padding: 20px;
-            border-top: 1px solid #ddd;
+        .error-icon {
+            font-size: 4rem;
+            color: #dc3545;
+            margin-bottom: 1rem;
         }
-        
         .status-title {
-            font-size: 18px;
+            font-size: 2rem;
             font-weight: bold;
-            margin-bottom: 15px;
+            margin-bottom: 1rem;
         }
-        
-        .radio-option {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
+        .status-message {
+            font-size: 1.1rem;
+            color: #6c757d;
+            margin-bottom: 2rem;
         }
-        
-        .radio-custom {
-            width: 25px;
-            height: 25px;
-            border-radius: 50%;
-            margin-right: 10px;
-            display: inline-block;
-        }
-        
-        .radio-success {
-            background-color: #5ad4f1;
-        }
-        
-        .radio-default {
-            border: 2px solid #333;
-        }
-        
-        .detail-link {
-            font-size: 12px;
+        .btn-custom {
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: 500;
             text-decoration: none;
-            color: #333;
+            transition: all 0.3s ease;
+        }
+        .btn-success-custom {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            color: white;
+            border: none;
+        }
+        .btn-success-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(40, 167, 69, 0.3);
+            color: white;
+        }
+        .btn-primary-custom {
+            background: linear-gradient(45deg, #007bff, #6610f2);
+            color: white;
+            border: none;
+        }
+        .btn-primary-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 123, 255, 0.3);
+            color: white;
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>Hiện Thị Trạng Thái Thanh Toán</h1>
-        <img src="{{ asset('images/manhinhtrangthaigiaodich/logo.png') }}" alt="Storme Logo" class="logo">
-    </div>
-    
-    <div class="container">
-        <div class="customer-info">
-            <h2>Thông tin khách hàng</h2>
-            <div class="form-group">
-                <label>Họ tên:</label>
-                <input type="text">
-            </div>
-            <div class="form-group">
-                <label>Email:</label>
-                <input type="email">
-            </div>
-            <div class="form-group">
-                <label>SĐT:</label>
-                <input type="text">
-            </div>
-            <div class="form-group">
-                <label>Địa chỉ:</label>
-                <input type="text">
-            </div>
-            
-            <div class="product-info">
-                <p><strong>Iphone 16 128gb</strong></p>
-                <p>Tổng Thanh Toán: 22.590.000đ <a href="#" class="detail-link">Xem chi tiết tại đây</a></p>
-            </div>
-        </div>
-        
-        <div class="status-section">
-            <div class="congratulations">
-                <img src="{{ asset('images/manhinhtrangthaigiaodich/chucmung.png') }}" alt="Congratulations" />
-            </div>
-            
-            <div class="status-options">
-                <div class="status-title">Trạng Thái Thanh Toán</div>
-                
-                <div class="radio-option">
-                    <span class="radio-custom radio-success"></span>
-                    <span>Đã Thanh Toán Thành Công</span>
+    <div class="status-container">
+        <div class="status-card">
+            @if(session('success'))
+                <!-- Trạng thái thành công -->
+                <div class="success-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h1 class="status-title text-success">Đặt hàng thành công!</h1>
+                <p class="status-message">
+                    {{ session('success') }}
+                </p>
+                <p class="text-muted mb-4">
+                    Chúng tôi sẽ liên hệ với bạn sớm nhất để xác nhận đơn hàng.
+                </p>
+                <div class="d-flex gap-3 justify-content-center">
+                    <a href="{{ route('home') }}" class="btn btn-success-custom">
+                        <i class="fas fa-home me-2"></i>Về trang chủ
+                    </a>
+                    
                 </div>
                 
-                <div class="radio-option">
-                    <span class="radio-custom radio-default"></span>
-                    <span>Thanh Toán Thủ Công</span>
+            @elseif(session('error'))
+                <!-- Trạng thái lỗi -->
+                <div class="error-icon">
+                    <i class="fas fa-times-circle"></i>
                 </div>
-            </div>
+                <h1 class="status-title text-danger">Đặt hàng thất bại!</h1>
+                <p class="status-message">
+                    {{ session('error') }}
+                </p>
+                <p class="text-muted mb-4">
+                    Vui lòng thử lại hoặc liên hệ với chúng tôi để được hỗ trợ.
+                </p>
+                <div class="d-flex gap-3 justify-content-center">
+                    <a href="{{ route('cart.index') }}" class="btn btn-primary-custom">
+                        <i class="fas fa-arrow-left me-2"></i>Quay lại giỏ hàng
+                    </a>
+                    <a href="{{ route('home') }}" class="btn btn-success-custom">
+                        <i class="fas fa-home me-2"></i>Về trang chủ
+                    </a>
+                </div>
+                
+            @else
+                <!-- Trạng thái mặc định -->
+                <div class="text-primary" style="font-size: 4rem; margin-bottom: 1rem;">
+                    <i class="fas fa-question-circle"></i>
+                </div>
+                <h1 class="status-title text-primary">Không có thông tin</h1>
+                <p class="status-message">
+                    Không tìm thấy thông tin về trạng thái đơn hàng.
+                </p>
+                <a href="{{ route('home') }}" class="btn btn-primary-custom">
+                    <i class="fas fa-home me-2"></i>Về trang chủ
+                </a>
+            @endif
         </div>
     </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

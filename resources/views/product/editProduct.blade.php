@@ -10,15 +10,34 @@
 </head>
 
 <body>
+    @if (session('success'))
+    <div class="alert alert-success">{{ session('success') }}</div>
+    @endif
+
+    @if (session('error'))
+    <div class="alert alert-danger">{{ session('error') }}</div>
+    @endif
+    @if ($errors->has('image'))
+    <div class="alert alert-danger">
+        {{ $errors->first('image') }}
+    </div>
+    @endif
     <header class="header">
         <div class="header-title">Thêm sản phẩm</div>
         <div class="logo-container">
             <img src="{{ asset('images/manhinhthemsanpham/logo.png') }}" alt="Logo" class="logo">
         </div>
     </header>
-
+    @if (session('msg'))
+    <div class="alert alert-info" style="padding:10px; margin-bottom:15px; background-color:#d9edf7; color:#31708f; border-radius:4px;">
+        {{ session('msg') }}
+    </div>
+    @endif
     <form method="POST" action="{{ route('product.saveProduct', ['id' => $product->id])  }}" enctype="multipart/form-data">
         @csrf
+        <input type="hidden" name="updated_at" value="{{ $product->updated_at }}">
+
+        <input name="id" type="hidden" value="{{ $product->id }}">
         <main class="main-content">
             <div class="add-product-container">
                 <div class="image-upload-container">
@@ -35,7 +54,10 @@
 
                     <div class="form-group">
                         <label for="product-name">Tên sản phẩm:</label>
-                        <input type="text" id="product-name" name="name" class="form-control" value="{{ old('name', $product->name) }}">
+                        <input type="text" id="product-name" name="name" class="form-control" maxlength="50"
+                            pattern="^(?!\s)[a-zA-Z0-9À-ỹ\s]*\S$"
+                            title="Không được bắt đầu hoặc toàn bộ là khoảng trắng, chỉ cho phép chữ, số và khoảng trắng ở giữa"
+                            required>
                     </div>
 
                     <div class="form-group">
@@ -45,17 +67,26 @@
 
                     <div class="form-group">
                         <label for="product-quantity">Số lượng:</label>
-                        <input type="number" id="product-quantity" name="quantity" class="form-control" value="{{ old('quantity', $product->quantity) }}">
+                        <input type="number" id="product-quantity" name="quantity" class="form-control" value="{{ old('quantity', $product->quantity) }}" required min="1"
+                            max="20"
+                            step="1"
+                            oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 2);"
+                            title="Chỉ được nhập số nguyên dương từ 1 đến 20">
                     </div>
 
                     <div class="form-group">
                         <label for="product-price">Đơn giá:</label>
-                        <input type="text" id="product-price" name="price" class="form-control" value="{{ old('price', $product->price) }}">
+                        <input type="text" id="product-price" name="price" class="form-control" value="{{ old('price', $product->price) }}" required
+                            min="0"
+                            max="1000000000"
+                            step="1"
+                            oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);"
+                            title="Chỉ được nhập số và tối đa là 1.000.000.000">
                     </div>
 
                     <div class="form-group">
                         <label for="product-category">Danh mục:</label>
-                        <select id="product-category" name="category_id" class="form-control">
+                        <select id="product-category" name="category_id" class="form-control" required>
                             <option value="">-- Chọn danh mục --</option>
                             @foreach ($categories as $category)
                             <option value="{{ $category->id }}" {{ $product->category_id == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>

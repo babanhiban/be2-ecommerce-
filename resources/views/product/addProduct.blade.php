@@ -41,27 +41,38 @@
 
                     <div class="form-group">
                         <label for="product-name">Tên sản phẩm:</label>
-                        <input type="text" id="product-name" name="name" class="form-control">
+                        <input type="text" id="product-name" name="name" class="form-control" maxlength="50"
+                            pattern="^(?!\s)[a-zA-Z0-9À-ỹ\s]*\S$"
+                            title="Không được bắt đầu hoặc toàn bộ là khoảng trắng, chỉ cho phép chữ, số và khoảng trắng ở giữa"
+                            required>
                     </div>
 
                     <div class="form-group">
                         <label for="product-info">Thông tin:</label>
-                        <input type="text" id="product-info" name="description" class="form-control">
+                        <input type="text" id="product-info" name="description" class="form-control" required>
                     </div>
 
                     <div class="form-group">
                         <label for="product-quantity">Số lượng:</label>
-                        <input type="number" id="product-quantity" name="quantity" class="form-control">
+                        <input type="number" id="product-quantity" name="quantity" class="form-control" required min="1"
+                            max="20"
+                            step="1"
+                            oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 2);"
+                            title="Chỉ được nhập số nguyên dương từ 1 đến 20">
                     </div>
 
                     <div class="form-group">
                         <label for="product-price">Đơn giá:</label>
-                        <input type="text" id="product-price" name="price" class="form-control">
+                        <input type="text" id="product-price" name="price" class="form-control" required min="1"
+                            max="1000000000"
+                            step="1"
+                            oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);"
+                            title="Chỉ được nhập số và tối đa là 1.000.000.000">
                     </div>
 
                     <div class="form-group">
                         <label for="product-category">Danh mục:</label>
-                        <select id="product-category" name="category_id" class="form-control">
+                        <select id="product-category" name="category_id" class="form-control" required>
                             <option value="">-- Chọn danh mục --</option>
                             @foreach ($categories as $category)
                             <option value="{{ $category->id }}">{{ $category->name }}</option>

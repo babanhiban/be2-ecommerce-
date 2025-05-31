@@ -11,6 +11,21 @@
 </head>
 
 <body>
+    @if (session('error'))
+        <div id="notification" class="notification error">
+            <span class="icon">⚠️</span>
+            <span>{{ session('error') }}</span>
+            <button onclick="closeNotification()" class="close-btn">&times;</button>
+        </div>
+    @endif
+
+    @if (session('success'))
+        <div id="notification" class="notification success">
+            <span class="icon">✅</span>
+            <span>{{ session('success') }}</span>
+            <button onclick="closeNotification()" class="close-btn">&times;</button>
+        </div>
+    @endif
     <header class="header">
         <div class="header-top">
             <div class="logo">
@@ -33,48 +48,55 @@
             <div class="account">
 
                 <!-- Kiểm tra role tài khoản vừa đăng nhập là gì -->
-                @if(auth()->check())
-                @php
-                $isAdmin = false;
-                foreach(auth()->user()->roles as $role) {
-                if($role->name === 'admin') {
-                $isAdmin = true;
-                break;
-                }
-                }
-                @endphp
+                @if (auth()->check())
+                    @php
+                        $isAdmin = false;
+                        foreach (auth()->user()->roles as $role) {
+                            if ($role->name === 'admin') {
+                                $isAdmin = true;
+                                break;
+                            }
+                        }
+                    @endphp
 
-                <!-- Nếu là admin thì sẽ thay đổi phần thông tin ở tashbar theo admin  -->
-                @if($isAdmin)
-                <div class="dropdown">
-                    <button class="dropbtn">
-                        <i class="fas fa-user-shield"></i> {{ auth()->user()->name }} <i class="fas fa-chevron-down"></i>
-                    </button>
-                    <div class="dropdown-content">
-                        <a href="{{ route('user.updateUser', ['id' => $user->id]) }}"><i class="fas fa-user-edit"></i> Thông tin cá nhân</a>
-                        <a href="{{ route('admin.users') }}"><i class="fas fa-users-cog"></i> Quản lý tài khoản</a>
-                        <a href="{{ route('admin.products') }}"><i class="fas fa-users-cog"></i> Quản lý sản phẩm</a>
-                        <a href="{{ route('orders.index') }}"><i class="fas fa-users-cog"></i> Quản lý đơn hàng</a>
-                        <a href="{{ route('logout') }}"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
-                    </div>
-                </div>
+                    <!-- Nếu là admin thì sẽ thay đổi phần thông tin ở tashbar theo admin  -->
+                    @if ($isAdmin)
+                        <div class="dropdown">
+                            <button class="dropbtn">
+                                <i class="fas fa-user-shield"></i> {{ auth()->user()->name }} <i
+                                    class="fas fa-chevron-down"></i>
+                            </button>
+                            <div class="dropdown-content">
+                                <a href="{{ route('user.updateUser', ['id' => $user->id]) }}"><i
+                                        class="fas fa-user-edit"></i> Thông tin cá nhân</a>
+                                <a href="{{ route('admin.users') }}"><i class="fas fa-users-cog"></i> Quản lý tài
+                                    khoản</a>
+                                <a href="{{ route('admin.products') }}"><i class="fas fa-users-cog"></i> Quản lý sản
+                                    phẩm</a>
+                                <a href="{{ route('orders.index') }}"><i class="fas fa-users-cog"></i> Quản lý đơn
+                                    hàng</a>
+                                <a href="{{ route('logout') }}"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
+                            </div>
+                        </div>
 
-                <!-- Còn nếu là member hay staff thì sẽ thay đổi phần thông tin ở tashbar theo member hoặc staff  -->
+                        <!-- Còn nếu là member hay staff thì sẽ thay đổi phần thông tin ở tashbar theo member hoặc staff  -->
+                    @else
+                        <div class="dropdown">
+                            <button class="dropbtn">
+                                <i class="fas fa-user-shield"></i> {{ auth()->user()->name }} <i
+                                    class="fas fa-chevron-down"></i>
+                            </button>
+                            <div class="dropdown-content">
+                                <a href="{{ route('user.updateUser', ['id' => $user->id]) }}"><i
+                                        class="fas fa-user-edit"></i> Thông tin cá nhân</a>
+                                <a href="{{ route('logout') }}"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
+                            </div>
+                        </div>
+                    @endif
+
+                    <!-- Nếu không đăng nhập tài khoản nào thì sẽ hiển thị Đăng nhập / Đăng ký giúp chuyển hướng trang về lại đăng nhập -->
                 @else
-                <div class="dropdown">
-                    <button class="dropbtn">
-                        <i class="fas fa-user-shield"></i> {{ auth()->user()->name }} <i class="fas fa-chevron-down"></i>
-                    </button>
-                    <div class="dropdown-content">
-                        <a href="{{ route('user.updateUser', ['id' => $user->id]) }}"><i class="fas fa-user-edit"></i> Thông tin cá nhân</a>
-                        <a href="{{ route('logout') }}"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
-                    </div>
-                </div>
-                @endif
-
-                <!-- Nếu không đăng nhập tài khoản nào thì sẽ hiển thị Đăng nhập / Đăng ký giúp chuyển hướng trang về lại đăng nhập -->
-                @else
-                <a href="{{ route('login') }}">Đăng Nhập/Đăng Ký</a>
+                    <a href="{{ route('login') }}">Đăng Nhập/Đăng Ký</a>
                 @endif
             </div>
 
@@ -91,14 +113,15 @@
         <section class="categories">
             <div class="category-container">
                 @foreach ($categories as $category)
-                <div class="category-item">
-                    <div class="category-image">
-                        <a href="{{ route('product.categoryId_Product', $category->id) }}">
-                            <img src="{{ asset('images/manhinhtrangchu/categories/'.$category->image) }}" alt="{{ $category->name }}" style="width:200px; height:auto;">
-                        </a>
+                    <div class="category-item">
+                        <div class="category-image">
+                            <a href="{{ route('product.categoryId_Product', $category->id) }}">
+                                <img src="{{ asset('images/manhinhtrangchu/categories/' . $category->image) }}"
+                                    alt="{{ $category->name }}" style="width:200px; height:auto;">
+                            </a>
+                        </div>
+                        <div class="category-name">{{ $category->name }}</div>
                     </div>
-                    <div class="category-name">{{ $category->name }}</div>
-                </div>
                 @endforeach
 
 
@@ -113,15 +136,18 @@
                 <div class="slider-wrapper">
                     <div class="slide active">
 
-                        <img src="{{ asset('images/manhinhtrangchu/banners/gaming_laptop.png') }}" alt="Tuần lễ laptop gaming">
+                        <img src="{{ asset('images/manhinhtrangchu/banners/gaming_laptop.png') }}"
+                            alt="Tuần lễ laptop gaming">
                     </div>
                     <div class="slide active">
 
-                        <img src="{{ asset('images/manhinhtrangchu/banners/laptop_acer_nitro5.png') }}" alt="Tuần lễ laptop gaming">
+                        <img src="{{ asset('images/manhinhtrangchu/banners/laptop_acer_nitro5.png') }}"
+                            alt="Tuần lễ laptop gaming">
                     </div>
                     <div class="slide active">
 
-                        <img src="{{ asset('images/manhinhtrangchu/banners/thang12laptopuudai.png') }}" alt="Tuần lễ laptop gaming">
+                        <img src="{{ asset('images/manhinhtrangchu/banners/thang12laptopuudai.png') }}"
+                            alt="Tuần lễ laptop gaming">
                     </div>
                     <!-- Thêm các slides khác nếu cần -->
                 </div>
@@ -140,39 +166,33 @@
             </div>
 
             <div class="products-container">
-                @foreach ($products as $product )
-                <div class="product-item">
-                    <div class="product-image">
-                        <img src="{{ asset('images/manhinhsanpham/' . $product->image) }}" alt="Not Found">
-                    </div>
-                    <div class="product-name">{{$product->name}}</div>
-                    <div class="product-price">Giá: {{ number_format($product->price, 0, ',', '.') }} VND</div>
+                @foreach ($products as $product)
+                    <div class="product-item">
+                        <div class="product-image">
+                            <img src="{{ asset('images/manhinhsanpham/' . $product->image) }}" alt="Not Found">
+                        </div>
+                        <div class="product-name">{{ $product->name }}</div>
+                        <div class="product-price">Giá: {{ number_format($product->price, 0, ',', '.') }} VND</div>
 
-                    @if ($product->quantity > 0)
-                    <div class="product-detail-link">
-                        <a href="{{ route('product.show', $product->id) }}">Xem chi tiết</a>
-                    </div>
-                    <div class="product-action">
-                        <form action="{{ route('checkout.buynow', ['product_id' => $product->id]) }}" method="POST">
-                            @csrf
-                            <input type="hidden" name="quantity" value="1">
-                            <button type="submit" class="buy-button">Mua ngay</button>
-                        </form>
-                    </div>
-                    <div>
-                        <form action="{{ route('cart.add', $product->id) }}" method="POST">
-                            @csrf
-                            <button type="submit" class="add-button">Thêm vào giỏ</button>
-                        </form>
-                    </div>
-                    @else
-                    <p class="text-muted mt-3">⚠️ <strong>Hết hàng</strong></p>
-                    <button class="btn btn-secondary mt-2" disabled>Không thể mua</button>
-                    @endif
+                        @if ($product->quantity > 0)
+                            <div class="product-detail-link">
+                                <a href="{{ route('product.show', $product->id) }}">Xem chi tiết</a>
+                            </div>
+   
+                            <div>
+                                <form action="{{ route('cart.add', $product->id) }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="add-button">Thêm vào giỏ</button>
+                                </form>
+                            </div>
+                        @else
+                            <p class="text-muted mt-3">⚠️ <strong>Hết hàng</strong></p>
+                            <button class="btn btn-secondary mt-2" disabled>Không thể mua</button>
+                        @endif
 
 
 
-                </div>
+                    </div>
                 @endforeach
             </div>
         </section>
@@ -282,6 +302,26 @@
             currentSlide = (currentSlide + 1) % slides.length;
             showSlide(currentSlide);
         }, 5000);
+
+        function closeNotification() {
+            const notification = document.getElementById('notification');
+            if (notification) {
+                notification.style.animation = 'slideOut 0.3s ease-in';
+                setTimeout(() => {
+                    notification.remove();
+                }, 300);
+            }
+        }
+
+        // Tự động ẩn thông báo sau 5 giây
+        document.addEventListener('DOMContentLoaded', function() {
+            const notification = document.getElementById('notification');
+            if (notification) {
+                setTimeout(() => {
+                    closeNotification();
+                }, 5000);
+            }
+        });
     </script>
 </body>
 
