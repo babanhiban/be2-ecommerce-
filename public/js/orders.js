@@ -155,6 +155,7 @@ $(document).ready(function () {
             $('#edit_address').val(res.address);
             $('#edit_status').val((res.status || '').trim());
 
+              $('#edit_updated_at').val(res.updated_at);
             const modal = new bootstrap.Modal(document.getElementById('editModal'));
             modal.show();
         }).fail(() => {
@@ -187,14 +188,23 @@ $(document).ready(function () {
                     location.reload();
                 });
             },
-            error: function (xhr) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Lỗi',
-                    text: 'Cập nhật đơn hàng thất bại.',
-                });
-                console.error(xhr.responseText);
-            }
+          error: function (xhr) {
+    if (xhr.status === 409) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Thông báo',
+            text: 'Dữ liệu đã bị thay đổi. Vui lòng tải lại trang trước khi cập nhật.',
+        });
+    } else {
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi',
+            text: 'Cập nhật đơn hàng thất bại.',
+        });
+        console.error(xhr.responseText);
+    }
+}
+
         });
     });
 

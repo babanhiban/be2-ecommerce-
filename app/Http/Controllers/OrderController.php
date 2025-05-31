@@ -67,22 +67,32 @@ class OrderController extends Controller
         return response()->json(['message' => 'Đã tạo đơn hàng']);
     }
 
-    public function update(Request $request, Order $order)
-    {
-        $validated = $request->validate([
-            'customer_name' => 'required|string|max:255',
-            'phone' => 'required|string|max:20',
-            'address' => 'required|string|max:255',
-            'status' => 'required|string|in:Đang xử lý,Đang giao,Hoàn thành,Đã huỷ',
-        ]);
+   public function update(Request $request, Order $order)
+{
+    $validated = $request->validate([
+        'customer_name' => 'required|string|max:255',
+        'phone' => 'required|string|max:20',
+        'address' => 'required|string|max:255',
+        'status' => 'required|string|in:Đang xử lý,Đang giao,Hoàn thành,Đã huỷ',
+        'updated_at' => 'required|date', // 👈 validate thêm trường này
+    ]);
 
-        $order->update($validated);
-
+    // Kiểm tra xem bản ghi đã bị cập nhật bởi ai khác chưa
+    if ($validated['updated_at'] !== $order->updated_at->toISOString()) {
         return response()->json([
-            'message' => 'Cập nhật thành công',
-            'order' => $order
-        ]);
+            'message' => 'Dữ liệu đã bị thay đổi bởi người khác. Vui lòng tải lại trang.',
+        ], 409); // Conflict
     }
+
+    // Cập nhật nếu không có xung đột
+    $order->update($validated);
+
+    return response()->json([
+        'message' => 'Cập nhật thành công',
+        'order' => $order
+    ]);
+}
+
 
     public function destroy(Order $order)
     {
@@ -90,24 +100,26 @@ class OrderController extends Controller
         return response()->json(['message' => 'Đơn hàng đã được xoá.']);
     }
 
-    public function show($id)
-    {
-        $order = Order::with(['items.product'])->findOrFail($id);
+   public function show($id)
+{
+    $order = Order::with(['items.product'])->findOrFail($id);
 
-        return response()->json([
-            'customer_name' => $order->customer_name,
-            'phone' => $order->phone,
-            'address' => $order->address,
-            'status' => $order->status,
-            'total_price' => $order->total_price,
-            'products' => $order->items->map(function ($item) {
-                return [
-                    'name' => optional($item->product)->name ?? '(Không tồn tại)',
-                    'quantity' => $item->quantity,
-                ];
-            }),
-        ]);
-    }
+    return response()->json([
+        'customer_name' => $order->customer_name,
+        'phone' => $order->phone,
+        'address' => $order->address,
+        'status' => $order->status,
+        'total_price' => $order->total_price,
+        'updated_at' => $order->updated_at->toISOString(), // 👈 thêm dòng này
+        'products' => $order->items->map(function ($item) {
+            return [
+                'name' => optional($item->product)->name ?? '(Không tồn tại)',
+                'quantity' => $item->quantity,
+            ];
+        }),
+    ]);
+}
+
 
 
 }
