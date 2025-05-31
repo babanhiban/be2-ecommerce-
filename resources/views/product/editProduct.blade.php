@@ -54,9 +54,10 @@
 
                     <div class="form-group">
                         <label for="product-name">Tên sản phẩm:</label>
-                        <input type="text" id="product-name" name="name" class="form-control" value="{{ old('name', $product->name) }} " required maxlength="50"
-                            pattern="^[a-zA-Z0-9À-ỹ\s]+$"
-                            title="Không được chứa ký tự đặc biệt và tối đa 50 ký tự">
+                        <input type="text" id="product-name" name="name" class="form-control" maxlength="50"
+                            pattern="^(?!\s)[a-zA-Z0-9À-ỹ\s]*\S$"
+                            title="Không được bắt đầu hoặc toàn bộ là khoảng trắng, chỉ cho phép chữ, số và khoảng trắng ở giữa"
+                            required>
                     </div>
 
                     <div class="form-group">
