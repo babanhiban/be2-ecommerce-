@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use App\Models\User;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -91,6 +92,17 @@ class ProductController extends Controller
     }
     public function update(Request $request, $id)
     {
+       // Kiểm tra id có phải số hay không
+    if (!is_numeric($id)) {
+        return redirect()->route('admin.products')->with('error', 'ID không hợp lệ.');
+    }
+
+    // Tìm sản phẩm, nếu không có thì báo lỗi và redirect
+    $product = Products::find($id);
+    if (!$product) {
+        return redirect()->route('admin.products')->with('error', 'Sản phẩm không tồn tại.');
+    }
+
         $input = $request->all();
         $product = Products::findOrFail($id);
         $formUpdatedAt = Carbon::parse($input['updated_at']);

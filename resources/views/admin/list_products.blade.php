@@ -113,7 +113,7 @@
 
 
         <div class="bottom-buttons">
-            <button class="btn-voucher">Thêm voucher</button>
+            
             <button class="btn-add"><a href="{{ route('product.addProduct') }}" style="text-decoration: none;">Them moi</a></button>
             <button class="btn-add"><a href="{{ route('home') }}" style="text-decoration: none;">Quay lại</a></button>
 
