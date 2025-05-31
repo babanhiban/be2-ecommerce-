@@ -1,3 +1,4 @@
+<input type="hidden" name="updated_at" id="edit_updated_at">
 <div class="mb-3">
     <label for="edit_customer_name" class="form-label">Tên khách hàng</label>
     <input type="text" class="form-control" id="edit_customer_name" name="customer_name" required>
