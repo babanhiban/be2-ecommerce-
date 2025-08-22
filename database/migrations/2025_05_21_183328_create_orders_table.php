@@ -16,7 +16,7 @@ return new class extends Migration
             $table->text('address')->nullable();
             $table->decimal('total_price', 15, 2)->nullable();
             $table->string('status')->default('Chờ xử lý');
-            $table->foreignId('voucher_code')->nullable()->constrained()->nullOnDelete();
+            $table->foreignId('voucher_id')->nullable()->constrained()->nullOnDelete();
 
             $table->timestamps();
         });

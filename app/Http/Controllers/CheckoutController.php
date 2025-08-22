@@ -74,7 +74,7 @@ public function process(Request $request)
             'address' => $request->input('address'),
             'total_price' => $totalPrice,
             'payment_method' => 'cod',
-            'status' => 'pending',
+            'status' => 'Đang xử lý',
         ]);
 
         foreach ($cartItems as $cartItem) {

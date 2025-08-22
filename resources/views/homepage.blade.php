@@ -75,6 +75,8 @@
                                     phẩm</a>
                                 <a href="{{ route('orders.index') }}"><i class="fas fa-users-cog"></i> Quản lý đơn
                                     hàng</a>
+                                    <a href="{{ route('admin.products') }}"><i class="fas fa-users-cog"></i> Quản lý voucher</a>
+                                    
                                 <a href="{{ route('logout') }}"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
                             </div>
                         </div>

@@ -174,7 +174,7 @@ Route::get('/admin/products/search', [ProductController::class, 'search'])->name
 Route::get('/homepage', function () {
     $user = null;
     $products = Products::all();
-    $categories = Category::all(); // ✅ Lấy danh mục
+    $categories = Category::all(); 
     if (Auth::check()) {
         $user = Auth::user();
         if ($user) {

@@ -26,7 +26,7 @@ class OrderController extends Controller
             'status'        => 'required|string|in:Đang xử lý,Đang giao,Hoàn thành,Đã huỷ',
             'product_id'    => 'required|exists:products,id',
             'quantity'      => 'required|integer|min:1',
-            'voucher_id'    => 'nullable|exists:vouchers,id', // dùng code nhưng trả về id
+            'voucher_id'    => 'nullable|exists:vouchers,id',
         ]);
 
         $product = Products::findOrFail($validated['product_id']);
@@ -74,7 +74,7 @@ class OrderController extends Controller
         'phone' => 'required|string|max:20',
         'address' => 'required|string|max:255',
         'status' => 'required|string|in:Đang xử lý,Đang giao,Hoàn thành,Đã huỷ',
-        'updated_at' => 'required|date', // 👈 validate thêm trường này
+        'updated_at' => 'required|date', 
     ]);
 
     // Kiểm tra xem bản ghi đã bị cập nhật bởi ai khác chưa
@@ -110,7 +110,7 @@ class OrderController extends Controller
         'address' => $order->address,
         'status' => $order->status,
         'total_price' => $order->total_price,
-        'updated_at' => $order->updated_at->toISOString(), // 👈 thêm dòng này
+        'updated_at' => $order->updated_at->toISOString(), 
         'products' => $order->items->map(function ($item) {
             return [
                 'name' => optional($item->product)->name ?? '(Không tồn tại)',

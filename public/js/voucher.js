@@ -9,13 +9,14 @@ $(document).ready(function () {
     // Xem chi tiết voucher
     $('.viewBtn').on('click', function () {
         const id = $(this).data('id');
-        $.get(`/vouchers/${id}`, function (v) {
-            $('#viewModal .modal-body').html(`
-                <p><strong>Mã:</strong> ${v.code}</p>
-                <p><strong>Giảm giá:</strong> ${v.discount}%</p>
-                <p><strong>Bắt đầu:</strong> ${v.start_date}</p>
-                <p><strong>Kết thúc:</strong> ${v.end_date}</p>
-            `);
+       $.get(`/vouchers/${id}`, function (v) {
+    $('#viewModal .modal-body').html(`
+        <p><strong>Mã:</strong> ${v.code}</p>
+        <p><strong>Giảm giá:</strong> ${v.discount}%</p>
+        <p><strong>Bắt đầu:</strong> ${new Date(v.start_date).toLocaleDateString('vi-VN')}</p>
+        <p><strong>Kết thúc:</strong> ${new Date(v.end_date).toLocaleDateString('vi-VN')}</p>
+    `); 
+});
             new bootstrap.Modal('#viewModal').show();
         }).fail(() => {
             Swal.fire('Lỗi', 'Không thể tải dữ liệu voucher.', 'error');
@@ -34,7 +35,6 @@ $(document).ready(function () {
         $('#editForm input[name=start_date]').val(v.start_date);
         $('#editForm input[name=end_date]').val(v.end_date);
 
-        // Thêm dòng này để hiện modal
         new bootstrap.Modal(document.getElementById('editModal')).show();
 
     }).fail((xhr) => {
