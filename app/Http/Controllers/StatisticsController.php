@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Order; // Giả sử model Order lưu đơn hàng
+use App\Models\Order;
 use Illuminate\Support\Facades\DB;
 
 class StatisticsController extends Controller
@@ -13,7 +13,7 @@ class StatisticsController extends Controller
         $fromDate = $request->input('from_date');
         $toDate = $request->input('to_date');
 
-        // Query cơ bản lọc theo ngày nếu có
+        // Query 
         $query = Order::query();
 
         if ($fromDate) {
@@ -38,7 +38,7 @@ class StatisticsController extends Controller
             ->groupBy('status')
             ->pluck('count', 'status');
 
-        // Thống kê đơn hàng theo tháng (dùng năm hiện tại)
+        // Thống kê đơn hàng theo tháng 
         $year = now()->year;
 
         $ordersByMonth = Order::select(
@@ -52,7 +52,6 @@ class StatisticsController extends Controller
             ->orderBy('month')
             ->pluck('count', 'month');
 
-        // Chuẩn hóa để đủ 12 tháng (nếu muốn)
         $allMonths = collect(range(1,12))
             ->mapWithKeys(fn($m) => [sprintf('%04d-%02d', $year, $m) => 0]);
 
@@ -64,7 +63,7 @@ class StatisticsController extends Controller
         ));
     }
 
-    // Export CSV đơn giản
+    // Export CSV 
     public function export(Request $request)
     {
         $fromDate = $request->input('from_date');
