@@ -12,7 +12,7 @@ class OrderController extends Controller
 {
    public function index()
 {
-    $orders = Order::orderBy('created_at', 'desc')->paginate(10); // 10 đơn hàng mỗi trang
+    $orders = Order::orderBy('created_at', 'desc')->paginate(10); // phân trang = 10 col
     return view('orders.index', compact('orders'));
 }
 
@@ -77,14 +77,14 @@ class OrderController extends Controller
         'updated_at' => 'required|date', 
     ]);
 
-    // Kiểm tra xem bản ghi đã bị cập nhật bởi ai khác chưa
+    // Check ==> data đã được update ở tab khác chưa
     if ($validated['updated_at'] !== $order->updated_at->toISOString()) {
         return response()->json([
             'message' => 'Dữ liệu đã bị thay đổi bởi người khác. Vui lòng tải lại trang.',
         ], 409); // Conflict
     }
 
-    // Cập nhật nếu không có xung đột
+    // Update nếu không có conflict
     $order->update($validated);
 
     return response()->json([
